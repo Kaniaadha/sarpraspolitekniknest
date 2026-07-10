@@ -54,3 +54,62 @@ CREATE TABLE kategori (
         ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE lantai (
+    id_lantai INT AUTO_INCREMENT PRIMARY KEY,
+    id_lokasi INT NOT NULL,
+    kode_lantai VARCHAR(10) NOT NULL UNIQUE,
+    nama_lantai VARCHAR(100) NOT NULL,
+    nomor_lantai INT NOT NULL,
+    deskripsi TEXT,
+    status ENUM('Aktif','Nonaktif') DEFAULT 'Aktif',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE ruangan (
+    id_ruangan INT AUTO_INCREMENT PRIMARY KEY,
+    id_lantai INT NOT NULL,
+    kode_ruangan VARCHAR(10) NOT NULL UNIQUE,
+    nama_ruangan VARCHAR(100) NOT NULL,
+    luas DECIMAL(8,2),
+    kapasitas INT,
+    deskripsi TEXT,
+    status ENUM('Aktif','Nonaktif') DEFAULT 'Aktif',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE public_space (
+    id_public_space INT AUTO_INCREMENT PRIMARY KEY,
+    id_lokasi INT NOT NULL,
+    kode_public_space VARCHAR(10) NOT NULL UNIQUE,
+    nama_public_space VARCHAR(100) NOT NULL,
+    luas DECIMAL(8,2),
+    deskripsi TEXT,
+    status ENUM('Aktif','Nonaktif') DEFAULT 'Aktif',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE inventaris (
+    id_inventaris INT AUTO_INCREMENT PRIMARY KEY,
+    kode_inventaris VARCHAR(10) NOT NULL UNIQUE,
+    id_kategori INT NOT NULL,
+    id_ruangan INT NULL,
+    id_public_space INT NULL,
+    nama_barang VARCHAR(100) NOT NULL,
+    merk VARCHAR(100),
+    spesifikasi TEXT,
+    jumlah INT NOT NULL DEFAULT 1,
+    kondisi ENUM('Baik','Rusak Ringan','Rusak Berat') DEFAULT 'Baik',
+    tahun_perolehan YEAR,
+    sumber_perolehan VARCHAR(100),
+    status ENUM('Aktif','Nonaktif') DEFAULT 'Aktif',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP
+);
+
