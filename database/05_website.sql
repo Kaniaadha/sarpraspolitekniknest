@@ -11,6 +11,7 @@ USE db_sisarpras;
 
 CREATE TABLE banner (
     id_banner INT AUTO_INCREMENT PRIMARY KEY,
+    id_admin INT NOT NULL,
 
     judul VARCHAR(150) NOT NULL,
 

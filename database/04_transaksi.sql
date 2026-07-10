@@ -13,6 +13,8 @@ CREATE TABLE peminjaman (
     id_peminjaman INT AUTO_INCREMENT PRIMARY KEY,
     kode_peminjaman VARCHAR(15) NOT NULL UNIQUE,
 
+    id_admin INT NULL,
+
     nama_peminjam VARCHAR(100) NOT NULL,
     nim_nip VARCHAR(30),
     no_hp VARCHAR(20),
