@@ -25,6 +25,14 @@ require_once __DIR__ . '/../config/config.php';
 
     <!-- Custom -->
     <link rel="stylesheet" href="<?= BASE_URL; ?>/assets/css/custom.css">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.bootstrap5.min.css">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet"
+    href="https://cdn.datatables.net/2.3.2/css/dataTables.bootstrap5.min.css">
+
 </head>
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
