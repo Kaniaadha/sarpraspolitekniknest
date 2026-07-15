@@ -83,7 +83,7 @@ CREATE TABLE ruangan (
 
 CREATE TABLE public_space (
     id_public_space INT AUTO_INCREMENT PRIMARY KEY,
-    id_lokasi INT NOT NULL,
+    id_lantai INT NOT NULL,
     kode_public_space VARCHAR(10) NOT NULL UNIQUE,
     nama_public_space VARCHAR(100) NOT NULL,
     luas DECIMAL(8,2),

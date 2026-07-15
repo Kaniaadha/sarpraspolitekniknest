@@ -24,9 +24,9 @@ ON UPDATE CASCADE
 ON DELETE RESTRICT;
 
 ALTER TABLE public_space
-ADD CONSTRAINT fk_publicspace_lokasi
-FOREIGN KEY (id_lokasi)
-REFERENCES lokasi(id_lokasi)
+ADD CONSTRAINT fk_publicspace_lantai
+FOREIGN KEY (id_lantai)
+REFERENCES lantai(id_lantai)
 ON UPDATE CASCADE
 ON DELETE RESTRICT;
 
