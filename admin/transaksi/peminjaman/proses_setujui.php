@@ -11,12 +11,6 @@ if (!isset($_SESSION['id_admin'])) {
 
 require_once "../../../config/database.php";
 
-/*
-|--------------------------------------------------------------------------
-| Validasi ID
-|--------------------------------------------------------------------------
-*/
-
 if (!isset($_GET['id']) || empty($_GET['id'])) {
 
     $_SESSION['error'] = "ID peminjaman tidak ditemukan.";
@@ -27,12 +21,6 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 }
 
 $id_peminjaman = (int) $_GET['id'];
-
-/*
-|--------------------------------------------------------------------------
-| Ambil Data Peminjaman
-|--------------------------------------------------------------------------
-*/
 
 $queryPeminjaman = mysqli_query($conn, "
     SELECT
@@ -55,12 +43,6 @@ if (!$queryPeminjaman || mysqli_num_rows($queryPeminjaman) == 0) {
 
 $peminjaman = mysqli_fetch_assoc($queryPeminjaman);
 
-/*
-|--------------------------------------------------------------------------
-| Validasi Status
-|--------------------------------------------------------------------------
-*/
-
 if ($peminjaman['status'] != 'Menunggu') {
 
     $_SESSION['error'] = "Hanya transaksi dengan status Menunggu yang dapat disetujui.";
@@ -70,20 +52,9 @@ if ($peminjaman['status'] != 'Menunggu') {
 
 }
 
-/*
-|--------------------------------------------------------------------------
-| Mulai Transaction
-|--------------------------------------------------------------------------
-*/
-
 mysqli_begin_transaction($conn);
 
 try {
-        /*
-    |--------------------------------------------------------------------------
-    | Ambil Detail Barang
-    |--------------------------------------------------------------------------
-    */
 
     $queryDetail = mysqli_query($conn, "
         SELECT
@@ -109,17 +80,10 @@ try {
 
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Validasi Stok Semua Barang
-    |--------------------------------------------------------------------------
-    */
-
     $detailBarang = [];
 
     while ($detail = mysqli_fetch_assoc($queryDetail)) {
 
-        // Simpan untuk dipakai pada Bagian 3
         $detailBarang[] = $detail;
 
         if ($detail['stok'] < $detail['jumlah']) {
@@ -133,12 +97,6 @@ try {
         }
 
     }
-
-        /*
-    |--------------------------------------------------------------------------
-    | Kurangi Stok Inventaris
-    |--------------------------------------------------------------------------
-    */
 
     foreach ($detailBarang as $barang) {
 
@@ -159,12 +117,6 @@ try {
 
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Update Status Peminjaman
-    |--------------------------------------------------------------------------
-    */
-
     $updatePeminjaman = mysqli_query($conn, "
         UPDATE peminjaman
         SET
@@ -178,12 +130,6 @@ try {
         throw new Exception("Gagal memperbarui status peminjaman.");
 
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Commit Transaction
-    |--------------------------------------------------------------------------
-    */
 
     mysqli_commit($conn);
 

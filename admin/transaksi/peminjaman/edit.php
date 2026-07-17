@@ -27,10 +27,6 @@ if (
 $id_peminjaman = (int) $_GET['id'];
 
 
-// ===========================================
-// Ambil Data Peminjaman
-// ===========================================
-
 $queryPeminjaman = mysqli_query($conn, "
     SELECT *
     FROM peminjaman
@@ -52,10 +48,6 @@ if (
 $peminjaman = mysqli_fetch_assoc($queryPeminjaman);
 
 
-// ===========================================
-// Ambil Detail Barang
-// ===========================================
-
 $queryDetail = mysqli_query($conn, "
     SELECT
         dp.*,
@@ -68,10 +60,6 @@ $queryDetail = mysqli_query($conn, "
     ORDER BY dp.id_detail ASC
 ");
 
-
-// ===========================================
-// Ambil Data Inventaris
-// ===========================================
 
 $queryInventaris = mysqli_query($conn, "
     SELECT
