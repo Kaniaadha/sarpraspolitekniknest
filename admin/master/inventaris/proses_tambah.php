@@ -2,12 +2,18 @@
 session_start();
 
 require_once "../../../config/database.php";
+require_once "../../../helpers/generate_kode.php";
 
 // ==============================
 // Ambil Data
 // ==============================
 
-$kode_inventaris   = trim($_POST['kode_inventaris']);
+$kode_inventaris = generateKode(
+    $conn,
+    "inventaris",
+    "kode_inventaris",
+    "INV"
+);
 $id_kategori       = (int) $_POST['id_kategori'];
 $nama_barang       = trim($_POST['nama_barang']);
 $merk              = trim($_POST['merk']);

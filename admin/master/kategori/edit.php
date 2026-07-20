@@ -95,7 +95,7 @@ require_once "../../../includes/sidebar.php";
                                 name="kode_kategori"
                                 class="form-control"
                                 value="<?= htmlspecialchars($old['kode_kategori'] ?? $data['kode_kategori']); ?>"
-                                required>
+                                readonly>
 
                         </div>
 

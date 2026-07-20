@@ -169,7 +169,7 @@ type="text"
 name="kode_inventaris"
 class="form-control"
 value="<?= htmlspecialchars($old['kode_inventaris'] ?? $data['kode_inventaris']); ?>"
-required>
+readonly>
 
 </div>
 

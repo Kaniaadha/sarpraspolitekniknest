@@ -11,7 +11,13 @@ if (!isset($_SESSION['id_admin'])) {
 $old = $_SESSION['old'] ?? [];
 
 require_once "../../../config/database.php";
-
+require_once "../../../helpers/generate_kode.php";
+$kodeRuangan = generateKode(
+    $conn,
+    "ruangan",
+    "kode_ruangan",
+    "RNG"
+);
 // Ambil data lantai + lokasi
 $lantai = mysqli_query($conn, "
     SELECT
@@ -121,8 +127,8 @@ require_once "../../../includes/sidebar.php";
                                 name="kode_ruangan"
                                 class="form-control"
                                 placeholder="Contoh : RNG001"
-                                value="<?= htmlspecialchars($old['kode_ruangan'] ?? '') ?>"
-                                required>
+                                value="<?= htmlspecialchars($old['kode_ruangan'] ?? $kodeRuangan); ?>"
+                                readonly>
 
                         </div>
 

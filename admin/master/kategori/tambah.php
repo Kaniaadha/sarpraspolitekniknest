@@ -9,7 +9,13 @@ if (!isset($_SESSION['id_admin'])) {
 }
 
 require_once "../../../config/database.php";
-
+require_once "../../../helpers/generate_kode.php";
+$kodeKategori = generateKode(
+    $conn,
+    "kategori",
+    "kode_kategori",
+    "KTG"
+);
 $old = $_SESSION['old'] ?? [];
 
 require_once "../../../includes/header.php";
@@ -72,8 +78,8 @@ require_once "../../../includes/sidebar.php";
                                 name="kode_kategori"
                                 class="form-control"
                                 placeholder="Contoh : KTG001"
-                                value="<?= htmlspecialchars($old['kode_kategori'] ?? ''); ?>"
-                                required>
+                               value="<?= htmlspecialchars($old['kode_kategori'] ?? $kodeKategori); ?>"
+                                readonly>
 
                         </div>
 

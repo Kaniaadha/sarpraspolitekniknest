@@ -32,7 +32,37 @@ if (mysqli_num_rows($cek) == 0) {
     header("Location: index.php");
     exit;
 }
+// ==============================
+// Cek Relasi Ruangan
+// ==============================
 
+$cekRuangan = mysqli_query($conn, "
+    SELECT COUNT(*) AS total
+    FROM ruangan
+    WHERE id_lantai = '$id_lantai'
+");
+
+$dataRuangan = mysqli_fetch_assoc($cekRuangan);
+
+// ==============================
+// Cek Relasi Public Space
+// ==============================
+
+$cekPublic = mysqli_query($conn, "
+    SELECT COUNT(*) AS total
+    FROM public_space
+    WHERE id_lantai = '$id_lantai'
+");
+
+$dataPublic = mysqli_fetch_assoc($cekPublic);
+
+if ($dataRuangan['total'] > 0 || $dataPublic['total'] > 0) {
+
+    $_SESSION['error'] = "Data lantai tidak dapat dihapus karena masih memiliki ruangan atau public space.";
+
+    header("Location: index.php");
+    exit;
+}
 // ==============================
 // Hapus Data
 // ==============================

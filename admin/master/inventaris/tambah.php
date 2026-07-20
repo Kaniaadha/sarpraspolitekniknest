@@ -9,7 +9,14 @@ if (!isset($_SESSION['id_admin'])) {
 }
 
 require_once "../../../config/database.php";
+require_once "../../../helpers/generate_kode.php";
 
+$kodeInventaris = generateKode(
+    $conn,
+    "inventaris",
+    "kode_inventaris",
+    "INV"
+);
 $old = $_SESSION['old'] ?? [];
 
 // ======================
@@ -144,8 +151,8 @@ Kode Inventaris
 type="text"
 name="kode_inventaris"
 class="form-control"
-placeholder="Contoh : INV001"
-value="<?= htmlspecialchars($old['kode_inventaris'] ?? '') ?>"
+value="<?= htmlspecialchars($old['kode_inventaris'] ?? $kodeInventaris); ?>"
+readonly
 required>
 
 </div>

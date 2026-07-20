@@ -96,7 +96,7 @@ require_once "../../../includes/sidebar.php";
                                 name="kode_lokasi"
                                 class="form-control"
                                 value="<?= htmlspecialchars($data['kode_lokasi']); ?>"
-                                required>
+                                readonly>
 
                         </div>
 

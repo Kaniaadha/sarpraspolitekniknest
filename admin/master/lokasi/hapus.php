@@ -32,7 +32,25 @@ if (mysqli_num_rows($cek) == 0) {
     header("Location: index.php");
     exit;
 }
+// ==============================
+// Cek Relasi Lantai
+// ==============================
 
+$cekRelasi = mysqli_query($conn, "
+    SELECT COUNT(*) AS total
+    FROM lantai
+    WHERE id_lokasi = '$id_lokasi'
+");
+
+$dataRelasi = mysqli_fetch_assoc($cekRelasi);
+
+if ($dataRelasi['total'] > 0) {
+
+    $_SESSION['error'] = "Data lokasi tidak dapat dihapus karena masih memiliki data lantai.";
+
+    header("Location: index.php");
+    exit;
+}
 // ==============================
 // Hapus Data
 // ==============================
