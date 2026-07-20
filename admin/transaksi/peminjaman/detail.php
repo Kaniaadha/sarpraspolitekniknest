@@ -53,12 +53,12 @@ switch ($peminjaman['status']) {
         $badge = '<span class="badge bg-warning text-dark">Menunggu</span>';
         break;
 
-    case "Disetujui":
-        $badge = '<span class="badge bg-info">Disetujui</span>';
-        break;
-
     case "Dipinjam":
         $badge = '<span class="badge bg-primary">Dipinjam</span>';
+        break;
+    
+    case "Menunggu Pengembalian":
+        $badge = '<span class="badge bg-info">Menunggu Pengembalian</span>';
         break;
 
     case "Selesai":
@@ -404,12 +404,19 @@ require_once "../../../includes/sidebar.php";
 
                     <?php elseif ($peminjaman['status'] == 'Dipinjam') : ?>
 
-                        <a href="../pengembalian/tambah.php?id=<?= $peminjaman['id_peminjaman']; ?>"
-                           class="btn btn-primary">
+                        <button class="btn btn-secondary" disabled>
+                            <i class="bi bi-hourglass-split me-1"></i>
+                            Menunggu Pengajuan Pengembalian
+                        </button>
 
-                            <i class="bi bi-box-arrow-in-left me-1"></i>
+                    <?php elseif ($peminjaman['status'] == 'Menunggu Pengembalian') : ?>
 
-                            Pengembalian
+                        <a href="proses_selesai.php?id=<?= $peminjaman['id_peminjaman']; ?>"
+                        class="btn btn-success"
+                        onclick="return confirm('Apakah Anda yakin ingin mengonfirmasi pengembalian barang ini?')">
+
+                            <i class="bi bi-check-circle me-1"></i>
+                            Konfirmasi Pengembalian
 
                         </a>
 

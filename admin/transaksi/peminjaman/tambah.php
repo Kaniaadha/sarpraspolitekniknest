@@ -165,6 +165,7 @@ require_once "../../../includes/sidebar.php";
                                 name="tanggal_pinjam"
                                 class="form-control"
                                 value="<?= date('Y-m-d'); ?>"
+                                min="<?= date('Y-m-d'); ?>"
                                 required>
 
                         </div>
@@ -181,6 +182,7 @@ require_once "../../../includes/sidebar.php";
                                 type="date"
                                 name="tanggal_kembali"
                                 class="form-control"
+                                min="<?= date('Y-m-d'); ?>"
                                 required>
 
                         </div>

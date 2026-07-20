@@ -210,19 +210,19 @@ require_once "../../../includes/sidebar.php";
 
                                                 break;
 
-                                            case "Disetujui":
-
-                                                echo '<span class="badge bg-info">
-                                                        Disetujui
-                                                      </span>';
-
-                                                break;
-
                                             case "Dipinjam":
 
                                                 echo '<span class="badge bg-primary">
                                                         Dipinjam
                                                       </span>';
+
+                                                break;
+
+                                             case "Menunggu Pengembalian":
+
+                                                echo '<span class="badge bg-info">
+                                                        Menunggu Pengembalian
+                                                    </span>';
 
                                                 break;
 
@@ -258,33 +258,28 @@ require_once "../../../includes/sidebar.php";
 
                                     <td class="text-center">
 
-                                        <a
-                                            href="detail.php?id=<?= $row['id_peminjaman']; ?>"
-                                            class="btn btn-info btn-sm me-1"
-                                            title="Detail">
-
+                                        <a href="detail.php?id=<?= $row['id_peminjaman']; ?>"
+                                        class="btn btn-info btn-sm me-1"
+                                        title="Detail">
                                             <i class="bi bi-eye"></i>
-
                                         </a>
 
-                                        <a
-                                            href="edit.php?id=<?= $row['id_peminjaman']; ?>"
+                                        <?php if ($row['status'] == 'Menunggu') : ?>
+
+                                            <a href="edit.php?id=<?= $row['id_peminjaman']; ?>"
                                             class="btn btn-warning btn-sm me-1"
                                             title="Edit">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
 
-                                            <i class="bi bi-pencil-square"></i>
-
-                                        </a>
-
-                                        <a
-                                            href="#"
+                                            <a href="#"
                                             class="btn btn-danger btn-sm"
                                             title="Hapus"
                                             onclick="hapusPeminjaman(<?= $row['id_peminjaman']; ?>)">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
 
-                                            <i class="bi bi-trash"></i>
-
-                                        </a>
+                                        <?php endif; ?>
 
                                     </td>
 

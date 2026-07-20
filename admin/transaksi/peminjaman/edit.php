@@ -229,6 +229,7 @@ require_once "../../../includes/sidebar.php";
                     name="tanggal_pinjam"
                     class="form-control"
                     value="<?= htmlspecialchars($peminjaman['tanggal_pinjam']); ?>"
+                    min="<?= date('Y-m-d'); ?>"
                     required>
 
             </div>
@@ -246,6 +247,7 @@ require_once "../../../includes/sidebar.php";
                     name="tanggal_kembali"
                     class="form-control"
                     value="<?= htmlspecialchars($peminjaman['tanggal_kembali']); ?>"
+                    min="<?= date('Y-m-d'); ?>"
                     required>
 
             </div>

@@ -59,6 +59,30 @@ if (
 }
 
 
+$hariIni = date('Y-m-d');
+
+if ($tanggal_pinjam < $hariIni) {
+
+    $_SESSION['error'] =
+        "Tanggal pinjam tidak boleh sebelum hari ini.";
+
+    header("Location: edit.php?id=".$id_peminjaman);
+    exit;
+
+}
+
+if ($tanggal_kembali < $hariIni) {
+
+    $_SESSION['error'] =
+        "Tanggal kembali tidak boleh sebelum hari ini.";
+
+    header("Location: edit.php?id=".$id_peminjaman);
+    exit;
+
+}
+
+
+
 if ($tanggal_kembali < $tanggal_pinjam) {
 
     $_SESSION['error'] = "Tanggal kembali tidak boleh lebih awal dari tanggal pinjam.";
