@@ -118,7 +118,6 @@ require_once "../../../includes/sidebar.php";
 
         <div class="container-fluid">
 
-
 <div class="card mb-4">
 
     <div class="card-header">
@@ -397,4 +396,7 @@ require_once "../../../includes/sidebar.php";
 
 </main>
 
-<?php require_once "../../../includes/footer.php"; ?>
+<?php 
+require_once "../../../includes/footer.php";
+require_once "../../../includes/scripts.php";
+?>
