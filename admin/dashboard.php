@@ -31,6 +31,17 @@ $public = mysqli_fetch_assoc(
     mysqli_query($conn, "SELECT COUNT(*) AS total FROM public_space")
 );
 
+// Jumlah APAR
+$apar = mysqli_fetch_assoc(
+    mysqli_query($conn, "
+        SELECT COUNT(*) AS total
+        FROM inventaris i
+        INNER JOIN kategori k
+            ON i.id_kategori = k.id_kategori
+        WHERE k.nama_kategori = 'APAR'
+    ")
+);
+
 // Barang Rusak
 $rusak = mysqli_fetch_assoc(
     mysqli_query($conn, "
@@ -39,6 +50,18 @@ $rusak = mysqli_fetch_assoc(
         WHERE kondisi='Rusak'
     ")
 );
+
+// ==============================
+// Monitoring (Dummy Data)
+// ==============================
+
+$menunggu = 5;
+
+$dipinjam = 12;
+
+$terlambat = 2;
+
+$stockTerakhir = "20 Juli 2026";
 
 ?>
 
@@ -49,7 +72,7 @@ $rusak = mysqli_fetch_assoc(
 
             <div class="d-flex justify-content-between align-items-center">
 
-                <h2 class="mb-0">Dashboard</h2>
+                <h2 class="mb-0">Dashboard Admin</h2>
 
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item">Home</li>
@@ -73,7 +96,7 @@ $rusak = mysqli_fetch_assoc(
                     <div>
 
                         <h2 class="fw-bold mb-2">
-                            Halo, <?= $_SESSION['nama_admin']; ?> 👋
+                            Halo, <?= $_SESSION['nama_admin']; ?>
                         </h2>
 
                         <p class="text-muted mb-0">
@@ -96,96 +119,220 @@ $rusak = mysqli_fetch_assoc(
         <div class="row g-3">
 
             <!-- Gedung -->
-            <div class="col-xl-3 col-md-6">
-                <div class="card dashboard-card">
-                    <div class="card-body text-center">
-                        <i class="bi bi-building dashboard-icon"></i>
-                        <h6>Gedung</h6>
-                        <h2><?= $gedung['total']; ?></h2>
+            <div class="col-xl col-lg-4 col-md-6">
+                <a
+                    href="master/lokasi/index.php"
+                    class="text-decoration-none">
+                    <div class="card dashboard-card">
+                        <div class="card-body">
+                            <div class="icon-orange">
+                                <i class="bi bi-building"></i>
+                            </div>
+                            <h6>Lokasi</h6>
+                            <h2><?= $gedung['total']; ?></h2>
+                            <span class="dashboard-link">
+                                Lihat Detail
+                                <i class="bi bi-arrow-right"></i>
+                            </span>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
 
             <!-- Ruangan -->
-            <div class="col-xl-3 col-md-6">
-                <div class="card dashboard-card">
-                    <div class="card-body text-center">
-                        <i class="bi bi-door-open dashboard-icon"></i>
-                        <h6>Ruangan</h6>
-                        <h2><?= $ruangan['total']; ?></h2>
+            <div class="col-xl col-lg-4 col-md-6">
+                <a href="master/ruangan/index.php"
+                class="text-decoration-none">
+                    <div class="card dashboard-card">
+                        <div class="card-body">
+                            <div class="icon-purple">
+                                <i class="bi bi-door-open"></i>
+                            </div>
+                            <h6>Ruangan</h6>
+                            <h2><?= $ruangan['total']; ?></h2>
+                            <span class="dashboard-link">
+                                Lihat Detail
+                                <i class="bi bi-arrow-right"></i>
+                            </span>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
 
             <!-- Inventaris -->
-            <div class="col-xl-3 col-md-6">
-                <div class="card dashboard-card">
-                    <div class="card-body text-center">
-                        <i class="bi bi-box-seam dashboard-icon"></i>
-                        <h6>Inventaris</h6>
-                        <h2><?= $inventaris['total']; ?></h2>
+            <div class="col-xl col-lg-4 col-md-6">
+                <a href="master/inventaris/index.php"
+                class="text-decoration-none">
+                    <div class="card dashboard-card">
+                        <div class="card-body">
+                            <div class="icon-green">
+                                <i class="bi bi-box-seam"></i>
+                            </div>
+                            <h6>Inventaris</h6>
+                            <h2><?= $inventaris['total']; ?></h2>
+                            <span class="dashboard-link">
+                                Lihat Detail
+                                <i class="bi bi-arrow-right"></i>
+                            </span>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
 
             <!-- Public Space -->
-            <div class="col-xl-3 col-md-6">
-                <div class="card dashboard-card">
-                    <div class="card-body text-center">
-                        <i class="bi bi-tree dashboard-icon"></i>
-                        <h6>Public Space</h6>
-                        <h2><?= $public['total']; ?></h2>
+            <div class="col-xl col-lg-4 col-md-6">
+                <a href="master/public_space/index.php"
+                class="text-decoration-none">
+                    <div class="card dashboard-card">
+                        <div class="card-body">
+                            <div class="icon-pink">
+                                <i class="bi bi-tree"></i>
+                            </div>
+                            <h6>Public Space</h6>
+                            <h2><?= $public['total']; ?></h2>
+                            <span class="dashboard-link">
+                                Lihat Detail
+                                <i class="bi bi-arrow-right"></i>
+                            </span>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
 
-            <!-- Peminjaman Aktif -->
-            <div class="col-xl-3 col-md-6">
-                <div class="card dashboard-card">
-                    <div class="card-body text-center">
-                        <i class="bi bi-arrow-left-right dashboard-icon text-primary"></i>
-                        <h6>Peminjaman Aktif</h6>
-                        <h2>0</h2>
+            <!-- APAR -->
+            <div class="col-xl col-lg-4 col-md-6">
+                <a
+                    href="master/inventaris/index.php?kategori=APAR"
+                    class="text-decoration-none">
+                    <div class="card dashboard-card">
+                        <div class="card-body">
+                            <div class="icon-red">
+                                <i class="bi bi-fire"></i>
+                            </div>
+                            <h6>APAR</h6>
+                            <h2><?= $apar['total']; ?></h2>
+                            <span class="dashboard-link">
+                                Lihat Detail
+                                <i class="bi bi-arrow-right"></i>
+                            </span>
+                        </div>
                     </div>
-                </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Transaksi -->
+        <div class="row mt-4">
+
+            <!-- Menunggu -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <a href="transaksi/peminjaman/index.php?status=Menunggu" class="text-decoration-none">
+                    <div class="card dashboard-card h-100">
+                        <div class="card-body text-center">
+
+                            <div class="icon-blue mb-3">
+                                <i class="bi bi-hourglass-split"></i>
+                            </div>
+
+                            <h6 class="fw-bold">Menunggu Persetujuan</h6>
+
+                            <h2 class="fw-bold">
+                                <?= $menunggu ?>
+                            </h2>
+
+                            <span class="dashboard-link">
+                                Lihat Detail
+                                <i class="bi bi-arrow-right"></i>
+                            </span>
+
+                        </div>
+                    </div>
+                </a>
             </div>
 
-            <!-- Laporan Masuk -->
-            <div class="col-xl-3 col-md-6">
-                <div class="card dashboard-card">
-                    <div class="card-body text-center">
-                        <i class="bi bi-envelope-paper dashboard-icon text-danger"></i>
-                        <h6>Laporan Masuk</h6>
-                        <h2>0</h2>
+            <!-- Dipinjam -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <a href="transaksi/peminjaman/index.php?status=Dipinjam" class="text-decoration-none">
+                    <div class="card dashboard-card h-100">
+                        <div class="card-body text-center">
+
+                            <div class="icon-green mb-3">
+                                <i class="bi bi-box-arrow-up"></i>
+                            </div>
+
+                            <h6 class="fw-bold">Sedang Dipinjam</h6>
+
+                            <h2 class="fw-bold">
+                                <?= $dipinjam ?>
+                            </h2>
+
+                            <span class="dashboard-link">
+                                Lihat Detail
+                                <i class="bi bi-arrow-right"></i>
+                            </span>
+
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
 
-            <!-- Barang Rusak -->
-            <div class="col-xl-3 col-md-6">
-                <div class="card dashboard-card">
-                    <div class="card-body text-center">
-                        <i class="bi bi-exclamation-triangle dashboard-icon text-warning"></i>
-                        <h6>Barang Rusak</h6>
-                        <h2><?= $rusak['total']; ?></h2>
+            <!-- Terlambat -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <a href="transaksi/peminjaman/index.php?status=Terlambat" class="text-decoration-none">
+                    <div class="card dashboard-card h-100">
+                        <div class="card-body text-center">
+
+                            <div class="icon-red mb-3">
+                                <i class="bi bi-clock-history"></i>
+                            </div>
+
+                            <h6 class="fw-bold">Terlambat Mengembalikan</h6>
+
+                            <h2 class="fw-bold">
+                                <?= $terlambat ?>
+                            </h2>
+
+                            <span class="dashboard-link">
+                                Lihat Detail
+                                <i class="bi bi-arrow-right"></i>
+                            </span>
+
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
 
             <!-- Stock Opname -->
-            <div class="col-xl-3 col-md-6">
-                <div class="card dashboard-card">
-                    <div class="card-body text-center">
-                        <i class="bi bi-calendar-check dashboard-icon text-success"></i>
-                        <h6>Stock Opname</h6>
-                        <small class="text-muted">
-                            Belum Dilakukan
-                        </small>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <a href="transaksi/stock-opname/index.php" class="text-decoration-none">
+                    <div class="card dashboard-card h-100">
+                        <div class="card-body text-center">
+
+                            <div class="icon-orange mb-3">
+                                <i class="bi bi-calendar-check"></i>
+                            </div>
+
+                            <h6 class="fw-bold">Stock Opname</h6>
+
+                            <p class="mb-1 text-muted">
+                                Terakhir :
+                            </p>
+
+                            <h5 class="fw-bold">
+                                <?= $stockTerakhir ?>
+                            </h5>
+
+                            <span class="dashboard-link">
+                                Lihat Detail
+                                <i class="bi bi-arrow-right"></i>
+                            </span>
+
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
 
-        </div>
+        </div>           
 
         <!-- Grafik -->
         <div class="row mt-4">

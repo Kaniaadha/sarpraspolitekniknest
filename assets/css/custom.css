@@ -242,3 +242,100 @@ body{
     border:none;
     padding:15px;
 }
+
+/* ===== Dashboard Card V2 ===== */
+
+.dashboard-link{
+    display:inline-block;
+    margin-top:12px;
+    color:#ff7b35;
+    font-weight:600;
+    text-decoration:none;
+    font-size:14px;
+}
+
+.dashboard-link i{
+    margin-left:4px;
+}
+
+.icon-orange{
+    width:72px;
+    height:72px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:auto;
+    border-radius:50%;
+    background:#fff3ea;
+    color:#ff7b35;
+    font-size:34px;
+}
+.icon-purple{
+    width:72px;
+    height:72px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    margin:auto;
+
+    border-radius:50%;
+    background:#f2ebff;
+    color:#7c3aed;
+    font-size:34px;
+}
+
+.icon-green{
+    width:72px;
+    height:72px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    margin:auto;
+    border-radius:50%;
+    background:#e9fff2;
+    color:#16a34a;
+    font-size:34px;
+}
+
+.icon-pink{
+    width:72px;
+    height:72px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    margin:auto;
+    border-radius:50%;
+    background:#fff0f7;
+    color:#ec4899;
+    font-size:34px;
+}
+.icon-red{
+    width:72px;
+    height:72px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:auto;
+    border-radius:50%;
+    background:#fff1f2;
+    color:#dc3545;
+    font-size:34px;
+}
+.icon-blue{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background:#eef5ff;
+    color:#0d6efd;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:auto;
+    font-size:32px;
+}
