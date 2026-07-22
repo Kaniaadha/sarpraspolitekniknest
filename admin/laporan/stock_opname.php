@@ -310,13 +310,6 @@ require_once "../../includes/sidebar.php";
 
             <div class="d-flex gap-2">
 
-                <a href="stock_opname_cetak.php"
-                    target="_blank"
-                    class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-printer-fill me-1"></i>
-                    Cetak
-                </a>
-
                 <a href="stock_opname_excel.php"
                     class="btn btn-outline-success btn-sm">
                     <i class="bi bi-file-earmark-excel-fill me-1"></i>
@@ -412,6 +405,15 @@ require_once "../../includes/sidebar.php";
                                         title="Lihat Detail">
 
                                         <i class="bi bi-eye-fill"></i>
+
+                                    </a>
+
+                                    <a href="stock_opname_cetak.php?id=<?= $row['id_stock_opname']; ?>"
+                                        target="_blank"
+                                        class="btn btn-sm btn-outline-secondary"
+                                        title="Cetak Hasil Stock Opname">
+
+                                        <i class="bi bi-printer-fill"></i>
 
                                     </a>
 
