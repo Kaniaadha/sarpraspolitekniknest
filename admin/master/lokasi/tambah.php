@@ -11,6 +11,13 @@ if (!isset($_SESSION['id_admin'])) {
 $old = $_SESSION['old'] ?? [];
 
 require_once "../../../config/database.php";
+require_once "../../../helpers/generate_kode.php";
+$kodeLokasi = generateKode(
+    $conn,
+    "lokasi",
+    "kode_lokasi",
+    "LOC"
+);
 require_once "../../../includes/header.php";
 require_once "../../../includes/navbar.php";
 require_once "../../../includes/sidebar.php";
@@ -72,8 +79,8 @@ require_once "../../../includes/sidebar.php";
                                 name="kode_lokasi"
                                 class="form-control"
                                 placeholder="Contoh : LOC001"
-                                value="<?= htmlspecialchars($old['kode_lokasi'] ?? '') ?>"
-                                required>
+                                value="<?= htmlspecialchars($old['kode_lokasi'] ?? $kodeLokasi); ?>"
+                                readonly>
 
                         </div>
 

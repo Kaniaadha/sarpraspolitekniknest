@@ -1,6 +1,7 @@
 <?php
 session_start();
-
+require_once "../foto/helper.php";
+require_once "../foto/config.php";
 require_once "../../../config/database.php";
 
 // ==============================
@@ -32,7 +33,18 @@ $sumber_perolehan = trim($_POST['sumber_perolehan']);
 $status           = $_POST['status'];
 
 $currentYear = date('Y');
+/*
+|--------------------------------------------------------------------------
+| Upload
+|--------------------------------------------------------------------------
+*/
 
+$uploadFolder = "../../../assets/uploads/inventaris/";
+
+ensureUploadDirectory($uploadFolder);
+
+$fotoLama = $_POST['foto_lama'] ?? '';
+$fotoBaru = $fotoLama;
 // ==============================
 // Simpan Old Input
 // ==============================
@@ -155,7 +167,52 @@ if (mysqli_num_rows($cekKode) > 0) {
     header("Location: edit.php?id=$id_inventaris");
     exit;
 }
+/*
+|--------------------------------------------------------------------------
+| Upload Foto Baru
+|--------------------------------------------------------------------------
+*/
 
+if (
+    isset($_FILES['foto']) &&
+    $_FILES['foto']['error'] !== UPLOAD_ERR_NO_FILE
+) {
+
+    $validation = validateImage($_FILES['foto'], $config);
+
+    if ($validation !== true) {
+
+        $_SESSION['error'] = $validation;
+
+        header("Location: edit.php?id=$id_inventaris");
+        exit;
+
+    }
+
+    $extension = pathinfo(
+        $_FILES['foto']['name'],
+        PATHINFO_EXTENSION
+    );
+
+    $fotoBaru = generateUniqueFileName($extension);
+
+    $destination = $uploadFolder . $fotoBaru;
+
+    if (
+        !move_uploaded_file(
+            $_FILES['foto']['tmp_name'],
+            $destination
+        )
+    ) {
+
+        $_SESSION['error'] = "Upload foto gagal.";
+
+        header("Location: edit.php?id=$id_inventaris");
+        exit;
+
+    }
+
+}
 // ==============================
 // Format NULL
 // ==============================
@@ -191,6 +248,7 @@ $query = mysqli_query($conn, "
         tahun_perolehan = $tahun_sql,
         sumber_perolehan = '$sumber_perolehan',
         status = '$status',
+        foto = " . ($fotoBaru ? "'$fotoBaru'" : "NULL") . ",
         updated_at = NOW()
     WHERE id_inventaris = '$id_inventaris'
 ");
@@ -200,7 +258,16 @@ $query = mysqli_query($conn, "
 // ==============================
 
 if ($query) {
+if (
+    $fotoBaru !== $fotoLama &&
+    !empty($fotoLama)
+) {
 
+    deletePhysicalFile(
+        $uploadFolder . $fotoLama
+    );
+
+}
     unset($_SESSION['old']);
 
     $_SESSION['success'] = "Data Inventaris berhasil diperbarui.";
@@ -209,7 +276,14 @@ if ($query) {
     exit;
 
 } else {
+if (
+    isset($destination) &&
+    file_exists($destination)
+) {
 
+    deletePhysicalFile($destination);
+
+}
     $_SESSION['error'] = "Data Inventaris gagal diperbarui.";
 
     header("Location: edit.php?id=$id_inventaris");

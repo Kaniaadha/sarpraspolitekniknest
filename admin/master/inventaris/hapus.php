@@ -7,6 +7,7 @@ if (!isset($_SESSION['id_admin'])) {
 }
 
 require_once "../../../config/database.php";
+require_once "../foto/helper.php";
 
 if (!isset($_GET['id'])) {
     header("Location: index.php");
@@ -14,7 +15,7 @@ if (!isset($_GET['id'])) {
 }
 
 $id_inventaris = (int) $_GET['id'];
-
+$uploadFolder = "../../../assets/uploads/inventaris/";
 // ==============================
 // Cek Data
 // ==============================
@@ -32,6 +33,7 @@ if (mysqli_num_rows($cek) == 0) {
     header("Location: index.php");
     exit;
 }
+$data = mysqli_fetch_assoc($cek);
 
 // ==============================
 // Hapus Data
@@ -47,7 +49,12 @@ $query = mysqli_query($conn, "
 // ==============================
 
 if ($query) {
+if (!empty($data['foto'])) {
 
+    deletePhysicalFile(
+        $uploadFolder . $data['foto']
+    );
+}
     $_SESSION['success'] = "Data Inventaris berhasil dihapus.";
 
 } else {

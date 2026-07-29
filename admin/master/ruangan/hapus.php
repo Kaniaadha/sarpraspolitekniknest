@@ -32,7 +32,25 @@ if (mysqli_num_rows($cek) == 0) {
     header("Location: index.php");
     exit;
 }
+// ==============================
+// Cek Relasi Inventaris
+// ==============================
 
+$cekRelasi = mysqli_query($conn, "
+    SELECT COUNT(*) AS total
+    FROM inventaris
+    WHERE id_ruangan = '$id_ruangan'
+");
+
+$dataRelasi = mysqli_fetch_assoc($cekRelasi);
+
+if ($dataRelasi['total'] > 0) {
+
+    $_SESSION['error'] = "Data ruangan tidak dapat dihapus karena masih digunakan oleh inventaris.";
+
+    header("Location: index.php");
+    exit;
+}
 // ==============================
 // Hapus Data
 // ==============================

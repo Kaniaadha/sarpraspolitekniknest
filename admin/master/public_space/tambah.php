@@ -9,7 +9,13 @@ if (!isset($_SESSION['id_admin'])) {
 }
 
 require_once "../../../config/database.php";
-
+require_once "../../../helpers/generate_kode.php";
+$kodePublic = generateKode(
+    $conn,
+    "public_space",
+    "kode_public_space",
+    "PSP"
+);
 $old = $_SESSION['old'] ?? [];
 
 // Ambil Data Lantai + Lokasi
@@ -121,8 +127,8 @@ require_once "../../../includes/sidebar.php";
                                 name="kode_public_space"
                                 class="form-control"
                                 placeholder="Contoh : PSP001"
-                                value="<?= htmlspecialchars($old['kode_public_space'] ?? ''); ?>"
-                                required>
+                               value="<?= htmlspecialchars($old['kode_public_space'] ?? $kodePublic); ?>"
+                                readonly>
 
                         </div>
 

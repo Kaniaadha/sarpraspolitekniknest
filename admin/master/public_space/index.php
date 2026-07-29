@@ -152,7 +152,13 @@ require_once "../../../includes/sidebar.php";
                                     </td>
 
                                     <td class="text-center">
+                                        <a
+                                            href="../foto/index.php?tipe=public_space&id=<?= $row['id_public_space']; ?>"
+                                            class="btn btn-info btn-sm me-1"
+                                            title="Gallery Foto">
 
+                                            <i class="bi bi-images"></i>
+                                        </a>
                                         <a
                                             href="edit.php?id=<?= $row['id_public_space']; ?>"
                                             class="btn btn-warning btn-sm me-1">
