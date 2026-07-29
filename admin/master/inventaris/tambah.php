@@ -137,7 +137,10 @@ Form Tambah Inventaris
 
 <div class="card-body">
 
-<form action="proses_tambah.php" method="POST">
+<form
+    action="proses_tambah.php"
+    method="POST"
+    enctype="multipart/form-data">
 
 <div class="row">
 
@@ -357,7 +360,41 @@ value="<?= $p['id_public_space'];?>">
 </div>
 
 <hr class="my-4">
+<hr class="my-4">
 
+<h5 class="mb-3">
+
+    Foto Inventaris
+
+</h5>
+
+<div class="row">
+
+    <div class="col-md-12 mb-3">
+
+        <label class="form-label">
+
+            Foto Barang
+
+        </label>
+
+        <input
+            type="file"
+            name="foto"
+            class="form-control"
+            accept=".jpg,.jpeg,.png,.webp">
+
+        <div class="form-text">
+
+            Format:
+            JPG, JPEG, PNG, WEBP
+            • Maksimal 5 MB
+
+        </div>
+
+    </div>
+
+</div>
 <h5 class="mb-3">
 Informasi Inventaris
 </h5>

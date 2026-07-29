@@ -129,11 +129,15 @@ require_once "../../../includes/sidebar.php";
 
                             <tr>
 
-                                <th width="5%">
+                                <th width="5%" class="text-center">
                                     No
                                 </th>
 
-                                <th>
+                                <th width="8%">
+                                    Gambar
+                                </th>
+
+                                <th class="text-center">
                                     Kode
                                 </th>
 
@@ -149,15 +153,15 @@ require_once "../../../includes/sidebar.php";
                                     Penempatan
                                 </th>
 
-                                <th>
+                                <th class="text-center">
                                     Jumlah
                                 </th>
 
-                                <th>
+                                <th class="text-center">
                                     Kondisi
                                 </th>
 
-                                <th>
+                                <th class="text-center">
                                     Status
                                 </th>
 
@@ -180,8 +184,40 @@ require_once "../../../includes/sidebar.php";
                                     <td>
                                         <?= $no++; ?>
                                     </td>
+                                    <td class="text-center">
 
-                                    <td>
+                                        <?php if (!empty($row['foto'])) : ?>
+
+                                            <img
+                                                src="../../../assets/uploads/inventaris/<?= htmlspecialchars($row['foto']); ?>"
+                                                class="img-thumbnail"
+                                                style="
+                                                    width:70px;
+                                                    height:70px;
+                                                    object-fit:cover;
+                                                    cursor:pointer;
+                                                "
+                                                onclick="previewFoto(this.src)">
+
+                                        <?php else : ?>
+
+                                            <div
+                                                class="border rounded d-flex align-items-center justify-content-center mx-auto"
+                                                style="
+                                                    width:70px;
+                                                    height:70px;
+                                                    color:#999;
+                                                    font-size:12px;
+                                                ">
+
+                                                Tidak Ada
+
+                                            </div>
+
+                                        <?php endif; ?>
+
+                                    </td>
+                                    <td class="text-center">
                                         <?= htmlspecialchars($row['kode_inventaris']); ?>
                                     </td>
 
@@ -251,13 +287,13 @@ require_once "../../../includes/sidebar.php";
 
                                     </td>
 
-                                    <td>
+                                    <td class="text-center">
 
                                         <?= number_format($row['jumlah']); ?>
 
                                     </td>
 
-                            <td>
+                            <td class="text-center">
 
                                 <?php
 
@@ -295,7 +331,7 @@ require_once "../../../includes/sidebar.php";
 
                             </td>
 
-                            <td>
+                            <td class="text-center">
 
                                 <?php if($row['status']=="Aktif") : ?>
 
@@ -389,7 +425,19 @@ require_once "../../../includes/sidebar.php";
                                 });
 
                             }
+                            function previewFoto(src){
 
+                                Swal.fire({
+
+                                    imageUrl: src,
+                                    imageAlt: 'Foto Inventaris',
+                                    showConfirmButton: false,
+                                    showCloseButton: true,
+                                    width: 700
+
+                                });
+
+                            }
                             </script>
 
                             <?php

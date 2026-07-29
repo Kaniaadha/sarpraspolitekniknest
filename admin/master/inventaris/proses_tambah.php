@@ -2,6 +2,8 @@
 session_start();
 
 require_once "../../../config/database.php";
+require_once "../foto/helper.php";
+require_once "../foto/config.php";
 require_once "../../../helpers/generate_kode.php";
 
 // ==============================
@@ -31,7 +33,17 @@ $sumber_perolehan  = trim($_POST['sumber_perolehan']);
 $status            = $_POST['status'];
 
 $currentYear = date('Y');
+/*
+|--------------------------------------------------------------------------
+| Upload
+|--------------------------------------------------------------------------
+*/
 
+$uploadFolder = "../../../assets/uploads/inventaris/";
+
+ensureUploadDirectory($uploadFolder);
+
+$foto = null;
 // ==============================
 // Simpan Old Input
 // ==============================
@@ -160,7 +172,58 @@ if (mysqli_num_rows($cekKode) > 0) {
     exit;
 
 }
+/*
+|--------------------------------------------------------------------------
+| Upload Foto
+|--------------------------------------------------------------------------
+*/
 
+if (
+    isset($_FILES['foto']) &&
+    $_FILES['foto']['error'] !== UPLOAD_ERR_NO_FILE
+) {
+
+    $validation = validateImage($_FILES['foto'], $config);
+
+    if ($validation !== true) {
+
+        $_SESSION['error'] = $validation;
+
+        header("Location: tambah.php");
+        exit;
+    }
+
+    $extension = pathinfo(
+        $_FILES['foto']['name'],
+        PATHINFO_EXTENSION
+    );
+
+    $foto = generateUniqueFileName($extension);
+
+}
+/*
+|--------------------------------------------------------------------------
+| Upload File
+|--------------------------------------------------------------------------
+*/
+
+if ($foto !== null) {
+
+    $destination = $uploadFolder . $foto;
+
+    if (
+        !move_uploaded_file(
+            $_FILES['foto']['tmp_name'],
+            $destination
+        )
+    ) {
+
+        $_SESSION['error'] = "Upload foto gagal.";
+
+        header("Location: tambah.php");
+        exit;
+    }
+}
 // ==============================
 // Simpan Database
 // ==============================
@@ -184,6 +247,7 @@ $query = mysqli_query($conn, "
         tahun_perolehan,
         sumber_perolehan,
         status,
+        foto,
         created_at,
         updated_at
     )
@@ -200,11 +264,12 @@ $query = mysqli_query($conn, "
         '$kondisi',
         $tahun_sql,
         '$sumber_perolehan',
-        '$status',
+       '$status',
+        " . ($foto ? "'$foto'" : "NULL") . ",
         NOW(),
         NOW()
-    )
-");
+            )
+        ");
 
 // ==============================
 // Hasil
@@ -219,11 +284,14 @@ if ($query) {
     header("Location: index.php");
     exit;
 
-} else {
+}else{
 
-    $_SESSION['error'] = "Data Inventaris gagal ditambahkan.";
+    if(
+        isset($destination) &&
+        file_exists($destination)
+    ){
+        deletePhysicalFile($destination);
+    }
 
-    header("Location: tambah.php");
-    exit;
-
+    $_SESSION['error']="Data Inventaris gagal ditambahkan.";
 }

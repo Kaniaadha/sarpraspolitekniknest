@@ -147,12 +147,20 @@ Form Edit Inventaris
 
 <div class="card-body">
 
-<form action="proses_edit.php" method="POST">
+<form
+    action="proses_edit.php"
+    method="POST"
+    enctype="multipart/form-data">
+
+<input
+    type="hidden"
+    name="id_inventaris"
+    value="<?= $data['id_inventaris']; ?>">
 
 <input
 type="hidden"
-name="id_inventaris"
-value="<?= $data['id_inventaris']; ?>">
+name="foto_lama"
+value="<?= $data['foto']; ?>">
 
 <div class="row">
 
@@ -395,7 +403,75 @@ value="<?= $p['id_public_space'];?>"
 </select>
 
 </div>
+<hr class="my-4">
 
+<h5 class="mb-3">
+
+    Foto Inventaris
+
+</h5>
+
+<div class="row">
+
+    <div class="col-md-4 mb-3">
+
+    <?php if (!empty($data['foto'])) : ?>
+
+        <img
+            src="../../../assets/uploads/inventaris/<?= $data['foto']; ?>"
+            class="img-fluid rounded border shadow-sm"
+            style="max-height:220px;">
+
+        <div class="mt-2">
+            <a
+                href="hapus_foto.php?id=<?= $data['id_inventaris']; ?>"
+                class="btn btn-danger btn-sm btn-hapus-foto">
+
+                <i class="fas fa-trash"></i>
+                Hapus Foto
+
+            </a>
+        </div>
+
+    <?php else : ?>
+
+        <div
+            class="border rounded d-flex align-items-center justify-content-center"
+            style="height:220px;">
+
+            <span class="text-muted">
+                Belum ada foto
+            </span>
+
+        </div>
+
+    <?php endif; ?>
+
+    </div>
+
+    <div class="col-md-8">
+
+        <label class="form-label">
+
+            Ganti Foto
+
+        </label>
+
+        <input
+            type="file"
+            name="foto"
+            class="form-control"
+            accept=".jpg,.jpeg,.png,.webp">
+
+        <div class="form-text">
+
+            Kosongkan jika tidak ingin mengganti foto.
+
+        </div>
+
+    </div>
+
+</div>
 <hr class="my-4">
 
 <h5 class="mb-3">
@@ -606,7 +682,36 @@ document.addEventListener("DOMContentLoaded", function(){
 });
 
 </script>
+<script>
+document.querySelectorAll('.btn-hapus-foto').forEach(button => {
 
+    button.addEventListener('click', function(e) {
+
+        e.preventDefault();
+
+        const url = this.getAttribute('href');
+
+        Swal.fire({
+            title: 'Hapus Foto?',
+            text: 'Foto inventaris akan dihapus, tetapi data inventaris tetap tersimpan.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+
+        });
+
+    });
+
+});
+</script>
 <?php
 unset($_SESSION['old']);
 
