@@ -156,8 +156,18 @@ $query = mysqli_query($conn, "
                                 <td class="text-center">
 
                                     <a
+                                        href="../foto/index.php?tipe=ruangan&id=<?= $row['id_ruangan']; ?>"
+                                        class="btn btn-info btn-sm me-1"
+                                        title="Gallery Foto">
+
+                                        <i class="bi bi-images"></i>
+
+                                    </a>
+
+                                    <a
                                         href="edit.php?id=<?= $row['id_ruangan']; ?>"
-                                        class="btn btn-warning btn-sm me-1">
+                                        class="btn btn-warning btn-sm me-1"
+                                        title="Edit">
 
                                         <i class="bi bi-pencil-square"></i>
 
@@ -166,7 +176,8 @@ $query = mysqli_query($conn, "
                                     <a
                                         href="#"
                                         class="btn btn-danger btn-sm"
-                                        onclick="hapusRuangan(<?= $row['id_ruangan']; ?>)">
+                                        onclick="hapusRuangan(<?= $row['id_ruangan']; ?>)"
+                                        title="Hapus">
 
                                         <i class="bi bi-trash"></i>
 
