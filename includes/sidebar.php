@@ -134,7 +134,8 @@
                 <li class="nav-header">SETTING</li>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="<?= BASE_URL; ?>/admin/setting/banner/index.php"
+                        class="nav-link <?= (isset($menu) && $menu == 'banner') ? 'active' : ''; ?>">
                         <i class="nav-icon bi bi-image-fill"></i>
                         <p>Banner</p>
                     </a>
