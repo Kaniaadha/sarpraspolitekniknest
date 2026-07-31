@@ -14,7 +14,7 @@ $queryAdmin = mysqli_query($conn, "
 
 $dataAdmin = mysqli_fetch_assoc($queryAdmin);
 
-$fotoNavbar = BASE_URL . "/assets/dist/img/user2-160x160.jpg";
+$fotoNavbar = BASE_URL . "/assets/uploads/admin/" . $dataAdmin['foto'];
 
 if (
     !empty($dataAdmin['foto']) &&
