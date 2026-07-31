@@ -1,65 +1,239 @@
+<?php
+
+session_start();
+
+if (isset($_SESSION['id_admin'])) {
+    header("Location: admin/dashboard.php");
+    exit;
+}
+
+?>
 <!DOCTYPE html>
 <html lang="id">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | SISARPRAS</title>
 
-    <link rel="stylesheet" href="assets/dist/css/adminlte.css">
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Login Admin | SISARPRAS Politeknik NEST</title>
+
+    <!-- AdminLTE -->
+    <link rel="stylesheet"
+          href="assets/dist/css/adminlte.css">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Login CSS -->
+    <link rel="stylesheet"
+          href="assets/css/login.css">
+
 </head>
 
-<body class="login-page bg-body-secondary">
+<body>
 
-<div class="login-box">
+<?php if (isset($_SESSION['error'])) : ?>
 
-    <div class="login-logo">
-        <b>SISARPRAS</b>
-    </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <div class="card">
+<script>
 
-        <div class="card-body login-card-body">
+window.addEventListener("load", function () {
 
-            <p class="login-box-msg">
-                Silakan login untuk melanjutkan
-            </p>
+    Swal.fire({
 
-            <form action="proses_login.php" method="POST">
+        icon: "error",
 
-                <div class="mb-3">
-                    <input
-                        type="text"
-                        class="form-control"
-                        name="username"
-                        placeholder="Username"
-                        required>
-                </div>
+        title: "Login Gagal",
 
-                <div class="mb-3">
-                    <input
-                        type="password"
-                        class="form-control"
-                        name="password"
-                        placeholder="Password"
-                        required>
-                </div>
+        text: "<?= htmlspecialchars($_SESSION['error']); ?>",
 
-                <button
-                    type="submit"
-                    class="btn btn-primary w-100">
-                    Login
-                </button>
+        confirmButtonColor: "#ff8a00"
 
-            </form>
+    });
+
+});
+
+</script>
+
+<?php unset($_SESSION['error']); ?>
+
+<?php endif; ?>
+
+<main class="login-page">
+
+    <div class="login-overlay">
+
+        <div class="login-card">
+
+            <!-- HEADER -->
+
+            <div class="login-header">
+
+                <img
+                    src="assets/img/logo/logo-polnest.png"
+                    class="login-logo"
+                    alt="Logo Politeknik NEST">
+
+                <span class="admin-badge">
+
+                    ADMIN PORTAL
+
+                </span>
+
+                <h1>SISARPRAS</h1>
+
+                <h2>Politeknik NEST</h2>
+
+                <p>
+                    Sistem Informasi Sarana dan Prasarana
+                </p>
+
+            </div>
+
+            <!-- BODY -->
+
+            <div class="login-body">
+
+                <form
+                    action="proses_login.php"
+                    method="POST"
+                    id="loginForm">
+
+                    <!-- USERNAME -->
+
+                    <div class="input-group-custom">
+
+                        <label for="username">
+
+                            Username
+
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="bi bi-person"></i>
+
+                            <input
+
+                                type="text"
+
+                                id="username"
+
+                                name="username"
+
+                                placeholder="Masukkan username"
+
+                                autocomplete="username"
+
+                                required>
+
+                        </div>
+
+                    </div>
+
+                    <!-- PASSWORD -->
+
+                    <div class="input-group-custom">
+
+                        <label for="password">
+
+                            Password
+
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="bi bi-lock"></i>
+
+                            <input
+
+                                type="password"
+
+                                id="password"
+
+                                name="password"
+
+                                placeholder="Masukkan password"
+
+                                autocomplete="current-password"
+
+                                required>
+
+                            <button
+
+                                type="button"
+
+                                id="togglePassword"
+
+                                class="toggle-password">
+
+                                <i class="bi bi-eye"></i>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <!-- BUTTON -->
+
+                    <button
+
+                        type="submit"
+
+                        id="loginButton"
+
+                        class="login-button">
+
+                        LOGIN ADMIN
+
+                    </button>
+
+                </form>
+
+            </div>
+
+            <!-- FOOTER -->
+
+            <div class="login-footer">
+
+                <a
+                    href="index.php"
+                    class="back-home">
+
+                    <i class="bi bi-arrow-left"></i>
+
+                    Kembali ke Beranda
+
+                </a>
+
+                <p>
+
+                    © <?= date('Y'); ?> Politeknik NEST
+
+                </p>
+
+            </div>
 
         </div>
 
     </div>
 
-</div>
+</main>
 
+<!-- AdminLTE -->
 <script src="assets/dist/js/adminlte.js"></script>
+
+<!-- SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Login JS -->
+<script src="assets/js/login.js"></script>
 
 </body>
 </html>

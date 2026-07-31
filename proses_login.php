@@ -1,16 +1,53 @@
 <?php
+
 session_start();
 
 require_once 'config/database.php';
 
-$username = $_POST['username'];
-$password = $_POST['password'];
+// ======================================================
+// Ambil Data
+// ======================================================
 
-$query = mysqli_query($conn, "SELECT * FROM admin WHERE username='$username'");
+$username = trim($_POST['username'] ?? '');
+$password = $_POST['password'] ?? '';
 
-if (mysqli_num_rows($query) == 1) {
+// ======================================================
+// Validasi Input
+// ======================================================
 
-    $admin = mysqli_fetch_assoc($query);
+if ($username === '' || $password === '') {
+
+    $_SESSION['error'] = "Username dan password wajib diisi.";
+
+    header("Location: login.php");
+    exit;
+
+}
+
+// ======================================================
+// Cari Admin
+// ======================================================
+
+$stmt = mysqli_prepare(
+    $conn,
+    "SELECT *
+     FROM admin
+     WHERE username = ?"
+);
+
+mysqli_stmt_bind_param(
+    $stmt,
+    "s",
+    $username
+);
+
+mysqli_stmt_execute($stmt);
+
+$result = mysqli_stmt_get_result($stmt);
+
+if (mysqli_num_rows($result) === 1) {
+
+    $admin = mysqli_fetch_assoc($result);
 
     if (password_verify($password, $admin['password'])) {
 
@@ -21,14 +58,11 @@ if (mysqli_num_rows($query) == 1) {
         header("Location: admin/dashboard.php");
         exit;
 
-    } else {
-
-        echo "Password salah.";
-
     }
 
-} else {
-
-    echo "Username tidak ditemukan.";
-
 }
+
+$_SESSION['error'] = "Username atau password salah.";
+
+header("Location: login.php");
+exit;
