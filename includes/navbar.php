@@ -1,5 +1,32 @@
 <nav class="app-header navbar navbar-expand bg-white shadow-sm">
 
+<?php
+
+require_once __DIR__ . "/../config/database.php";
+
+$idAdmin = $_SESSION['id_admin'];
+
+$queryAdmin = mysqli_query($conn, "
+    SELECT foto
+    FROM admin
+    WHERE id_admin = '$idAdmin'
+");
+
+$dataAdmin = mysqli_fetch_assoc($queryAdmin);
+
+$fotoNavbar = BASE_URL . "/assets/dist/img/user2-160x160.jpg";
+
+if (
+    !empty($dataAdmin['foto']) &&
+    file_exists(__DIR__ . "/../assets/uploads/admin/" . $dataAdmin['foto'])
+) {
+
+    $fotoNavbar = BASE_URL . "/assets/uploads/admin/" . $dataAdmin['foto'];
+
+}
+
+?>
+
     <div class="container-fluid">
 
         <ul class="navbar-nav">
@@ -16,21 +43,27 @@
 
             <li class="nav-item dropdown">
 
-                <a class="nav-link dropdown-toggle"
+                <a class="nav-link dropdown-toggle d-flex align-items-center"
                     href="#"
                     role="button"
                     data-bs-toggle="dropdown">
 
-                    <i class="bi bi-person-circle"></i>
-                    <?= $_SESSION['nama_admin']; ?>
+                    <img
+                        src="<?= $fotoNavbar; ?>"
+                        alt="Foto Profil"
+                        width="36"
+                        height="36"
+                        class="rounded-circle me-2"
+                        style="object-fit: cover; border:2px solid #dee2e6;">
 
+                    <?= $_SESSION['nama_admin']; ?>
                 </a>
 
                 <ul class="dropdown-menu dropdown-menu-end">
 
                     <li>
                         <a class="dropdown-item"
-                            href="<?= BASE_URL; ?>/admin/setting/profile.php">
+                            href="<?= BASE_URL; ?>/admin/profile.php">
 
                             <i class="bi bi-person"></i>
 

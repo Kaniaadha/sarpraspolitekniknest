@@ -142,14 +142,16 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="<?= BASE_URL; ?>/admin/activity_log.php"
+                        class="nav-link <?= (isset($menu) && $menu == 'banner') ? 'active' : ''; ?>">
                         <i class="nav-icon bi bi-clock-history"></i>
                         <p>Activity Log</p>
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href= "<?= BASE_URL; ?>/admin/setting/admin.php"
+                        class="nav-link <?= (isset($menu) && $menu == 'setting') ? 'active' : ''; ?>">
                         <i class="nav-icon bi bi-person-circle"></i>
                         <p>Profil</p>
                     </a>
