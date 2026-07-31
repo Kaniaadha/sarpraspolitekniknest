@@ -10,12 +10,37 @@ if (!isset($_SESSION['id_admin'])) {
 
 require_once "../../../config/database.php";
 
+$status = $_GET['status'] ?? '';
+
+$where = "";
+
+if ($status == "Menunggu") {
+    $where = "WHERE p.status = 'Menunggu'";
+} elseif ($status == "Dipinjam") {
+    $where = "WHERE p.status = 'Dipinjam'";
+} elseif ($status == "Selesai") {
+    $where = "WHERE p.status = 'Selesai'";
+} elseif ($status == "Ditolak") {
+    $where = "WHERE p.status = 'Ditolak'";
+} elseif ($status == "Menunggu Pengembalian") {
+    $where = "WHERE p.status = 'Menunggu Pengembalian'";
+} elseif ($status == "Terlambat") {
+
+    $where = "
+        WHERE
+            p.status = 'Dipinjam'
+        AND
+            p.tanggal_kembali < CURDATE()
+    ";
+
+}
+
 $query = mysqli_query($conn, "
     SELECT
         p.*
     FROM peminjaman p
-    ORDER BY
-        p.created_at DESC
+    $where
+    ORDER BY p.created_at DESC
 ");
 
 require_once "../../../includes/header.php";
@@ -40,9 +65,13 @@ require_once "../../../includes/sidebar.php";
                 <ol class="breadcrumb mb-0">
 
                     <li class="breadcrumb-item">
-
-                        Dashboard
-
+                        
+                        <a href="<?= BASE_URL ?>/admin/dashboard.php">
+                        
+                            Dashboard
+                        
+                        </a>
+                        
                     </li>
 
                     <li class="breadcrumb-item">
@@ -250,6 +279,22 @@ require_once "../../../includes/sidebar.php";
 
                                                 break;
 
+                                        }
+
+                                                                                if (
+                                            $row['status'] == "Dipinjam" &&
+                                            strtotime($row['tanggal_kembali']) < strtotime(date('Y-m-d'))
+                                        ) {
+
+                                            $hariTerlambat = floor(
+                                                (time() - strtotime($row['tanggal_kembali']))
+                                                / (60 * 60 * 24)
+                                            );
+
+                                            echo "<br>";
+                                            echo '<span class="badge bg-danger mt-1">
+                                                    Terlambat ' . $hariTerlambat . ' Hari
+                                                </span>';
                                         }
 
                                         ?>
