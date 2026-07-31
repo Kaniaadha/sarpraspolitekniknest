@@ -84,7 +84,7 @@ require_once "../../../includes/sidebar.php";
 
                         <li class="breadcrumb-item">
 
-                            <a href="../dashboard/index.php">
+                            <a href="<?= BASE_URL ?>/admin/dashboard.php">
                                 Dashboard
                             </a>
 
@@ -93,7 +93,7 @@ require_once "../../../includes/sidebar.php";
                         <li class="breadcrumb-item">
 
                             <a href="riwayat.php">
-                                Stock Opname
+                                Riwayat Stock Opname
                             </a>
 
                         </li>

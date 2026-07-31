@@ -37,11 +37,11 @@ require_once "../../../includes/sidebar.php";
 
                 <div class="col-sm-6">
 
-                    <h3 class="mb-0">
+                        <h2 class="fw-bold mb-0">
 
-                        Riwayat Stock Opname
+                            Riwayat Stock Opname
 
-                    </h3>
+                        </h2>
 
                 </div>
 
@@ -50,19 +50,23 @@ require_once "../../../includes/sidebar.php";
                     <ol class="breadcrumb float-sm-end">
 
                         <li class="breadcrumb-item">
-
-                            <a href="../dashboard/index.php">
-
+                            <a href="<?= BASE_URL ?>/admin/dashboard.php">
                                 Dashboard
-
                             </a>
+                        </li>
 
+                        <li class="breadcrumb-item">
+                            Transaksi
+                        </li>
+
+                        <li class="breadcrumb-item">
+                            <a href="<?= BASE_URL ?>/admin/transaksi/stock_opname/index.php">
+                                Stock Opname
+                            </a>
                         </li>
 
                         <li class="breadcrumb-item active">
-
-                            Riwayat Stock Opname
-
+                            Riwayat
                         </li>
 
                     </ol>
@@ -75,9 +79,9 @@ require_once "../../../includes/sidebar.php";
 
     </div>
 
-    <div class="app-content">
 
-        <div class="container-fluid">
+
+    <div class="container-fluid">
 
 <div class="card">
 
@@ -104,6 +108,7 @@ require_once "../../../includes/sidebar.php";
         </div>
 
     </div>
+
 
     <div class="card-body">
 
@@ -217,10 +222,20 @@ require_once "../../../includes/sidebar.php";
 
 </div>
 
+<div class="mt-4">
+
+    <a href="index.php" class="btn btn-secondary">
+
+        <i class="bi bi-arrow-left-circle me-1"></i>
+
+        Kembali
+
+    </a>
+
+</div>
+
         </div>
-
-    </div>
-
+        
 </main>
 
 <?php require_once "../../../includes/footer.php"; ?>
@@ -272,3 +287,5 @@ $(document).ready(function () {
 });
 
 </script>
+
+<?php require_once "../../../includes/scripts.php"; ?>

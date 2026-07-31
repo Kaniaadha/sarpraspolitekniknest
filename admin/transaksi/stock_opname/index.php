@@ -99,9 +99,13 @@ require_once "../../../includes/sidebar.php";
                 <ol class="breadcrumb mb-0">
 
                     <li class="breadcrumb-item">
-
-                        Dashboard
-
+                        
+                        <a href="<?= BASE_URL ?>/admin/dashboard.php">
+                        
+                            Dashboard
+                        
+                        </a>
+                        
                     </li>
 
                     <li class="breadcrumb-item">
