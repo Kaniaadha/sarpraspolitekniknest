@@ -133,9 +133,19 @@ require_once "../../includes/sidebar.php";
 
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item">Dashboard</li>
-                        <li class="breadcrumb-item">Laporan</li>
-                        <li class="breadcrumb-item active">Kerusakan</li>
+                        <li class="breadcrumb-item">
+                            <a href="<?= BASE_URL ?>/admin/dashboard.php">
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="<?= BASE_URL ?>/admin/laporan/index.php">
+                                Laporan
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            Kerusakan
+                        </li>
                     </ol>
                 </nav>
 
@@ -381,19 +391,12 @@ require_once "../../includes/sidebar.php";
 
                         <div class="d-flex gap-2">
 
-                            <a href="kerusakan_excel.php"
-                                class="btn btn-outline-success btn-sm">
+                            <a href="kerusakan_cetak.php"
+                                target="_blank"
+                                class="btn btn-outline-secondary btn-sm">
 
-                                <i class="bi bi-file-earmark-excel-fill me-1"></i>
-                                Excel
-
-                            </a>
-
-                            <a href="kerusakan_pdf.php"
-                                class="btn btn-outline-danger btn-sm">
-
-                                <i class="bi bi-file-earmark-pdf-fill me-1"></i>
-                                PDF
+                                <i class="bi bi-printer-fill me-1"></i>
+                                Cetak
 
                             </a>
 

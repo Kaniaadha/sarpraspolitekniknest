@@ -118,11 +118,15 @@ require_once "../../includes/sidebar.php";
                 <ol class="breadcrumb mb-0">
 
                     <li class="breadcrumb-item">
-                        Dashboard
+                        <a href="<?= BASE_URL ?>/admin/dashboard.php">
+                            Dashboard
+                        </a>
                     </li>
 
                     <li class="breadcrumb-item">
-                        Laporan
+                        <a href="<?= BASE_URL ?>/admin/laporan/index.php">
+                            Laporan
+                        </a>
                     </li>
 
                     <li class="breadcrumb-item active">
@@ -288,22 +292,6 @@ require_once "../../includes/sidebar.php";
 
                     <i class="bi bi-printer-fill me-1"></i>
                     Cetak
-
-                </a>
-
-                <a href="inventaris_excel.php"
-                    class="btn btn-outline-success btn-sm">
-
-                    <i class="bi bi-file-earmark-excel-fill me-1"></i>
-                    Excel
-
-                </a>
-
-                <a href="inventaris_pdf.php"
-                    class="btn btn-outline-danger btn-sm">
-
-                    <i class="bi bi-file-earmark-pdf-fill me-1"></i>
-                    PDF
 
                 </a>
 

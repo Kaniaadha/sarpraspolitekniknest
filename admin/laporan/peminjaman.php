@@ -74,9 +74,19 @@ require_once "../../includes/sidebar.php";
 
                 <nav>
                     <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item">Dashboard</li>
-                        <li class="breadcrumb-item">Laporan</li>
-                        <li class="breadcrumb-item active">Peminjaman</li>
+                        <li class="breadcrumb-item">
+                            <a href="<?= BASE_URL ?>/admin/dashboard.php">
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="<?= BASE_URL ?>/admin/laporan/index.php">
+                                Laporan
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            Peminjaman
+                        </li>
                     </ol>
                 </nav>
 

@@ -98,9 +98,19 @@ require_once "../../includes/sidebar.php";
 
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item">Dashboard</li>
-                        <li class="breadcrumb-item">Laporan</li>
-                        <li class="breadcrumb-item active">Stock Opname</li>
+                        <li class="breadcrumb-item">
+                            <a href="<?= BASE_URL ?>/admin/dashboard.php">
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="<?= BASE_URL ?>/admin/laporan/index.php">
+                                Laporan
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            Stock Opname
+                        </li>
                     </ol>
                 </nav>
 
