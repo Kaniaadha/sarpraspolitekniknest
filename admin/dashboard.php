@@ -85,6 +85,24 @@ $terlambat = mysqli_fetch_assoc(
     ")
 );
 
+// ==============================
+// Activity Log Terbaru
+// ==============================
+
+$queryActivity = mysqli_query($conn, "
+    SELECT
+        al.aktivitas,
+        al.created_at,
+        a.nama_admin
+    FROM activity_log al
+    INNER JOIN admin a
+        ON al.id_admin = a.id_admin
+    ORDER BY al.created_at DESC
+    LIMIT 1
+");
+
+$activity = mysqli_fetch_assoc($queryActivity);
+
 // Menunggu Persetujuan
 $queryMenunggu = mysqli_query($conn, "
     SELECT
@@ -489,21 +507,84 @@ if ($dataStock) {
                         <ul class="list-group list-group-flush">
 
                             <li class="list-group-item">
-                                ⚠ Barang rusak dilaporkan
-                                <br>
-                                <small class="text-muted">5 menit lalu</small>
+
+                                <?php if ($rusak['total'] > 0) : ?>
+
+                                    ⚠ Terdapat <strong><?= $rusak['total']; ?></strong> inventaris rusak
+                                    <br>
+                                    <small class="text-muted">
+                                        Segera lakukan pengecekan
+                                    </small>
+
+                                <?php else : ?>
+
+                                    ✅ Tidak ada inventaris rusak
+                                    <br>
+                                    <small class="text-muted">
+                                        Semua inventaris dalam kondisi baik
+                                    </small>
+
+                                <?php endif; ?>
+
                             </li>
 
                             <li class="list-group-item">
-                                📦 Pengajuan peminjaman baru
-                                <br>
-                                <small class="text-muted">20 menit lalu</small>
+
+                                <?php if ($activity) : ?>
+
+                                    🕒 <?= htmlspecialchars($activity['nama_admin']); ?>
+                                    <?= htmlspecialchars($activity['aktivitas']); ?>
+
+                                    <br>
+
+                                    <small class="text-muted">
+                                        <?= date('d M Y H:i', strtotime($activity['created_at'])); ?>
+                                    </small>
+
+                                <?php else : ?>
+
+                                    🕒 Belum ada aktivitas
+
+                                    <br>
+
+                                    <small class="text-muted">-</small>
+
+                                <?php endif; ?>
+
                             </li>
 
                             <li class="list-group-item">
-                                📋 Stock opname bulan ini belum dilakukan
-                                <br>
-                                <small class="text-muted">Hari ini</small>
+
+                                <?php if ($jadwalBerikutnya != null) : ?>
+
+                                    <?php if (time() >= $jadwalBerikutnya) : ?>
+
+                                        📋 Stock Opname sudah waktunya dilakukan
+                                        <br>
+                                        <small class="text-danger">
+                                            Segera lakukan stock opname
+                                        </small>
+
+                                    <?php else : ?>
+
+                                        📋 Stock Opname berikutnya
+                                        <br>
+                                        <small class="text-muted">
+                                            <?= date('d F Y', $jadwalBerikutnya); ?>
+                                        </small>
+
+                                    <?php endif; ?>
+
+                                <?php else : ?>
+
+                                    📋 Belum ada jadwal Stock Opname
+                                    <br>
+                                    <small class="text-muted">
+                                        Silakan lakukan stock opname pertama
+                                    </small>
+
+                                <?php endif; ?>
+
                             </li>
 
                         </ul>
