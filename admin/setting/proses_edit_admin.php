@@ -11,7 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 
     header("Location: admin.php");
     exit;
-
 }
 
 /* =====================================================
@@ -285,13 +284,8 @@ if ($update) {
         )
     ");
 
-    echo "
-    <script>
-        alert('Profil berhasil diperbarui.');
-        window.location='admin.php';
-    </script>
-    ";
-
+    $_SESSION['success'] = "Profil berhasil diperbarui.";
+    header("Location: admin.php");
     exit;
 
 }
@@ -300,11 +294,6 @@ if ($update) {
    JIKA UPDATE GAGAL
 ===================================================== */
 
-echo "
-<script>
-    alert('Profil gagal diperbarui.');
-    window.history.back();
-</script>
-";
-
+$_SESSION['error'] = "Profil gagal diperbarui.";
+header("Location: admin.php");
 exit;
