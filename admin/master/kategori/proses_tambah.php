@@ -121,6 +121,25 @@ if ($query) {
 
     unset($_SESSION['old']);
 
+    $idKategori = mysqli_insert_id($conn);
+
+    mysqli_query($conn, "
+        INSERT INTO activity_log
+        (
+            id_admin,
+            aktivitas,
+            tabel_terkait,
+            id_data
+        )
+        VALUES
+        (
+            '{$_SESSION['id_admin']}',
+            'Menambah Kategori',
+            'kategori',
+            '$idKategori'
+        )
+    ");
+
     $_SESSION['success'] = "Data Kategori berhasil ditambahkan.";
 
     header("Location: index.php");

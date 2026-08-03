@@ -66,6 +66,23 @@ $query = mysqli_query($conn, "
 
 if ($query) {
 
+    mysqli_query($conn, "
+        INSERT INTO activity_log
+        (
+            id_admin,
+            aktivitas,
+            tabel_terkait,
+            id_data
+        )
+        VALUES
+        (
+            '{$_SESSION['id_admin']}',
+            'Menghapus Kategori',
+            'kategori',
+            '$id_kategori'
+        )
+    ");
+
     $_SESSION['success'] = "Data Kategori berhasil dihapus.";
 
 } else {

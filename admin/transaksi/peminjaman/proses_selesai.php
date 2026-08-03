@@ -78,6 +78,23 @@ try {
 
     mysqli_commit($conn);
 
+    mysqli_query($conn, "
+        INSERT INTO activity_log
+        (
+            id_admin,
+            aktivitas,
+            tabel_terkait,
+            id_data
+        )
+        VALUES
+        (
+            '{$_SESSION['id_admin']}',
+            'Menyelesaikan Peminjaman',
+            'peminjaman',
+            '$id_peminjaman'
+        )
+    ");
+
     $_SESSION['success'] = "Pengembalian berhasil dikonfirmasi.";
 
 } catch (Exception $e) {

@@ -160,6 +160,25 @@ $query = mysqli_query($conn, "
 
 if ($query) {
 
+    $idRuangan = mysqli_insert_id($conn);
+
+    mysqli_query($conn, "
+        INSERT INTO activity_log
+        (
+            id_admin,
+            aktivitas,
+            tabel_terkait,
+            id_data
+        )
+        VALUES
+        (
+            '{$_SESSION['id_admin']}',
+            'Menambah Ruangan',
+            'ruangan',
+            '$idRuangan'
+        )
+    ");
+
     unset($_SESSION['old']);
 
     $_SESSION['success'] = "Data ruangan berhasil ditambahkan.";

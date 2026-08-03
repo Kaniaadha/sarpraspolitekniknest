@@ -279,6 +279,25 @@ if ($query) {
 
     unset($_SESSION['old']);
 
+    $idInventaris = mysqli_insert_id($conn);
+
+    mysqli_query($conn, "
+        INSERT INTO activity_log
+        (
+            id_admin,
+            aktivitas,
+            tabel_terkait,
+            id_data
+        )
+        VALUES
+        (
+            '{$_SESSION['id_admin']}',
+            'Menambah Inventaris',
+            'inventaris',
+            '$idInventaris'
+        )
+    ");
+
     $_SESSION['success'] = "Data Inventaris berhasil ditambahkan.";
 
     header("Location: index.php");

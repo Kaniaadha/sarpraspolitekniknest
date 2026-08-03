@@ -55,6 +55,24 @@ if (!empty($data['foto'])) {
         $uploadFolder . $data['foto']
     );
 }
+    
+    mysqli_query($conn, "
+        INSERT INTO activity_log
+        (
+            id_admin,
+            aktivitas,
+            tabel_terkait,
+            id_data
+        )
+        VALUES
+        (
+            '{$_SESSION['id_admin']}',
+            'Menghapus Inventaris',
+            'inventaris',
+            '$id_inventaris'
+        )
+    ");
+
     $_SESSION['success'] = "Data Inventaris berhasil dihapus.";
 
 } else {

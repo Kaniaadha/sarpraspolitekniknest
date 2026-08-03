@@ -268,6 +268,24 @@ if (
     );
 
 }
+    
+    mysqli_query($conn, "
+        INSERT INTO activity_log
+        (
+            id_admin,
+            aktivitas,
+            tabel_terkait,
+            id_data
+        )
+        VALUES
+        (
+            '{$_SESSION['id_admin']}',
+            'Mengubah Inventaris',
+            'inventaris',
+            '$id_inventaris'
+        )
+    ");
+
     unset($_SESSION['old']);
 
     $_SESSION['success'] = "Data Inventaris berhasil diperbarui.";

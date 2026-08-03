@@ -262,6 +262,23 @@ try {
 
     mysqli_commit($conn);
 
+    mysqli_query($conn, "
+        INSERT INTO activity_log
+        (
+            id_admin,
+            aktivitas,
+            tabel_terkait,
+            id_data
+        )
+        VALUES
+        (
+            '{$_SESSION['id_admin']}',
+            'Mengubah Peminjaman',
+            'peminjaman',
+            '$id_peminjaman'
+        )
+    ");
+
     $_SESSION['success'] = "Data peminjaman berhasil diperbarui.";
 
     header("Location: index.php");

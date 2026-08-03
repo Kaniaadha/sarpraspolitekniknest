@@ -203,6 +203,25 @@ try {
 
     $conn->commit();
 
+    $namaModul = ucfirst(str_replace('_', ' ', $module));
+
+    mysqli_query($conn, "
+        INSERT INTO activity_log
+        (
+            id_admin,
+            aktivitas,
+            tabel_terkait,
+            id_data
+        )
+        VALUES
+        (
+            '{$_SESSION['id_admin']}',
+            'Mengubah Cover Foto {$namaModul}',
+            '{$table}',
+            '$id'
+        )
+    ");
+
     $_SESSION['success'] = uploadSuccess(
         $config,
         'cover_success'

@@ -131,6 +131,25 @@ $query = mysqli_query($conn, "
 // ==============================
 if ($query) {
 
+    $idAdminBaru = mysqli_insert_id($conn);
+
+    mysqli_query($conn, "
+        INSERT INTO activity_log
+        (
+            id_admin,
+            aktivitas,
+            tabel_terkait,
+            id_data
+        )
+        VALUES
+        (
+            '{$_SESSION['id_admin']}',
+            'Menambah Admin',
+            'admin',
+            '$idAdminBaru'
+        )
+    ");
+
     $_SESSION['success'] = "Admin berhasil ditambahkan.";
 
     header("Location: index.php");

@@ -38,6 +38,23 @@ $query = mysqli_query($conn, "
 
 if ($query) {
 
+    mysqli_query($conn, "
+        INSERT INTO activity_log
+        (
+            id_admin,
+            aktivitas,
+            tabel_terkait,
+            id_data
+        )
+        VALUES
+        (
+            '{$_SESSION['id_admin']}',
+            'Menghapus Admin',
+            'admin',
+            '$id_admin'
+        )
+    ");
+
     $_SESSION['success'] = "Data admin berhasil dihapus.";
 
 } else {

@@ -160,6 +160,23 @@ if (!$queryUpdateStatus) {
 
 mysqli_commit($conn);
 
+mysqli_query($conn, "
+    INSERT INTO activity_log
+    (
+        id_admin,
+        aktivitas,
+        tabel_terkait,
+        id_data
+    )
+    VALUES
+    (
+        '{$_SESSION['id_admin']}',
+        'Menyelesaikan Stock Opname',
+        'stock_opname',
+        '$id_stock_opname'
+    )
+");
+
 echo "
     <script>
 

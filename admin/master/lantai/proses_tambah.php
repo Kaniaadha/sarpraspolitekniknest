@@ -153,6 +153,25 @@ if ($query) {
 
     unset($_SESSION['old']);
 
+    $idLantai = mysqli_insert_id($conn);
+
+    mysqli_query($conn, "
+        INSERT INTO activity_log
+        (
+            id_admin,
+            aktivitas,
+            tabel_terkait,
+            id_data
+        )
+        VALUES
+        (
+            '{$_SESSION['id_admin']}',
+            'Menambah Lantai',
+            'lantai',
+            '$idLantai'
+        )
+    ");
+
     $_SESSION['success'] = "Data lantai berhasil ditambahkan.";
 
     header("Location: index.php");

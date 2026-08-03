@@ -113,6 +113,23 @@ if ($query) {
 
     unset($_SESSION['old']);
 
+    mysqli_query($conn, "
+        INSERT INTO activity_log
+        (
+            id_admin,
+            aktivitas,
+            tabel_terkait,
+            id_data
+        )
+        VALUES
+        (
+            '{$_SESSION['id_admin']}',
+            'Mengubah Kategori',
+            'kategori',
+            '$id_kategori'
+        )
+    ");
+
     $_SESSION['success'] = "Data Kategori berhasil diperbarui.";
 
     header("Location: index.php");

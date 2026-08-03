@@ -132,6 +132,23 @@ $query = mysqli_query($conn, "
 
 if ($query) {
 
+    mysqli_query($conn, "
+        INSERT INTO activity_log
+        (
+            id_admin,
+            aktivitas,
+            tabel_terkait,
+            id_data
+        )
+        VALUES
+        (
+            '{$_SESSION['id_admin']}',
+            'Mengubah Public Space',
+            'public_space',
+            '$id_public_space'
+        )
+    ");
+
     unset($_SESSION['old']);
 
     $_SESSION['success'] = "Data Public Space berhasil diperbarui.";

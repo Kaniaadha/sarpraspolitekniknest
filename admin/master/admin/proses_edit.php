@@ -157,6 +157,23 @@ if ($ubah_password) {
 
 if ($query) {
 
+    mysqli_query($conn, "
+        INSERT INTO activity_log
+        (
+            id_admin,
+            aktivitas,
+            tabel_terkait,
+            id_data
+        )
+        VALUES
+        (
+            '{$_SESSION['id_admin']}',
+            'Mengubah Admin',
+            'admin',
+            '$id_admin'
+        )
+    ");
+
     unset($_SESSION['old']);
 
     $_SESSION['success'] = "Data admin berhasil diperbarui.";
