@@ -1,0 +1,589 @@
+/* ==========================================================
+   SISARPRAS POLITEKNIK NEST
+   GLOBAL USER STYLE
+========================================================== */
+
+
+/* ==========================================================
+   ROOT
+========================================================== */
+
+:root{
+
+    --primary:#F45B8D;
+    --primary-dark:#E04679;
+
+    --secondary:#FF8A3D;
+    --secondary-light:#FFB36B;
+
+    --gradient:linear-gradient(
+        135deg,
+        #F45B8D,
+        #FF8A3D
+    );
+
+    --background:#FFF8FB;
+
+    --white:#FFFFFF;
+
+    --dark:#2D2D2D;
+
+    --text:#666;
+
+    --shadow:0 12px 30px rgba(244,91,141,.15);
+
+}
+
+
+/* ==========================================================
+   RESET
+========================================================== */
+
+*{
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+body{
+
+    font-family:'Poppins',sans-serif;
+
+    background:var(--background);
+
+    color:var(--text);
+
+    overflow-x:hidden;
+
+    line-height:1.7;
+
+}
+
+img{
+
+    max-width:100%;
+
+    display:block;
+
+}
+
+a{
+
+    text-decoration:none;
+
+}
+
+ul{
+
+    list-style:none;
+
+    padding-left:0;
+
+    margin-bottom:0;
+
+}
+
+section{
+
+    padding:80px 0;
+
+}
+
+.container{
+
+    max-width:1200px;
+
+}
+
+
+/* ==========================================================
+   TYPOGRAPHY
+========================================================== */
+
+.section-title{
+
+    color:var(--dark);
+
+    font-size:34px;
+
+    font-weight:700;
+
+    margin-bottom:12px;
+
+}
+
+.section-subtitle{
+
+    color:#777;
+
+    max-width:650px;
+
+    margin:auto;
+
+    margin-bottom:50px;
+
+    font-size:16px;
+
+}
+
+.page-title{
+
+    color:var(--dark);
+
+    font-size:40px;
+
+    font-weight:700;
+
+}
+
+.text-orange{
+
+    color:var(--primary);
+
+}
+
+.bg-orange{
+
+    background:var(--primary);
+
+}
+
+
+/* ==========================================================
+   BUTTON
+========================================================== */
+
+.btn{
+
+    border-radius:10px;
+
+    padding:12px 28px;
+
+    font-weight:600;
+
+}
+
+.btn-primary{
+
+    background:var(--primary);
+
+    border:none;
+
+}
+
+.btn-primary:hover{
+
+    background:var(--primary-dark);
+
+    transform:translateY(-2px);
+
+}
+
+.btn-outline-primary{
+
+    border:2px solid var(--primary);
+
+    color:var(--primary);
+
+    background:#fff;
+
+}
+
+.btn-outline-primary:hover{
+
+    background:var(--primary);
+
+    color:#fff;
+
+}
+
+.btn-custom{
+
+    border-radius:50px;
+
+    padding:12px 30px;
+
+}
+
+
+/* ==========================================================
+   NAVBAR
+========================================================== */
+
+.navbar{
+
+    background:#fff;
+
+    box-shadow:0 2px 15px rgba(0,0,0,.06);
+
+    padding:16px 0;
+
+}
+
+.navbar-brand{
+
+    color:var(--dark);
+
+    font-size:30px;
+
+    font-weight:700;
+
+}
+
+.navbar-brand:hover{
+
+    color:var(--primary);
+
+}
+
+.navbar-nav{
+
+    gap:10px;
+
+}
+
+.nav-link{
+
+    color:var(--dark);
+
+    font-weight:500;
+
+    padding:10px 16px!important;
+
+    border-radius:10px;
+
+}
+
+.nav-link:hover{
+
+    color:var(--primary);
+
+    background:#FFF1EB;
+
+}
+
+.nav-link.active{
+
+    background:var(--primary);
+
+    color:#fff!important;
+
+}
+
+.navbar .btn{
+
+    padding:10px 24px;
+
+}
+
+
+/* ==========================================================
+   GLOBAL CARD
+========================================================== */
+
+.card-custom{
+
+    background:#fff;
+
+    border:none;
+
+    overflow:hidden;
+
+    box-shadow:var(--shadow);
+
+}
+
+/* ==========================================================
+   HERO
+========================================================== */
+
+... SEMUA CSS HERO PUNYAMU TETAP ...
+
+
+
+/* ==========================================================
+   HERO RESPONSIVE
+========================================================== */
+
+@media (max-width:992px){
+
+    ...SEMUA RESPONSIVE HERO...
+
+}
+
+
+/* ==========================================================
+   BREADCRUMB
+========================================================== */
+
+.breadcrumb-section{
+
+    background:#FFF4EE;
+
+    padding:50px 0;
+
+}
+
+.breadcrumb{
+
+    margin-bottom:0;
+
+}
+
+.breadcrumb-item a{
+
+    color:var(--primary);
+
+}
+
+.breadcrumb-item.active{
+
+    color:#777;
+
+}
+
+
+
+/* ==========================================================
+   PAGE HEADER
+========================================================== */
+
+.page-header{
+
+    background:var(--gradient);
+
+    color:#fff;
+
+    padding:80px 0;
+
+    text-align:center;
+
+}
+
+.page-header h1{
+
+    font-size:42px;
+
+    font-weight:700;
+
+}
+
+
+
+/* ==========================================================
+   PAGINATION
+========================================================== */
+
+.pagination{
+
+    justify-content:center;
+
+}
+
+.pagination .page-link{
+
+    color:var(--primary);
+
+    border:none;
+
+    margin:0 4px;
+
+    border-radius:10px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.05);
+
+}
+
+.pagination .page-item.active .page-link{
+
+    background:var(--gradient);
+
+    color:#fff;
+
+}
+
+
+
+/* ==========================================================
+   IMAGE
+========================================================== */
+
+.img-cover{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+
+
+/* ==========================================================
+   UTILITY
+========================================================== */
+
+.rounded-custom{
+
+    border-radius:20px;
+
+}
+
+.shadow-custom{
+
+    box-shadow:var(--shadow);
+
+}
+
+.mt-80{
+
+    margin-top:80px;
+
+}
+
+.mb-80{
+
+    margin-bottom:80px;
+
+}
+
+.py-80{
+
+    padding:80px 0;
+
+}
+
+
+
+/* ==========================================================
+   BACK TO TOP
+========================================================== */
+
+.back-to-top{
+
+    position:fixed;
+
+    right:25px;
+
+    bottom:25px;
+
+    width:48px;
+
+    height:48px;
+
+    border-radius:50%;
+
+    background:var(--gradient);
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-decoration:none;
+
+    box-shadow:var(--shadow);
+
+    z-index:999;
+
+}
+
+
+
+/* ==========================================================
+   LOADING
+========================================================== */
+
+.loading{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    min-height:250px;
+
+}
+
+
+
+/* ==========================================================
+   RESPONSIVE GLOBAL
+========================================================== */
+
+@media(max-width:992px){
+
+    .section-title{
+
+        font-size:30px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    section{
+
+        padding:60px 0;
+
+    }
+
+    .page-header{
+
+        padding:60px 0;
+
+    }
+
+    .page-header h1{
+
+        font-size:32px;
+
+    }
+
+    .section-title{
+
+        font-size:26px;
+
+    }
+
+    .container{
+
+        padding-left:18px;
+
+        padding-right:18px;
+
+    }
+
+}
+
+@media(max-width:576px){
+
+    .btn{
+
+        width:100%;
+
+    }
+
+    .page-title{
+
+        font-size:30px;
+
+    }
+
+}
