@@ -2,298 +2,195 @@
 session_start();
 
 require_once "../../config/database.php";
+require_once "../../helpers/activity_log.php";
 
-/* =====================================================
-   VALIDASI AKSES
-===================================================== */
-
+// Validasi request
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-
     header("Location: admin.php");
     exit;
 }
 
-/* =====================================================
-   AMBIL DATA FORM
-===================================================== */
-
+// Mengambil data dari form
 $id_admin   = mysqli_real_escape_string($conn, $_POST['id_admin']);
 $nama_admin = mysqli_real_escape_string($conn, trim($_POST['nama_admin']));
 $username   = mysqli_real_escape_string($conn, trim($_POST['username']));
 $email      = mysqli_real_escape_string($conn, trim($_POST['email']));
 $no_hp      = mysqli_real_escape_string($conn, trim($_POST['no_hp']));
 
-/* =====================================================
-   VALIDASI INPUT
-===================================================== */
-
+// Validasi input
 if (empty($nama_admin)) {
 
     echo "
-    <script>
-        alert('Nama admin wajib diisi.');
-        window.history.back();
-    </script>
+        <script>
+            alert('Nama admin wajib diisi.');
+            window.history.back();
+        </script>
     ";
 
     exit;
-
 }
 
 if (empty($username)) {
 
     echo "
-    <script>
-        alert('Username wajib diisi.');
-        window.history.back();
-    </script>
+        <script>
+            alert('Username wajib diisi.');
+            window.history.back();
+        </script>
     ";
 
     exit;
-
 }
 
-/* =====================================================
-   VALIDASI USERNAME
-===================================================== */
-
+// Validasi username
 $cekUsername = mysqli_query($conn, "
     SELECT id_admin
     FROM admin
-    WHERE username='$username'
+    WHERE username = '$username'
     AND id_admin != '$id_admin'
 ");
 
 if (mysqli_num_rows($cekUsername) > 0) {
 
     echo "
-    <script>
-        alert('Username sudah digunakan.');
-        window.history.back();
-    </script>
+        <script>
+            alert('Username sudah digunakan.');
+            window.history.back();
+        </script>
     ";
 
     exit;
-
 }
 
-/* =====================================================
-   AMBIL DATA ADMIN LAMA
-===================================================== */
-
+// Mengambil data admin
 $queryAdmin = mysqli_query($conn, "
     SELECT *
     FROM admin
-    WHERE id_admin='$id_admin'
+    WHERE id_admin = '$id_admin'
 ");
 
 if (mysqli_num_rows($queryAdmin) == 0) {
 
     echo "
-    <script>
-        alert('Data admin tidak ditemukan.');
-        window.location='admin.php';
-    </script>
+        <script>
+            alert('Data admin tidak ditemukan.');
+            window.location='admin.php';
+        </script>
     ";
 
     exit;
-
 }
 
 $dataAdmin = mysqli_fetch_assoc($queryAdmin);
 
 $fotoLama = $dataAdmin['foto'];
-
-/* =====================================================
-   DEFAULT FOTO
-===================================================== */
-
 $namaFoto = $fotoLama;
 
-/* =====================================================
-   LOKASI UPLOAD
-===================================================== */
-
+// Menentukan folder upload
 $folderUpload = "../../assets/uploads/admin/";
 
-/* =====================================================
-   BUAT FOLDER JIKA BELUM ADA
-===================================================== */
-
 if (!is_dir($folderUpload)) {
-
     mkdir($folderUpload, 0777, true);
-
 }
 
-/* =====================================================
-   PROSES UPLOAD FOTO
-===================================================== */
-
-if (
-
-    isset($_FILES['foto']) &&
-    $_FILES['foto']['error'] == 0
-
-) {
+// Proses upload foto
+if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
 
     $namaFile = $_FILES['foto']['name'];
     $tmpFile  = $_FILES['foto']['tmp_name'];
     $ukuran   = $_FILES['foto']['size'];
 
-    $extensi = strtolower(
-        pathinfo($namaFile, PATHINFO_EXTENSION)
-    );
+    $extensi = strtolower(pathinfo($namaFile, PATHINFO_EXTENSION));
 
-    $allowed = array(
-
+    $allowed = [
         'jpg',
         'jpeg',
         'png'
+    ];
 
-    );
-
-    /* ===============================================
-       VALIDASI EKSTENSI
-    =============================================== */
-
+    // Validasi ekstensi
     if (!in_array($extensi, $allowed)) {
 
         echo "
-        <script>
-            alert('Format foto harus JPG, JPEG atau PNG.');
-            window.history.back();
-        </script>
+            <script>
+                alert('Format foto harus JPG, JPEG atau PNG.');
+                window.history.back();
+            </script>
         ";
 
         exit;
-
     }
 
-    /* ===============================================
-       VALIDASI UKURAN
-    =============================================== */
-
+    // Validasi ukuran
     if ($ukuran > 2 * 1024 * 1024) {
 
         echo "
-        <script>
-            alert('Ukuran foto maksimal 2 MB.');
-            window.history.back();
-        </script>
+            <script>
+                alert('Ukuran foto maksimal 2 MB.');
+                window.history.back();
+            </script>
         ";
 
         exit;
-
     }
 
-    /* ===============================================
-       RENAME FILE
-    =============================================== */
+    // Membuat nama file baru
+    $namaFoto = "admin_" . $id_admin . "_" . time() . "." . $extensi;
 
-    $namaFoto =
-
-        "admin_" .
-        $id_admin .
-        "_" .
-        time() .
-        "." .
-        $extensi;
-
-            /* ===============================================
-       UPLOAD FOTO
-    =============================================== */
-
+    // Upload foto
     if (!move_uploaded_file($tmpFile, $folderUpload . $namaFoto)) {
 
         echo "
-        <script>
-            alert('Upload foto gagal.');
-            window.history.back();
-        </script>
+            <script>
+                alert('Upload foto gagal.');
+                window.history.back();
+            </script>
         ";
 
         exit;
-
     }
 
-    /* ===============================================
-       HAPUS FOTO LAMA
-    =============================================== */
-
-    if (
-
-        !empty($fotoLama) &&
-        file_exists($folderUpload . $fotoLama)
-
-    ) {
-
+    // Menghapus foto lama
+    if (!empty($fotoLama) && file_exists($folderUpload . $fotoLama)) {
         unlink($folderUpload . $fotoLama);
-
     }
-
 }
 
-/* =====================================================
-   UPDATE DATA ADMIN
-===================================================== */
-
+// Memperbarui data admin
 $update = mysqli_query($conn, "
     UPDATE admin
     SET
         nama_admin = '$nama_admin',
-        username   = '$username',
-        email      = '$email',
-        no_hp      = '$no_hp',
-        foto       = '$namaFoto',
+        username = '$username',
+        email = '$email',
+        no_hp = '$no_hp',
+        foto = '$namaFoto',
         updated_at = NOW()
     WHERE id_admin = '$id_admin'
 ");
 
-/* =====================================================
-   JIKA UPDATE BERHASIL
-===================================================== */
-
 if ($update) {
 
-    /* ===============================================
-       UPDATE SESSION
-    =============================================== */
-
+    // Memperbarui session
     $_SESSION['nama_admin'] = $nama_admin;
-    $_SESSION['username']   = $username;
+    $_SESSION['username'] = $username;
 
-    /* ===============================================
-       SIMPAN ACTIVITY LOG
-    =============================================== */
-
-    mysqli_query($conn, "
-        INSERT INTO activity_log
-        (
-            id_admin,
-            aktivitas,
-            tabel_terkait,
-            id_data
-        )
-        VALUES
-        (
-            '$id_admin',
-            'Mengubah Profil Admin',
-            'admin',
-            '$id_admin'
-        )
-    ");
+    // Menyimpan activity log
+    simpanActivityLog(
+        $conn,
+        $_SESSION['id_admin'],
+        "Mengubah Profil Admin",
+        "admin",
+        $id_admin
+    );
 
     $_SESSION['success'] = "Profil berhasil diperbarui.";
+
     header("Location: admin.php");
     exit;
-
 }
 
-/* =====================================================
-   JIKA UPDATE GAGAL
-===================================================== */
-
 $_SESSION['error'] = "Profil gagal diperbarui.";
+
 header("Location: admin.php");
 exit;

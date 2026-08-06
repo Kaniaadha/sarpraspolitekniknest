@@ -1,211 +1,134 @@
 <?php
 session_start();
 
+// Cek login admin
 if (!isset($_SESSION['id_admin'])) {
     header("Location: ../../../login.php");
     exit;
 }
 
 require_once "../../../config/database.php";
+require_once "../../../helpers/activity_log.php";
 
-
-if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-
-    header("Location: index.php");
+// Validasi ID stock opname
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    header("Location: riwayat.php");
     exit;
-
 }
 
+$id_stock_opname = mysqli_real_escape_string($conn, $_GET['id']);
 
-$kode_stock_opname = mysqli_real_escape_string(
-    $conn,
-    $_POST['kode_stock_opname']
-);
+// Mengambil data stock opname
+$queryStockOpname = mysqli_query($conn, "
+    SELECT *
+    FROM stock_opname
+    WHERE id_stock_opname = '$id_stock_opname'
+");
 
-$id_admin = mysqli_real_escape_string(
-    $conn,
-    $_POST['id_admin']
-);
+$stockOpname = mysqli_fetch_assoc($queryStockOpname);
 
-$tanggal = mysqli_real_escape_string(
-    $conn,
-    $_POST['tanggal']
-);
-
-$status = mysqli_real_escape_string(
-    $conn,
-    $_POST['status']
-);
-
-
-$id_inventaris = $_POST['id_inventaris'];
-
-$stok_sistem = $_POST['stok_sistem'];
-
-$stok_fisik = $_POST['stok_fisik'];
-
-$kondisi = $_POST['kondisi'];
-
-$catatan = $_POST['catatan'];
-
-
-if (
-    empty($id_inventaris) ||
-    empty($stok_sistem) ||
-    empty($stok_fisik)
-) {
-
-    echo "
-        <script>
-
-            alert('Data Stock Opname tidak lengkap!');
-
-            window.location='index.php';
-
-        </script>
-    ";
-
+if (!$stockOpname) {
+    header("Location: riwayat.php");
     exit;
-
 }
 
+if ($stockOpname['status'] == 'Selesai') {
+    header("Location: detail.php?id=$id_stock_opname");
+    exit;
+}
 
 mysqli_begin_transaction($conn);
 
-
-$queryStockOpname = mysqli_query($conn, "
-    INSERT INTO stock_opname (
-        kode_stock_opname,
-        id_admin,
-        tanggal,
-        status
-    ) VALUES (
-        '$kode_stock_opname',
-        '$id_admin',
-        '$tanggal',
-        '$status'
-    )
+// Mengambil detail stock opname
+$queryDetail = mysqli_query($conn, "
+    SELECT
+        dso.id_inventaris,
+        dso.stok_fisik,
+        dso.kondisi
+    FROM detail_stock_opname dso
+    WHERE dso.id_stock_opname = '$id_stock_opname'
 ");
 
-
-if (!$queryStockOpname) {
-
+if (!$queryDetail) {
     mysqli_rollback($conn);
 
     echo "
         <script>
-
-            alert('Gagal menyimpan data Stock Opname!');
-
-            window.location='index.php';
-
+            alert('Data detail Stock Opname tidak ditemukan.');
+            window.location='detail.php?id=$id_stock_opname';
         </script>
     ";
-
     exit;
-
 }
 
+if (mysqli_num_rows($queryDetail) == 0) {
+    mysqli_rollback($conn);
 
-$id_stock_opname = mysqli_insert_id($conn);
+    echo "
+        <script>
+            alert('Belum ada data detail Stock Opname.');
+            window.location='detail.php?id=$id_stock_opname';
+        </script>
+    ";
+    exit;
+}
 
+// Memperbarui data inventaris
+while ($detail = mysqli_fetch_assoc($queryDetail)) {
 
-for ($i = 0; $i < count($id_inventaris); $i++) {
+    $idInventaris = $detail['id_inventaris'];
+    $stokFisik = $detail['stok_fisik'];
+    $kondisi = mysqli_real_escape_string($conn, $detail['kondisi']);
 
-    $idInventaris = mysqli_real_escape_string(
-        $conn,
-        $id_inventaris[$i]
-    );
-
-    $stokSistem = mysqli_real_escape_string(
-        $conn,
-        $stok_sistem[$i]
-    );
-
-    $stokFisik = mysqli_real_escape_string(
-        $conn,
-        $stok_fisik[$i]
-    );
-
-    $kondisiBarang = mysqli_real_escape_string(
-        $conn,
-        $kondisi[$i]
-    );
-
-    $catatanBarang = mysqli_real_escape_string(
-        $conn,
-        $catatan[$i]
-    );
-
-    $selisih = $stokFisik - $stokSistem;
-
-    $queryDetail = mysqli_query($conn, "
-        INSERT INTO detail_stock_opname (
-            id_stock_opname,
-            id_inventaris,
-            stok_sistem,
-            stok_fisik,
-            selisih,
-            kondisi,
-            catatan
-        ) VALUES (
-            '$id_stock_opname',
-            '$idInventaris',
-            '$stokSistem',
-            '$stokFisik',
-            '$selisih',
-            '$kondisiBarang',
-            '$catatanBarang'
-        )
+    $queryUpdateInventaris = mysqli_query($conn, "
+        UPDATE inventaris
+        SET
+            jumlah = '$stokFisik',
+            kondisi = '$kondisi'
+        WHERE id_inventaris = '$idInventaris'
     ");
 
-    if (!$queryDetail) {
-
+    if (!$queryUpdateInventaris) {
         mysqli_rollback($conn);
 
         echo "
             <script>
-
-                alert('Gagal menyimpan detail Stock Opname!');
-
-                window.location='index.php';
-
+                alert('Gagal memperbarui data inventaris.');
+                window.location='detail.php?id=$id_stock_opname';
             </script>
         ";
-
         exit;
-
     }
-
 }
 
+// Mengubah status stock opname
+$queryUpdateStatus = mysqli_query($conn, "
+    UPDATE stock_opname
+    SET status = 'Selesai'
+    WHERE id_stock_opname = '$id_stock_opname'
+");
+
+if (!$queryUpdateStatus) {
+    mysqli_rollback($conn);
+
+    $_SESSION['error'] = "Gagal menyelesaikan Stock Opname.";
+
+    header("Location: detail.php?id=$id_stock_opname");
+    exit;
+}
 
 mysqli_commit($conn);
 
-mysqli_query($conn, "
-    INSERT INTO activity_log
-    (
-        id_admin,
-        aktivitas,
-        tabel_terkait,
-        id_data
-    )
-    VALUES
-    (
-        '{$_SESSION['id_admin']}',
-        'Menambah Stock Opname',
-        'stock_opname',
-        '$id_stock_opname'
-    )
-");
+// Menyimpan activity log
+simpanActivityLog(
+    $conn,
+    $_SESSION['id_admin'],
+    "Menyelesaikan Stock Opname",
+    "stock_opname",
+    $id_stock_opname
+);
 
+$_SESSION['success'] = "Stock Opname berhasil diselesaikan.";
 
-echo "
-    <script>
-
-        alert('Stock Opname berhasil disimpan.');
-
-        window.location='detail.php?id=$id_stock_opname';
-
-    </script>
-";
+header("Location: detail.php?id=$id_stock_opname");
+exit;

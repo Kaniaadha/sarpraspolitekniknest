@@ -2,6 +2,7 @@
 session_start();
 
 require_once "../../../config/database.php";
+require_once "../../../helpers/activity_log.php";
 
 // ==============================
 // Ambil Data
@@ -103,22 +104,13 @@ $query = mysqli_query($conn, "
 
 if ($query) {
     
-    mysqli_query($conn, "
-        INSERT INTO activity_log
-        (
-            id_admin,
-            aktivitas,
-            tabel_terkait,
-            id_data
-        )
-        VALUES
-        (
-            '{$_SESSION['id_admin']}',
-            'Mengubah Lokasi',
-            'lokasi',
-            '$id_lokasi'
-        )
-    ");
+    simpanActivityLog(
+        $conn,
+        $_SESSION['id_admin'],
+        "Mengubah Lokasi",
+        "lokasi",
+        $id_lokasi
+    );
     
     unset($_SESSION['old']);
 

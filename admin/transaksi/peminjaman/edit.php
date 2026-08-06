@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+// Cek login admin
 $menu = "peminjaman";
 
 if (!isset($_SESSION['id_admin'])) {
@@ -10,6 +11,7 @@ if (!isset($_SESSION['id_admin'])) {
 
 }
 
+// Koneksi database
 require_once "../../../config/database.php";
 
 if (
@@ -26,7 +28,7 @@ if (
 
 $id_peminjaman = (int) $_GET['id'];
 
-
+// Mengambil data peminjaman
 $queryPeminjaman = mysqli_query($conn, "
     SELECT *
     FROM peminjaman
@@ -47,7 +49,6 @@ if (
 
 $peminjaman = mysqli_fetch_assoc($queryPeminjaman);
 
-
 $queryDetail = mysqli_query($conn, "
     SELECT
         dp.*,
@@ -60,18 +61,37 @@ $queryDetail = mysqli_query($conn, "
     ORDER BY dp.id_detail ASC
 ");
 
-
+// Mengambil data inventaris
 $queryInventaris = mysqli_query($conn, "
     SELECT
-        id_inventaris,
-        kode_inventaris,
-        nama_barang,
-        jumlah,
-        kondisi,
-        status
-    FROM inventaris
-    WHERE status = 'Aktif'
-    ORDER BY nama_barang ASC
+        i.id_inventaris,
+        i.kode_inventaris,
+        i.nama_barang,
+        i.kondisi,
+        i.jumlah,
+
+        (
+            i.jumlah -
+            COALESCE(
+                (
+                    SELECT SUM(dp.jumlah)
+                    FROM detail_peminjaman dp
+                    INNER JOIN peminjaman p
+                        ON dp.id_peminjaman = p.id_peminjaman
+                    WHERE dp.id_inventaris = i.id_inventaris
+                    AND p.status = 'Dipinjam'
+                ),
+                0
+            )
+        ) AS stok_tersedia
+
+    FROM inventaris i
+
+    WHERE i.status='Aktif'
+
+    HAVING stok_tersedia > 0
+
+    ORDER BY i.nama_barang
 ");
 
 require_once "../../../includes/header.php";
@@ -130,7 +150,7 @@ require_once "../../../includes/sidebar.php";
                 name="id_peminjaman"
                 value="<?= $peminjaman['id_peminjaman']; ?>">
 
-            <!-- Card Data Peminjam -->
+            <!-- Data Peminjam -->
 
 <div class="card border-0 shadow-sm mb-4">
 
@@ -290,7 +310,7 @@ require_once "../../../includes/sidebar.php";
 
 </div>
 
-<!-- Card Data Barang -->
+<!-- Data Barang -->
 
 <div class="card border-0 shadow-sm mb-4">
 
@@ -358,7 +378,7 @@ require_once "../../../includes/sidebar.php";
 
                                     <option
                                         value="<?= $barang['id_inventaris']; ?>"
-                                        data-stok="<?= $barang['jumlah']; ?>"
+                                        data-stok="<?= $barang['stok_tersedia']; ?>"
                                         <?= ((int)$barang['id_inventaris'] === (int)$detail['id_inventaris']) ? 'selected' : ''; ?>>
 
                                         <?= htmlspecialchars($barang['kode_inventaris']); ?>
@@ -368,7 +388,7 @@ require_once "../../../includes/sidebar.php";
                                         <?= htmlspecialchars($barang['nama_barang']); ?>
 
                                         (Stok :
-                                        <?= $barang['jumlah']; ?>)
+                                        <?= $barang['stok_tersedia']; ?>)
 
                                     </option>
 
@@ -685,7 +705,7 @@ document.addEventListener("DOMContentLoaded", function(){
             let stok =
                 select.options[select.selectedIndex].dataset.stok;
 
-            if(stok){
+            if (stok) {
 
                 if(parseInt(jumlah.value) > parseInt(stok)){
 
@@ -709,7 +729,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
         });
 
-        if(!valid){
+        if (!valid) {
 
             e.preventDefault();
 

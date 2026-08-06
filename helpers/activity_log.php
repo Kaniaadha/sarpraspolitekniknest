@@ -16,13 +16,21 @@ if (!function_exists('simpanActivityLog')) {
         ?int $id_data = null
     ): bool {
 
-        $aktivitas = mysqli_real_escape_string($conn, $aktivitas);
+        $id_admin = (int) $id_admin;
 
-        $tabel = $tabel_terkait !== null
-            ? "'" . mysqli_real_escape_string($conn, $tabel_terkait) . "'"
+        $aktivitas = mysqli_real_escape_string(
+            $conn,
+            trim($aktivitas)
+        );
+
+        $tabel_terkait = $tabel_terkait !== null
+            ? "'" . mysqli_real_escape_string(
+                $conn,
+                trim($tabel_terkait)
+            ) . "'"
             : "NULL";
 
-        $id = $id_data !== null
+        $id_data = $id_data !== null
             ? (int) $id_data
             : "NULL";
 
@@ -38,10 +46,11 @@ if (!function_exists('simpanActivityLog')) {
             (
                 '$id_admin',
                 '$aktivitas',
-                $tabel,
-                $id
+                $tabel_terkait,
+                $id_data
             )
         ");
+
     }
 
 }

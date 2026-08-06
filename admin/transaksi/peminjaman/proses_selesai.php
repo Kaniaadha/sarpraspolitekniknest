@@ -1,13 +1,7 @@
 <?php
-
-/*
-|--------------------------------------------------------------------------
-| Inisialisasi
-|--------------------------------------------------------------------------
-*/
-
 session_start();
 
+// Cek login admin
 if (!isset($_SESSION['id_admin'])) {
     header("Location: ../../../login.php");
     exit;
@@ -16,26 +10,17 @@ if (!isset($_SESSION['id_admin'])) {
 require_once "../../../config/database.php";
 require_once "../../../helpers/activity_log.php";
 
-/*
-|--------------------------------------------------------------------------
-| Validasi ID
-|--------------------------------------------------------------------------
-*/
-
+// Validasi ID peminjaman
 if (!isset($_POST['id_peminjaman']) || empty($_POST['id_peminjaman'])) {
     $_SESSION['error'] = "Data peminjaman tidak ditemukan.";
+
     header("Location: index.php");
     exit;
 }
 
 $id_peminjaman = (int) $_POST['id_peminjaman'];
 
-/*
-|--------------------------------------------------------------------------
-| Data Peminjaman
-|--------------------------------------------------------------------------
-*/
-
+// Mengambil data peminjaman
 $queryPeminjaman = mysqli_query($conn, "
     SELECT *
     FROM peminjaman
@@ -45,50 +30,38 @@ $queryPeminjaman = mysqli_query($conn, "
 
 if (!$queryPeminjaman || mysqli_num_rows($queryPeminjaman) == 0) {
     $_SESSION['error'] = "Data peminjaman tidak ditemukan.";
+
     header("Location: index.php");
     exit;
 }
 
 $peminjaman = mysqli_fetch_assoc($queryPeminjaman);
 
-/*
-|--------------------------------------------------------------------------
-| Validasi Status
-|--------------------------------------------------------------------------
-*/
-
+// Validasi status peminjaman
 if ($peminjaman['status'] != "Dipinjam") {
     $_SESSION['error'] = "Status peminjaman tidak valid.";
-    header("Location: detail.php?id=" . $id_peminjaman);
+
+    header("Location: detail.php?id=$id_peminjaman");
     exit;
 }
 
-/*
-|--------------------------------------------------------------------------
-| Detail Barang
-|--------------------------------------------------------------------------
-*/
-
+// Mengambil data pengembalian
 $id_detail = $_POST['id_detail'] ?? [];
 $kondisi_sesudah = $_POST['kondisi_sesudah'] ?? [];
 $catatan = $_POST['catatan'] ?? [];
 
 if (empty($id_detail) || empty($kondisi_sesudah)) {
     $_SESSION['error'] = "Data pengembalian belum lengkap.";
-    header("Location: pengembalian.php?id=" . $id_peminjaman);
+
+    header("Location: pengembalian.php?id=$id_peminjaman");
     exit;
 }
-
-/*
-|--------------------------------------------------------------------------
-| Proses Pengembalian
-|--------------------------------------------------------------------------
-*/
 
 mysqli_begin_transaction($conn);
 
 try {
 
+    // Memperbarui detail pengembalian
     foreach ($id_detail as $index => $detail) {
 
         $detail = (int) $detail;
@@ -102,12 +75,6 @@ try {
             $conn,
             trim($catatan[$index])
         );
-
-        /*
-        |--------------------------------------------------------------------------
-        | Data Detail Barang
-        |--------------------------------------------------------------------------
-        */
 
         $queryDetail = mysqli_query($conn, "
             SELECT
@@ -124,14 +91,6 @@ try {
             throw new Exception("Data detail barang tidak ditemukan.");
         }
 
-        $dataDetail = mysqli_fetch_assoc($queryDetail);
-
-        /*
-        |--------------------------------------------------------------------------
-        | Update Detail Peminjaman
-        |--------------------------------------------------------------------------
-        */
-
         $updateDetail = mysqli_query($conn, "
             UPDATE detail_peminjaman
             SET
@@ -146,12 +105,7 @@ try {
 
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Update Status Peminjaman
-    |--------------------------------------------------------------------------
-    */
-
+    // Memperbarui status peminjaman
     $updatePeminjaman = mysqli_query($conn, "
         UPDATE peminjaman
         SET
@@ -164,24 +118,14 @@ try {
         throw new Exception("Gagal memperbarui status peminjaman.");
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Activity Log
-    |--------------------------------------------------------------------------
-    */
-
+    // Menyimpan activity log
     simpanActivityLog(
         $conn,
         $_SESSION['id_admin'],
-        "Mengonfirmasi Pengembalian Peminjaman",
-        "Kode Peminjaman : " . $peminjaman['kode_peminjaman']
+        "Mengonfirmasi Pengembalian",
+        "peminjaman",
+        $id_peminjaman
     );
-
-    /*
-    |--------------------------------------------------------------------------
-    | Commit
-    |--------------------------------------------------------------------------
-    */
 
     mysqli_commit($conn);
 
@@ -189,23 +133,11 @@ try {
 
 } catch (Exception $e) {
 
-    /*
-    |--------------------------------------------------------------------------
-    | Rollback
-    |--------------------------------------------------------------------------
-    */
-
     mysqli_rollback($conn);
 
     $_SESSION['error'] = $e->getMessage();
 
 }
 
-/*
-|--------------------------------------------------------------------------
-| Redirect
-|--------------------------------------------------------------------------
-*/
-
-header("Location: detail.php?id=" . $id_peminjaman);
+header("Location: detail.php?id=$id_peminjaman");
 exit;

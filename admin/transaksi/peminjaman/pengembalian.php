@@ -1,12 +1,8 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Inisialisasi
-|--------------------------------------------------------------------------
-*/
-
 session_start();
+
+// Cek login admin
 $menu = "peminjaman";
 
 if (!isset($_SESSION['id_admin'])) {
@@ -14,6 +10,7 @@ if (!isset($_SESSION['id_admin'])) {
     exit;
 }
 
+// Koneksi database
 require_once "../../../config/database.php";
 
 if (!isset($_GET['id']) || empty($_GET['id'])) {
@@ -24,12 +21,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $id_peminjaman = (int) $_GET['id'];
 
-/*
-|--------------------------------------------------------------------------
-| Data Peminjaman
-|--------------------------------------------------------------------------
-*/
-
+// Mengambil data peminjaman
 $queryPeminjaman = mysqli_query($conn, "
     SELECT *
     FROM peminjaman
@@ -45,24 +37,13 @@ if (!$queryPeminjaman || mysqli_num_rows($queryPeminjaman) == 0) {
 
 $peminjaman = mysqli_fetch_assoc($queryPeminjaman);
 
-/*
-|--------------------------------------------------------------------------
-| Validasi Status
-|--------------------------------------------------------------------------
-*/
-
 if ($peminjaman['status'] != "Dipinjam") {
     $_SESSION['error'] = "Barang tidak dapat diproses untuk pengembalian.";
     header("Location: detail.php?id=" . $id_peminjaman);
     exit;
 }
 
-/*
-|--------------------------------------------------------------------------
-| Detail Barang
-|--------------------------------------------------------------------------
-*/
-
+// Mengambil detail barang
 $queryDetail = mysqli_query($conn, "
     SELECT
         dp.*,
@@ -74,12 +55,6 @@ $queryDetail = mysqli_query($conn, "
     WHERE dp.id_peminjaman = '$id_peminjaman'
     ORDER BY dp.id_detail ASC
 ");
-
-/*
-|--------------------------------------------------------------------------
-| Header
-|--------------------------------------------------------------------------
-*/
 
 require_once "../../../includes/header.php";
 require_once "../../../includes/navbar.php";
@@ -503,12 +478,6 @@ document.getElementById("btnSimpan").addEventListener("click", function (e) {
 </script>
 
 <?php
-
-/*
-|--------------------------------------------------------------------------
-| Footer
-|--------------------------------------------------------------------------
-*/
 
 require_once "../../../includes/footer.php";
 require_once "../../../includes/scripts.php";

@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+// Cek login admin
 $menu = "stock_opname";
 
 if (!isset($_SESSION['id_admin'])) {
@@ -8,8 +9,8 @@ if (!isset($_SESSION['id_admin'])) {
     exit;
 }
 
+// Koneksi database
 require_once "../../../config/database.php";
-
 
 $id_admin = $_SESSION['id_admin'];
 
@@ -35,6 +36,7 @@ $kodeStockOpname =
     date('Ymd') .
     str_pad($nomor, 3, "0", STR_PAD_LEFT);
 
+// Mengambil data inventaris
 $queryInventaris = mysqli_query($conn, "
     SELECT
         i.*,
@@ -76,7 +78,6 @@ $queryInventaris = mysqli_query($conn, "
     ORDER BY i.nama_barang ASC
 ");
 
-
 require_once "../../../includes/header.php";
 require_once "../../../includes/navbar.php";
 require_once "../../../includes/sidebar.php";
@@ -84,6 +85,7 @@ require_once "../../../includes/sidebar.php";
 
 <main class="app-main">
 
+    <!-- Header -->
     <div class="app-content-header">
 
         <div class="container-fluid">
@@ -262,6 +264,7 @@ require_once "../../../includes/sidebar.php";
 
             </div>
 
+<!-- Daftar Inventaris -->
 <div class="card border-0 shadow-sm">
 
     <div class="card-header py-3">

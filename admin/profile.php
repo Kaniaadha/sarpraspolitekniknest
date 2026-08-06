@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+// Cek login admin
 if (!isset($_SESSION['id_admin'])) {
     header("Location: ../login.php");
     exit;
@@ -8,6 +9,7 @@ if (!isset($_SESSION['id_admin'])) {
 
 $page = "profile";
 
+// Memuat konfigurasi dan data admin
 require_once "../config/database.php";
 require_once "../config/config.php";
 
@@ -28,6 +30,7 @@ require_once "../includes/sidebar.php";
 
 <div class="app-main">
 
+    <!-- Header -->
     <div class="app-content-header">
 
         <div class="container-fluid">
@@ -70,8 +73,7 @@ require_once "../includes/sidebar.php";
 
     </div>
 
-
-
+    <!-- Informasi Profil -->
     <div class="app-content">
 
         <div class="container-fluid">
@@ -136,8 +138,6 @@ require_once "../includes/sidebar.php";
 
                                 </div>
 
-
-
                                 <!-- DATA -->
 
                                 <div class="col-md-8">
@@ -172,8 +172,6 @@ require_once "../includes/sidebar.php";
 
                                     </div>
 
-
-
                                     <div class="row mb-3">
 
                                         <div class="col-md-4">
@@ -197,8 +195,6 @@ require_once "../includes/sidebar.php";
                                         </div>
 
                                     </div>
-
-
 
                                     <div class="row mb-3">
 
@@ -228,8 +224,6 @@ require_once "../includes/sidebar.php";
 
                                     </div>
 
-
-
                                     <div class="row mb-3">
 
                                         <div class="col-md-4">
@@ -258,8 +252,6 @@ require_once "../includes/sidebar.php";
 
                                     </div>
 
-
-
                                     <div class="row mb-3">
 
                                         <div class="col-md-4">
@@ -284,7 +276,7 @@ require_once "../includes/sidebar.php";
 
                                     </div>
 
-                                                                        <hr class="my-4">
+                                    <hr class="my-4">
 
                                     <div class="row mb-3">
 
@@ -357,31 +349,31 @@ require_once "../includes/sidebar.php";
                                     </div>
 
                                 </div>
-                                <!-- End Data -->
+                                
 
                             </div>
-                            <!-- End Row -->
+                            
 
                         </div>
-                        <!-- End Card Body -->
+                        
 
                     </div>
-                    <!-- End Card -->
+                    
 
                 </div>
-                <!-- End Col -->
+                
 
             </div>
-            <!-- End Row -->
+            
 
         </div>
-        <!-- End Container -->
+        
 
     </div>
-    <!-- End Content -->
+    
 
 </div>
-<!-- End App Main -->
+
 
 <?php
 require_once "../includes/footer.php";

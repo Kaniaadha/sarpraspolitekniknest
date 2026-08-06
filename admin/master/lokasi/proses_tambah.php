@@ -2,6 +2,7 @@
 session_start();
 
 require_once "../../../config/database.php";
+require_once "../../../helpers/activity_log.php";
 
 // ==============================
 // Ambil Data
@@ -115,22 +116,13 @@ if ($query) {
 
     $idLokasi = mysqli_insert_id($conn);
 
-mysqli_query($conn, "
-    INSERT INTO activity_log
-        (
-            id_admin,
-            aktivitas,
-            tabel_terkait,
-            id_data
-        )
-        VALUES
-        (
-            '{$_SESSION['id_admin']}',
-            'Menambah Lokasi',
-            'lokasi',
-            '$idLokasi'
-        )
-    ");
+    simpanActivityLog(
+        $conn,
+        $_SESSION['id_admin'],
+        "Menambah Lokasi",
+        "lokasi",
+        $idLokasi
+    );
 
     $_SESSION['success'] = "Lokasi berhasil ditambahkan.";
 

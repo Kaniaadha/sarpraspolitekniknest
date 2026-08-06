@@ -28,6 +28,7 @@ session_start();
 */
 
 require_once '../../../config/database.php';
+require_once '../../../helpers/activity_log.php';
 require_once 'service.php';
 require_once 'config.php';
 require_once 'helper.php';
@@ -284,22 +285,13 @@ try {
 
     $namaModul = ucfirst(str_replace('_', ' ', $module));
 
-    mysqli_query($conn, "
-        INSERT INTO activity_log
-        (
-            id_admin,
-            aktivitas,
-            tabel_terkait,
-            id_data
-        )
-        VALUES
-        (
-            '{$_SESSION['id_admin']}',
-            'Menambah Foto {$namaModul}',
-            '{$table}',
-            '$id'
-        )
-    ");
+    simpanActivityLog(
+        $conn,
+        $_SESSION['id_admin'],
+        "Menambah Foto {$namaModul}",
+        $table,
+        $id
+    );
 
     $_SESSION['success'] = uploadSuccess(
         $config,

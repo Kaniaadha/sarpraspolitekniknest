@@ -5,6 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $menu = "banner";
 
+// Cek login admin
 if (!isset($_SESSION['id_admin'])) {
     header("Location: ../../../login.php");
     exit;
@@ -19,6 +20,7 @@ require_once "../../../includes/sidebar.php";
 
 <main class="app-main">
 
+    <!-- Header -->
     <div class="app-content-header">
 
         <div class="container-fluid">
@@ -45,20 +47,15 @@ require_once "../../../includes/sidebar.php";
 
     <div class="container-fluid">
 
-        <form
-            action="proses_tambah.php"
-            method="POST">
+        <form action="proses_tambah.php" method="POST">
 
             <div class="card border-0 shadow-sm">
 
                 <div class="card-header bg-white py-3">
 
                     <h5 class="mb-0">
-
                         <i class="bi bi-images me-2"></i>
-
                         Informasi Banner
-
                     </h5>
 
                 </div>
@@ -69,144 +66,117 @@ require_once "../../../includes/sidebar.php";
 
                         <div class="col-lg-8">
 
-<div class="mb-4">
+                            <!-- Form Banner -->
+                            <div class="mb-4">
 
-    <label class="form-label fw-semibold">
+                                <label class="form-label fw-semibold">
+                                    Judul Banner
+                                    <span class="text-danger">*</span>
+                                </label>
 
-        Judul Banner
-        <span class="text-danger">*</span>
+                                <input
+                                    type="text"
+                                    name="judul"
+                                    class="form-control"
+                                    maxlength="100"
+                                    autocomplete="off"
+                                    placeholder="Contoh: Selamat Datang di Politeknik Nest"
+                                    value="<?= htmlspecialchars($_SESSION['old']['judul'] ?? '') ?>"
+                                    required>
 
-    </label>
+                            </div>
 
-    <input
-        type="text"
-        name="judul"
-        class="form-control"
-        maxlength="100"
-        autocomplete="off"
-        placeholder="Contoh: Selamat Datang di Politeknik Nest"
-        value="<?= htmlspecialchars($_SESSION['old']['judul'] ?? '') ?>"
-        required>
+                            <div class="mb-4">
 
-</div>
+                                <label class="form-label fw-semibold">
+                                    Subjudul
+                                </label>
 
-<div class="mb-4">
+                                <input
+                                    type="text"
+                                    name="subjudul"
+                                    class="form-control"
+                                    maxlength="150"
+                                    autocomplete="off"
+                                    placeholder="Contoh: Kampus Vokasi Berbasis Industri"
+                                    value="<?= htmlspecialchars($_SESSION['old']['subjudul'] ?? '') ?>">
 
-    <label class="form-label fw-semibold">
+                            </div>
 
-        Subjudul
+                            <div class="mb-4">
 
-    </label>
+                                <label class="form-label fw-semibold">
+                                    Deskripsi
+                                </label>
 
-    <input
-        type="text"
-        name="subjudul"
-        class="form-control"
-        maxlength="150"
-        autocomplete="off"
-        placeholder="Contoh: Kampus Vokasi Berbasis Industri"
-        value="<?= htmlspecialchars($_SESSION['old']['subjudul'] ?? '') ?>">
+                                <textarea
+                                    name="deskripsi"
+                                    rows="3"
+                                    maxlength="255"
+                                    class="form-control"
+                                    placeholder="Masukkan deskripsi singkat banner..."><?= htmlspecialchars($_SESSION['old']['deskripsi'] ?? '') ?></textarea>
 
-</div>
+                                <div class="form-text">
+                                    Maksimal 255 karakter.
+                                </div>
 
-<div class="mb-4">
+                            </div>
 
-    <label class="form-label fw-semibold">
+                            <div class="mb-4">
 
-        Deskripsi
+                                <label class="form-label fw-semibold d-block">
+                                    Status Banner
+                                </label>
 
-    </label>
+                                <div class="form-check form-check-inline">
 
-    <textarea
-        name="deskripsi"
-        rows="3"
-        maxlength="255"
-        class="form-control"
-        placeholder="Masukkan deskripsi singkat banner..."><?= htmlspecialchars($_SESSION['old']['deskripsi'] ?? '') ?></textarea>
+                                    <input
+                                        class="form-check-input"
+                                        type="radio"
+                                        name="status"
+                                        id="aktif"
+                                        value="aktif"
+                                        <?= (($_SESSION['old']['status'] ?? 'aktif') == 'aktif') ? 'checked' : '' ?>>
 
-    <div class="form-text">
+                                    <label class="form-check-label" for="aktif">
+                                        Aktif
+                                    </label>
 
-        Maksimal 255 karakter.
+                                </div>
 
-    </div>
+                                <div class="form-check form-check-inline">
 
-</div>
+                                    <input
+                                        class="form-check-input"
+                                        type="radio"
+                                        name="status"
+                                        id="nonaktif"
+                                        value="nonaktif"
+                                        <?= (($_SESSION['old']['status'] ?? '') == 'nonaktif') ? 'checked' : '' ?>>
 
-<div class="mb-4">
+                                    <label class="form-check-label" for="nonaktif">
+                                        Nonaktif
+                                    </label>
 
-    <label class="form-label fw-semibold d-block">
+                                </div>
 
-        Status Banner
+                            </div>
 
-    </label>
+                            <hr class="my-4">
 
-    <div class="form-check form-check-inline">
+                            <div class="d-flex justify-content-end">
 
-        <input
-            class="form-check-input"
-            type="radio"
-            name="status"
-            id="aktif"
-            value="aktif"
-            <?= (($_SESSION['old']['status'] ?? 'aktif') == 'aktif') ? 'checked' : '' ?>>
+                                <a href="index.php" class="btn btn-secondary me-2">
+                                    <i class="bi bi-arrow-left-circle me-1"></i>
+                                    Kembali
+                                </a>
 
-        <label
-            class="form-check-label"
-            for="aktif">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-save me-1"></i>
+                                    Simpan Banner
+                                </button>
 
-            Aktif
-
-        </label>
-
-    </div>
-
-    <div class="form-check form-check-inline">
-
-        <input
-            class="form-check-input"
-            type="radio"
-            name="status"
-            id="nonaktif"
-            value="nonaktif"
-            <?= (($_SESSION['old']['status'] ?? '') == 'nonaktif') ? 'checked' : '' ?>>
-
-        <label
-            class="form-check-label"
-            for="nonaktif">
-
-            Nonaktif
-
-        </label>
-
-    </div>
-
-</div>
-
-<hr class="my-4">
-
-<div class="d-flex justify-content-end">
-
-    <a
-        href="index.php"
-        class="btn btn-secondary me-2">
-
-        <i class="bi bi-arrow-left-circle me-1"></i>
-
-        Kembali
-
-    </a>
-
-      <button
-        type="submit"
-        class="btn btn-primary">
-
-        <i class="bi bi-save me-1"></i>
-
-        Simpan Banner
-
-    </button>
-
-</div>
+                            </div>
 
                         </div>
 
@@ -230,23 +200,16 @@ require_once "../../../includes/scripts.php";
 <?php if (isset($_SESSION['gagal'])) : ?>
 
 <script>
-
 document.addEventListener("DOMContentLoaded", function () {
 
     Swal.fire({
-
         icon: "error",
-
         title: "Gagal",
-
         text: "<?= $_SESSION['gagal']; ?>",
-
         confirmButtonColor: "#0d6efd"
-
     });
 
 });
-
 </script>
 
 <?php

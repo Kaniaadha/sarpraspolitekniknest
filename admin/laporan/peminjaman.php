@@ -253,22 +253,6 @@ require_once "../../includes/sidebar.php";
 
                 </a>
 
-                <a href="peminjaman_excel.php"
-                    class="btn btn-outline-success btn-sm">
-
-                    <i class="bi bi-file-earmark-excel-fill me-1"></i>
-                    Excel
-
-                </a>
-
-                <a href="peminjaman_pdf.php"
-                    class="btn btn-outline-danger btn-sm">
-
-                    <i class="bi bi-file-earmark-pdf-fill me-1"></i>
-                    PDF
-
-                </a>
-
             </div>
 
         </div>

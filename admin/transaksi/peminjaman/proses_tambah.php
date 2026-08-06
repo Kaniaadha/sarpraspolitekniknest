@@ -1,17 +1,18 @@
 <?php
 session_start();
 
+// Cek login admin
 if (!isset($_SESSION['id_admin'])) {
-
     header("Location: ../../../login.php");
     exit;
-
 }
 
 require_once "../../../config/database.php";
+require_once "../../../helpers/activity_log.php";
 
 $id_admin = $_SESSION['id_admin'];
 
+// Mengambil data dari form
 $nama_peminjam     = trim($_POST['nama_peminjam']);
 $nim_nip           = trim($_POST['nim_nip']);
 $no_hp             = trim($_POST['no_hp']);
@@ -29,124 +30,134 @@ $status = "Menunggu";
 
 $_SESSION['old'] = $_POST;
 
-
+// Validasi data
 if (
-
     empty($nama_peminjam) ||
     empty($nim_nip) ||
     empty($tanggal_pinjam) ||
     empty($tanggal_kembali) ||
     empty($tujuan_peminjaman)
-
-){
-
+) {
     $_SESSION['error'] = "Semua data wajib diisi.";
 
     header("Location: tambah.php");
     exit;
-
 }
 
 if (count($id_inventaris) == 0) {
-
     $_SESSION['error'] = "Minimal pilih satu barang.";
 
     header("Location: tambah.php");
     exit;
-
 }
 
 $hariIni = date('Y-m-d');
 
 if ($tanggal_pinjam < $hariIni) {
-
-    $_SESSION['error'] =
-        "Tanggal pinjam tidak boleh sebelum hari ini.";
+    $_SESSION['error'] = "Tanggal pinjam tidak boleh sebelum hari ini.";
 
     header("Location: tambah.php");
     exit;
-
 }
 
 if ($tanggal_kembali < $hariIni) {
-
-    $_SESSION['error'] =
-        "Tanggal kembali tidak boleh sebelum hari ini.";
+    $_SESSION['error'] = "Tanggal kembali tidak boleh sebelum hari ini.";
 
     header("Location: tambah.php");
     exit;
-
 }
 
 if ($tanggal_kembali < $tanggal_pinjam) {
-
     $_SESSION['error'] = "Tanggal kembali tidak boleh lebih awal dari tanggal pinjam.";
 
     header("Location: tambah.php");
     exit;
-
 }
 
-
+// Validasi barang yang dipilih
 $barangDipilih = [];
 
 for ($i = 0; $i < count($id_inventaris); $i++) {
 
-    $idBarang = (int)$id_inventaris[$i];
-    $qty      = (int)$jumlah[$i];
+    $idBarang = (int) $id_inventaris[$i];
+    $qty = (int) $jumlah[$i];
 
     if ($idBarang <= 0) {
-
         $_SESSION['error'] = "Barang belum dipilih.";
 
         header("Location: tambah.php");
         exit;
-
     }
 
     if ($qty <= 0) {
-
         $_SESSION['error'] = "Jumlah barang tidak valid.";
 
         header("Location: tambah.php");
         exit;
-
     }
 
     if (in_array($idBarang, $barangDipilih)) {
-
         $_SESSION['error'] = "Barang yang sama tidak boleh dipilih lebih dari satu kali.";
 
         header("Location: tambah.php");
         exit;
-
     }
 
     $barangDipilih[] = $idBarang;
-
 }
 
+// Validasi stok barang
 for ($i = 0; $i < count($id_inventaris); $i++) {
 
-    $idBarang = (int)$id_inventaris[$i];
+    $idBarang = (int) $id_inventaris[$i];
+    $qty = (int) $jumlah[$i];
 
     $cek = mysqli_query($conn, "
-        SELECT id_inventaris
-        FROM inventaris
-        WHERE id_inventaris = '$idBarang'
+        SELECT
+            i.nama_barang,
+            i.jumlah,
+            (
+                i.jumlah -
+                COALESCE(
+                    (
+                        SELECT SUM(dp.jumlah)
+                        FROM detail_peminjaman dp
+                        INNER JOIN peminjaman p
+                            ON dp.id_peminjaman = p.id_peminjaman
+                        WHERE dp.id_inventaris = i.id_inventaris
+                        AND p.status = 'Dipinjam'
+                    ),
+                    0
+                )
+            ) AS stok_tersedia
+        FROM inventaris i
+        WHERE i.id_inventaris = '$idBarang'
+        LIMIT 1
     ");
 
     if (!$cek || mysqli_num_rows($cek) == 0) {
-
         $_SESSION['error'] = "Data barang tidak ditemukan.";
 
         header("Location: tambah.php");
         exit;
+    }
 
+    $barang = mysqli_fetch_assoc($cek);
+
+    if ($qty > $barang['stok_tersedia']) {
+        $_SESSION['error'] =
+            "Stok barang <b>" .
+            htmlspecialchars($barang['nama_barang']) .
+            "</b> tidak mencukupi. Tersedia " .
+            $barang['stok_tersedia'] . " unit.";
+
+        header("Location: tambah.php");
+        exit;
     }
 
 }
 
+// Membuat kode peminjaman
 $queryKode = mysqli_query($conn, "
     SELECT kode_peminjaman
     FROM peminjaman
@@ -159,19 +170,15 @@ $nomor = 1;
 if ($queryKode && mysqli_num_rows($queryKode) > 0) {
 
     $dataKode = mysqli_fetch_assoc($queryKode);
-
     $angka = substr($dataKode['kode_peminjaman'], 3);
 
     if (is_numeric($angka)) {
-
-        $nomor = (int)$angka + 1;
-
+        $nomor = (int) $angka + 1;
     }
 
 }
 
 $kode_peminjaman = "PJM" . str_pad($nomor, 4, "0", STR_PAD_LEFT);
-
 
 mysqli_begin_transaction($conn);
 
@@ -183,9 +190,9 @@ try {
     $email = mysqli_real_escape_string($conn, $email);
     $tujuan_peminjaman = mysqli_real_escape_string($conn, $tujuan_peminjaman);
 
+    // Menyimpan data peminjaman
     $queryPeminjaman = mysqli_query($conn, "
-        INSERT INTO peminjaman
-        (
+        INSERT INTO peminjaman (
             kode_peminjaman,
             id_admin,
             nama_peminjam,
@@ -197,8 +204,7 @@ try {
             tujuan_peminjaman,
             status
         )
-        VALUES
-        (
+        VALUES (
             '$kode_peminjaman',
             '$id_admin',
             '$nama_peminjam',
@@ -213,17 +219,16 @@ try {
     ");
 
     if (!$queryPeminjaman) {
-
         throw new Exception("Gagal menyimpan data peminjaman.");
-
     }
 
     $id_peminjaman = mysqli_insert_id($conn);
 
+    // Menyimpan detail peminjaman
     for ($i = 0; $i < count($id_inventaris); $i++) {
 
-        $idBarang = (int)$id_inventaris[$i];
-        $qty = (int)$jumlah[$i];
+        $idBarang = (int) $id_inventaris[$i];
+        $qty = (int) $jumlah[$i];
 
         $kondisi = mysqli_real_escape_string(
             $conn,
@@ -236,16 +241,14 @@ try {
         );
 
         $queryDetail = mysqli_query($conn, "
-            INSERT INTO detail_peminjaman
-            (
+            INSERT INTO detail_peminjaman (
                 id_peminjaman,
                 id_inventaris,
                 jumlah,
                 kondisi_sebelum,
                 catatan
             )
-            VALUES
-            (
+            VALUES (
                 '$id_peminjaman',
                 '$idBarang',
                 '$qty',
@@ -255,7 +258,6 @@ try {
         ");
 
         if (!$queryDetail) {
-
             throw new Exception("Gagal menyimpan detail peminjaman.");
         }
 
@@ -263,22 +265,14 @@ try {
 
     mysqli_commit($conn);
 
-    mysqli_query($conn, "
-        INSERT INTO activity_log
-        (
-            id_admin,
-            aktivitas,
-            tabel_terkait,
-            id_data
-        )
-        VALUES
-        (
-            '{$_SESSION['id_admin']}',
-            'Menambah Peminjaman',
-            'peminjaman',
-            '$id_peminjaman'
-        )
-    ");
+    // Menyimpan activity log
+    simpanActivityLog(
+        $conn,
+        $_SESSION['id_admin'],
+        "Menambah Peminjaman",
+        "peminjaman",
+        $id_peminjaman
+    );
 
     unset($_SESSION['old']);
 
@@ -295,7 +289,5 @@ try {
 
     header("Location: tambah.php");
     exit;
-
 }
-
 ?>

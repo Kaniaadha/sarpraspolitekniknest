@@ -9,6 +9,7 @@ if (!isset($_SESSION['id_admin'])) {
 }
 
 require_once "../../../config/database.php";
+require_once "../../../helpers/activity_log.php";
 
 // ===========================
 // Ambil ID
@@ -88,22 +89,13 @@ $query = mysqli_query($conn, "
 
 if ($query) {
 
-    mysqli_query($conn, "
-        INSERT INTO activity_log
-        (
-            id_admin,
-            aktivitas,
-            tabel_terkait,
-            id_data
-        )
-        VALUES
-        (
-            '{$_SESSION['id_admin']}',
-            'Menghapus Banner',
-            'banner',
-            '$id_banner'
-        )
-    ");
+    simpanActivityLog(
+        $conn,
+        $_SESSION['id_admin'],
+        "Menghapus Banner",
+        "banner",
+        $id_banner
+    );
 
     $_SESSION['berhasil'] = "Banner berhasil dihapus.";
 

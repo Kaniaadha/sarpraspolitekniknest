@@ -7,6 +7,7 @@ if (!isset($_SESSION['id_admin'])) {
 }
 
 require_once "../../../config/database.php";
+require_once "../../../helpers/activity_log.php";
 require_once "../foto/helper.php";
 
 if (!isset($_GET['id'])) {
@@ -56,22 +57,13 @@ if (!empty($data['foto'])) {
     );
 }
     
-    mysqli_query($conn, "
-        INSERT INTO activity_log
-        (
-            id_admin,
-            aktivitas,
-            tabel_terkait,
-            id_data
-        )
-        VALUES
-        (
-            '{$_SESSION['id_admin']}',
-            'Menghapus Inventaris',
-            'inventaris',
-            '$id_inventaris'
-        )
-    ");
+    simpanActivityLog(
+        $conn,
+        $_SESSION['id_admin'],
+        "Menghapus Inventaris",
+        "inventaris",
+        $id_inventaris
+    );
 
     $_SESSION['success'] = "Data Inventaris berhasil dihapus.";
 

@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+// Cek login admin
 if (!isset($_SESSION['id_admin'])) {
     header("Location: ../../login.php");
     exit;
@@ -11,6 +12,8 @@ $menu = "profil";
 
 require_once "../../config/database.php";
 require_once "../../config/config.php";
+
+// Mengambil data admin
 
 $id_admin = $_SESSION['id_admin'];
 
@@ -85,7 +88,7 @@ require_once "../../includes/sidebar.php";
 
         <div class="container-fluid">
 
-            <!-- FOTO -->
+            <!-- Foto Profil -->
 
             <div class="card shadow-sm border-0 mb-4">
 
@@ -143,7 +146,7 @@ require_once "../../includes/sidebar.php";
 
             </div>
 
-            <!-- INFORMASI ADMIN -->
+            <!-- Informasi Admin -->
 
             <div class="card shadow-sm border-0">
 
@@ -270,9 +273,7 @@ require_once "../../includes/sidebar.php";
 
             </div>
 
-            <!-- ====================================== -->
-            <!-- KEAMANAN AKUN -->
-            <!-- ====================================== -->
+            <!-- Keamanan Akun -->
 
             <div class="card shadow-sm border-0 mt-4">
 
@@ -423,19 +424,17 @@ require_once "../../includes/sidebar.php";
 
 <script>
 
-// =========================
-// Preview Foto
-// =========================
+// Preview foto
 
 const foto = document.getElementById('foto');
 
 const preview = document.getElementById('preview');
 
-foto.addEventListener('change', function(){
+foto.addEventListener('change', function () {
 
     const file = this.files[0];
 
-    if(file){
+    if (file) {
 
         preview.src = URL.createObjectURL(file);
 
@@ -443,12 +442,9 @@ foto.addEventListener('change', function(){
 
 });
 
+// Tampilkan / sembunyikan password
 
-// =========================
-// Show / Hide Password
-// =========================
-
-function togglePassword(id, button){
+function togglePassword(id, button) {
 
     const input = document.getElementById(id);
 

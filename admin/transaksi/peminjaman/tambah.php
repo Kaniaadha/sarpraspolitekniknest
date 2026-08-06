@@ -3,24 +3,48 @@ session_start();
 
 $menu = "peminjaman";
 
+// Cek login admin
+ = "peminjaman";
+
 if (!isset($_SESSION['id_admin'])) {
     header("Location: ../../../login.php");
     exit;
 }
 
+// Koneksi database
 require_once "../../../config/database.php";
 
+// Mengambil data inventaris
 $queryInventaris = mysqli_query($conn, "
     SELECT
-        id_inventaris,
-        kode_inventaris,
-        nama_barang,
-        jumlah,
-        kondisi
-    FROM inventaris
-    WHERE status = 'Aktif'
-    AND jumlah > 0
-    ORDER BY nama_barang ASC
+        i.id_inventaris,
+        i.kode_inventaris,
+        i.nama_barang,
+        i.kondisi,
+        i.jumlah,
+
+        (
+            i.jumlah -
+            COALESCE(
+                (
+                    SELECT SUM(dp.jumlah)
+                    FROM detail_peminjaman dp
+                    INNER JOIN peminjaman p
+                        ON dp.id_peminjaman = p.id_peminjaman
+                    WHERE dp.id_inventaris = i.id_inventaris
+                    AND p.status = 'Dipinjam'
+                ),
+                0
+            )
+        ) AS stok_tersedia
+
+    FROM inventaris i
+
+    WHERE i.status='Aktif'
+
+    HAVING stok_tersedia > 0
+
+    ORDER BY i.nama_barang
 ");
 
 require_once "../../../includes/header.php";
@@ -30,6 +54,7 @@ require_once "../../../includes/sidebar.php";
 
 <main class="app-main">
 
+    <!-- Header -->
     <div class="app-content-header">
 
         <div class="container-fluid">
@@ -45,7 +70,9 @@ require_once "../../../includes/sidebar.php";
                 <ol class="breadcrumb mb-0">
 
                     <li class="breadcrumb-item">
-                        Dashboard
+                        <a href="<?= BASE_URL ?>/admin/dashboard.php">
+                            Dashboard
+                        </a>
                     </li>
 
                     <li class="breadcrumb-item">
@@ -53,7 +80,9 @@ require_once "../../../includes/sidebar.php";
                     </li>
 
                     <li class="breadcrumb-item">
-                        Peminjaman
+                        <a href="index.php">
+                            Peminjaman
+                        </a>
                     </li>
 
                     <li class="breadcrumb-item active">
@@ -72,6 +101,8 @@ require_once "../../../includes/sidebar.php";
 
         <form action="proses_tambah.php" method="POST">
 
+            <!-- Data Peminjam -->
+            <!-- Data Barang -->
             <div class="card border-0 shadow-sm mb-4">
 
                 <div class="card-header">
@@ -211,26 +242,34 @@ require_once "../../../includes/sidebar.php";
 
             <div class="card border-0 shadow-sm mb-4">
 
-                <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header">
 
-                    <h5 class="mb-0">
+                    <div class="row align-items-center">
 
-                        <i class="bi bi-box-seam me-2"></i>
+                        <div class="col">
 
-                        Data Barang
+                            <h5 class="mb-0">
+                                <i class="bi bi-box-seam me-2"></i>
+                                Data Barang
+                            </h5>
 
-                    </h5>
+                        </div>
 
-                    <button
-                        type="button"
-                        class="btn btn-success btn-sm"
-                        id="tambahBarang">
+                        <div class="col-auto">
 
-                        <i class="bi bi-plus-circle me-1"></i>
+                            <button
+                                type="button"
+                                class="btn btn-success"
+                                id="tambahBarang">
 
-                        Tambah Barang
+                                <i class="bi bi-plus-circle me-1"></i>
+                                Tambah Barang
 
-                    </button>
+                            </button>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -269,7 +308,7 @@ require_once "../../../includes/sidebar.php";
 
                                         <option
                                             value="<?= $barang['id_inventaris']; ?>"
-                                            data-stok="<?= $barang['jumlah']; ?>">
+                                            data-stok="<?= $barang['stok_tersedia']; ?>">
 
                                             <?= htmlspecialchars($barang['kode_inventaris']); ?>
 
@@ -278,7 +317,7 @@ require_once "../../../includes/sidebar.php";
                                             <?= htmlspecialchars($barang['nama_barang']); ?>
 
                                             (Stok :
-                                            <?= $barang['jumlah']; ?>)
+                                            <?= $barang['stok_tersedia']; ?>)
 
                                         </option>
 
@@ -380,11 +419,11 @@ require_once "../../../includes/sidebar.php";
 
             </div>
 
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-between align-items-center">
 
                 <a
                     href="index.php"
-                    class="btn btn-secondary me-2">
+                    class="btn btn-secondary">
 
                     <i class="bi bi-arrow-left-circle me-1"></i>
 
@@ -412,13 +451,13 @@ require_once "../../../includes/sidebar.php";
 
 <script>
 
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function () {
 
     const wrapper = document.getElementById("barangWrapper");
     const btnTambah = document.getElementById("tambahBarang");
     const form = document.querySelector("form");
 
-    btnTambah.addEventListener("click", function(){
+    btnTambah.addEventListener("click", function () {
 
         let item = wrapper.querySelector(".barang-item");
         let clone = item.cloneNode(true);
@@ -517,7 +556,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
         });
 
-        if(!valid){
+        if (!valid){
 
             e.preventDefault();
 
@@ -545,7 +584,7 @@ document.addEventListener("DOMContentLoaded", function(){
                      .querySelector("select option:checked")
                      .dataset.stok;
 
-            if(stok){
+            if (stok){
 
                 if(parseInt(input.value) > parseInt(stok)){
 
@@ -557,7 +596,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
         });
 
-        if(!valid){
+        if (!valid){
 
             e.preventDefault();
 

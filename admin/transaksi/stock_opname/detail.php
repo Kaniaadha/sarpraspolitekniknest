@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+// Cek login admin
 if (!isset($_SESSION['id_admin'])) {
     header("Location: ../../../login.php");
     exit;
@@ -10,20 +11,15 @@ $menu = "stock_opname";
 
 require_once "../../../config/database.php";
 
-
+// Validasi ID stock opname
 if (!isset($_GET['id']) || empty($_GET['id'])) {
-
     header("Location: riwayat.php");
     exit;
-
 }
 
-$id_stock_opname = mysqli_real_escape_string(
-    $conn,
-    $_GET['id']
-);
+$id_stock_opname = mysqli_real_escape_string($conn, $_GET['id']);
 
-
+// Mengambil data stock opname
 $queryStockOpname = mysqli_query($conn, "
     SELECT
         so.*,
@@ -37,13 +33,11 @@ $queryStockOpname = mysqli_query($conn, "
 $stockOpname = mysqli_fetch_assoc($queryStockOpname);
 
 if (!$stockOpname) {
-
     header("Location: riwayat.php");
     exit;
-
 }
 
-
+// Mengambil detail stock opname
 $queryDetail = mysqli_query($conn, "
     SELECT
         dso.*,
@@ -56,7 +50,6 @@ $queryDetail = mysqli_query($conn, "
     ORDER BY i.nama_barang ASC
 ");
 
-
 require_once "../../../includes/header.php";
 require_once "../../../includes/navbar.php";
 require_once "../../../includes/sidebar.php";
@@ -64,6 +57,7 @@ require_once "../../../includes/sidebar.php";
 
 <main class="app-main">
 
+    <!-- Header -->
     <div class="app-content-header">
 
         <div class="container-fluid">
@@ -71,11 +65,7 @@ require_once "../../../includes/sidebar.php";
             <div class="row">
 
                 <div class="col-sm-6">
-
-                    <h3 class="mb-0">
-                        Detail Stock Opname
-                    </h3>
-
+                    <h3 class="mb-0">Detail Stock Opname</h3>
                 </div>
 
                 <div class="col-sm-6">
@@ -83,25 +73,15 @@ require_once "../../../includes/sidebar.php";
                     <ol class="breadcrumb float-sm-end">
 
                         <li class="breadcrumb-item">
-
-                            <a href="<?= BASE_URL ?>/admin/dashboard.php">
-                                Dashboard
-                            </a>
-
+                            <a href="<?= BASE_URL ?>/admin/dashboard.php">Dashboard</a>
                         </li>
 
                         <li class="breadcrumb-item">
-
-                            <a href="riwayat.php">
-                                Riwayat Stock Opname
-                            </a>
-
+                            <a href="riwayat.php">Riwayat Stock Opname</a>
                         </li>
 
                         <li class="breadcrumb-item active">
-
                             Detail Stock Opname
-
                         </li>
 
                     </ol>
@@ -118,277 +98,214 @@ require_once "../../../includes/sidebar.php";
 
         <div class="container-fluid">
 
-<div class="card mb-4">
+            <!-- Informasi Stock Opname -->
+            <div class="card mb-4">
 
-    <div class="card-header">
+                <div class="card-header">
+                    <h3 class="card-title">Informasi Stock Opname</h3>
+                </div>
 
-        <h3 class="card-title">
+                <div class="card-body">
 
-            Informasi Stock Opname
+                    <div class="row">
 
-        </h3>
+                        <div class="col-md-6">
 
-    </div>
+                            <table class="table table-borderless mb-0">
 
-    <div class="card-body">
+                                <tr>
+                                    <th width="180">Kode Stock Opname</th>
+                                    <td width="20">:</td>
+                                    <td><?= $stockOpname['kode_stock_opname']; ?></td>
+                                </tr>
 
-        <div class="row">
+                                <tr>
+                                    <th>Petugas</th>
+                                    <td>:</td>
+                                    <td><?= $stockOpname['nama_admin']; ?></td>
+                                </tr>
 
-            <div class="col-md-6">
+                            </table>
 
-                <table class="table table-borderless mb-0">
+                        </div>
 
-                    <tr>
+                        <div class="col-md-6">
 
-                        <th width="180">Kode Stock Opname</th>
+                            <table class="table table-borderless mb-0">
 
-                        <td width="20">:</td>
+                                <tr>
+                                    <th width="180">Tanggal</th>
+                                    <td width="20">:</td>
+                                    <td><?= date('d F Y', strtotime($stockOpname['tanggal'])); ?></td>
+                                </tr>
 
-                        <td><?= $stockOpname['kode_stock_opname']; ?></td>
+                                <tr>
 
-                    </tr>
+                                    <th>Status</th>
+                                    <td>:</td>
 
-                    <tr>
+                                    <td>
 
-                        <th>Petugas</th>
+                                        <?php if ($stockOpname['status'] == 'Draft') { ?>
 
-                        <td>:</td>
+                                            <span class="badge bg-warning">
+                                                Draft
+                                            </span>
 
-                        <td><?= $stockOpname['nama_admin']; ?></td>
+                                        <?php } else { ?>
 
-                    </tr>
+                                            <span class="badge bg-success">
+                                                Selesai
+                                            </span>
 
-                </table>
+                                        <?php } ?>
 
-            </div>
+                                    </td>
 
-            <div class="col-md-6">
+                                </tr>
 
-                <table class="table table-borderless mb-0">
+                            </table>
 
-                    <tr>
+                        </div>
 
-                        <th width="180">Tanggal</th>
+                    </div>
 
-                        <td width="20">:</td>
-
-                        <td><?= date('d F Y', strtotime($stockOpname['tanggal'])); ?></td>
-
-                    </tr>
-
-                    <tr>
-
-                        <th>Status</th>
-
-                        <td>:</td>
-
-                        <td>
-
-                            <?php if ($stockOpname['status'] == 'Draft') { ?>
-
-                                <span class="badge bg-warning">
-
-                                    Draft
-
-                                </span>
-
-                            <?php } else { ?>
-
-                                <span class="badge bg-success">
-
-                                    Selesai
-
-                                </span>
-
-                            <?php } ?>
-
-                        </td>
-
-                    </tr>
-
-                </table>
+                </div>
 
             </div>
 
-        </div>
+            <!-- Detail Stock Opname -->
+            <div class="card">
 
-    </div>
+                <div class="card-header">
+                    <h3 class="card-title">Daftar Detail Stock Opname</h3>
+                </div>
 
-</div>
+                <div class="card-body">
 
+                    <div class="table-responsive">
 
-<div class="card">
+                        <table class="table table-bordered table-hover align-middle">
 
-    <div class="card-header">
+                            <thead class="table-light">
 
-        <h3 class="card-title">
+                                <tr class="text-center">
+                                    <th width="5%">No</th>
+                                    <th width="10%">Kode</th>
+                                    <th>Nama Barang</th>
+                                    <th width="10%">Stok Sistem</th>
+                                    <th width="10%">Stok Fisik</th>
+                                    <th width="10%">Selisih</th>
+                                    <th width="12%">Kondisi</th>
+                                    <th>Catatan</th>
+                                </tr>
 
-            Daftar Detail Stock Opname
+                            </thead>
 
-        </h3>
+                            <tbody>
 
-    </div>
+                                <?php
+                                $no = 1;
 
-    <div class="card-body">
+                                while ($row = mysqli_fetch_assoc($queryDetail)) {
+                                ?>
 
-        <div class="table-responsive">
+                                    <tr>
 
-            <table class="table table-bordered table-hover align-middle">
+                                        <td class="text-center"><?= $no++; ?></td>
 
-                <thead class="table-light">
+                                        <td class="text-center">
+                                            <?= $row['kode_inventaris']; ?>
+                                        </td>
 
-                    <tr class="text-center">
+                                        <td>
+                                            <?= $row['nama_barang']; ?>
+                                        </td>
 
-                        <th width="5%">No</th>
+                                        <td class="text-center">
+                                            <?= $row['stok_sistem']; ?>
+                                        </td>
 
-                        <th width="10%">Kode</th>
+                                        <td class="text-center">
+                                            <?= $row['stok_fisik']; ?>
+                                        </td>
 
-                        <th>Nama Barang</th>
-                        <th width="10%">Stok Sistem</th>
-                        <th width="10%">Stok Fisik</th>
-                        <th width="10%">Selisih</th>
-                        <th width="12%">Kondisi</th>
-                        <th>Catatan</th>
+                                        <td class="text-center">
 
-                    </tr>
+                                            <?php if ($row['selisih'] > 0) { ?>
 
-                </thead>
+                                                <span class="badge bg-success">
+                                                    +<?= $row['selisih']; ?>
+                                                </span>
 
-                <tbody>
+                                            <?php } elseif ($row['selisih'] < 0) { ?>
 
-                    <?php
+                                                <span class="badge bg-danger">
+                                                    <?= $row['selisih']; ?>
+                                                </span>
 
-                    $no = 1;
+                                            <?php } else { ?>
 
-                    while ($row = mysqli_fetch_assoc($queryDetail)) {
+                                                <span class="badge bg-secondary">
+                                                    0
+                                                </span>
 
-                    ?>
+                                            <?php } ?>
 
-                    <tr>
+                                        </td>
 
-                        <td class="text-center">
+                                        <td class="text-center">
+                                            <?= $row['kondisi']; ?>
+                                        </td>
 
-                            <?= $no++; ?>
+                                        <td>
+                                            <?= !empty($row['catatan']) ? $row['catatan'] : '-'; ?>
+                                        </td>
 
-                        </td>
+                                    </tr>
 
-                        <td class="text-center">
+                                <?php } ?>
 
-                            <?= $row['kode_inventaris']; ?>
+                            </tbody>
 
-                        </td>
+                        </table>
 
-                        <td>
+                    </div>
 
-                            <?= $row['nama_barang']; ?>
+                </div>
 
-                        </td>
+            </div>
 
-                        <td class="text-center">
+            <div class="row mt-4">
 
-                            <?= $row['stok_sistem']; ?>
+                <div class="col-12">
 
-                        </td>
+                    <div class="d-flex justify-content-end gap-2">
 
-                        <td class="text-center">
+                        <a href="riwayat.php" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left me-1"></i>
+                            Kembali
+                        </a>
 
-                            <?= $row['stok_fisik']; ?>
+                        <?php if ($stockOpname['status'] == 'Draft') { ?>
 
-                        </td>
+                            <a
+                                href="proses_selesai.php?id=<?= $stockOpname['id_stock_opname']; ?>"
+                                class="btn btn-success"
+                                onclick="return confirm('Apakah Anda yakin ingin menyelesaikan Stock Opname ini? Setelah diselesaikan, stok inventaris akan diperbarui sesuai hasil Stock Opname.')">
 
-                        <td class="text-center">
+                                <i class="bi bi-check-circle me-1"></i>
+                                Selesaikan Stock Opname
 
-                            <?php if ($row['selisih'] > 0) { ?>
+                            </a>
 
-                                <span class="badge bg-success">
+                        <?php } ?>
 
-                                    +<?= $row['selisih']; ?>
+                    </div>
 
-                                </span>
+                </div>
 
-                            <?php } elseif ($row['selisih'] < 0) { ?>
-
-                                <span class="badge bg-danger">
-
-                                    <?= $row['selisih']; ?>
-
-                                </span>
-
-                            <?php } else { ?>
-
-                                <span class="badge bg-secondary">
-
-                                    0
-
-                                </span>
-
-                            <?php } ?>
-
-                        </td>
-
-                        <td class="text-center">
-
-                            <?= $row['kondisi']; ?>
-
-                        </td>
-
-                        <td>
-
-                            <?= !empty($row['catatan']) ? $row['catatan'] : '-'; ?>
-
-                        </td>
-
-                    </tr>
-
-                    <?php } ?>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<div class="row mt-4">
-
-    <div class="col-12">
-
-        <div class="d-flex justify-content-end gap-2">
-
-            <a
-                href="riwayat.php"
-                class="btn btn-secondary">
-
-                <i class="bi bi-arrow-left me-1"></i>
-
-                Kembali
-
-            </a>
-
-            <?php if ($stockOpname['status'] == 'Draft') { ?>
-
-                <a
-                    href="proses_selesai.php?id=<?= $stockOpname['id_stock_opname']; ?>"
-                    class="btn btn-success"
-                    onclick="return confirm('Apakah Anda yakin ingin menyelesaikan Stock Opname ini? Setelah diselesaikan, stok inventaris akan diperbarui sesuai hasil Stock Opname.')">
-
-                    <i class="bi bi-check-circle me-1"></i>
-
-                    Selesaikan Stock Opname
-
-                </a>
-
-            <?php } ?>
-
-        </div>
-
-    </div>
-
-</div>
+            </div>
 
         </div>
 
@@ -396,7 +313,7 @@ require_once "../../../includes/sidebar.php";
 
 </main>
 
-<?php 
+<?php
 require_once "../../../includes/footer.php";
 require_once "../../../includes/scripts.php";
 ?>
