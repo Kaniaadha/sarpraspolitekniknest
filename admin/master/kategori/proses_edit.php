@@ -2,6 +2,7 @@
 session_start();
 
 require_once "../../../config/database.php";
+require_once "../../../helpers/activity_log.php";
 
 // ==============================
 // Ambil Data
@@ -112,6 +113,14 @@ $query = mysqli_query($conn, "
 if ($query) {
 
     unset($_SESSION['old']);
+
+    simpanActivityLog(
+        $conn,
+        $_SESSION['id_admin'],
+        "Mengubah Kategori",
+        "kategori",
+        $id_kategori
+    );
 
     $_SESSION['success'] = "Data Kategori berhasil diperbarui.";
 

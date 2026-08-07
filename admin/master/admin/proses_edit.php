@@ -2,6 +2,7 @@
 session_start();
 
 require_once "../../../config/database.php";
+require_once "../../../helpers/activity_log.php";
 
 // ==============================
 // Ambil Data
@@ -156,6 +157,14 @@ if ($ubah_password) {
 // ==============================
 
 if ($query) {
+
+    simpanActivityLog(
+        $conn,
+        $_SESSION['id_admin'],
+        "Mengubah Admin",
+        "admin",
+        $id_admin
+    );
 
     unset($_SESSION['old']);
 

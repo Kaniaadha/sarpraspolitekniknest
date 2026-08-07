@@ -3,32 +3,27 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Cek login admin
 if (!isset($_SESSION['id_admin'])) {
     header("Location: ../../../login.php");
     exit;
 }
 
 require_once "../../../config/database.php";
+require_once "../../../helpers/activity_log.php";
 
-// ===========================
-// Ambil Data
-// ===========================
-
+// Mengambil data dari form
 $id_admin  = $_SESSION['id_admin'];
 $judul     = trim($_POST['judul'] ?? '');
 $subjudul  = trim($_POST['subjudul'] ?? '');
 $deskripsi = trim($_POST['deskripsi'] ?? '');
 $status    = $_POST['status'] ?? 'aktif';
 
-// Simpan input jika terjadi error
+// Menyimpan input jika terjadi error
 $_SESSION['old'] = $_POST;
 
-// ===========================
-// Validasi
-// ===========================
-
+// Validasi data
 if ($judul == "") {
-
     $_SESSION['gagal'] = "Judul banner wajib diisi.";
 
     header("Location: tambah.php");
@@ -36,26 +31,19 @@ if ($judul == "") {
 }
 
 if (!in_array($status, ['aktif', 'nonaktif'])) {
-
     $_SESSION['gagal'] = "Status banner tidak valid.";
 
     header("Location: tambah.php");
     exit;
 }
 
-// ===========================
-// Escape Data
-// ===========================
-
+// Escape data
 $judul_db     = mysqli_real_escape_string($conn, $judul);
 $subjudul_db  = mysqli_real_escape_string($conn, $subjudul);
 $deskripsi_db = mysqli_real_escape_string($conn, $deskripsi);
 $status_db    = mysqli_real_escape_string($conn, $status);
 
-// ===========================
-// Cek Duplikat
-// ===========================
-
+// Cek judul banner
 $cek = mysqli_query($conn, "
     SELECT id_banner
     FROM banner
@@ -64,20 +52,15 @@ $cek = mysqli_query($conn, "
 ");
 
 if (mysqli_num_rows($cek) > 0) {
-
     $_SESSION['gagal'] = "Judul banner sudah digunakan.";
 
     header("Location: tambah.php");
     exit;
 }
 
-// ===========================
-// Simpan Data
-// ===========================
-
+// Menyimpan data banner
 $query = mysqli_query($conn, "
-    INSERT INTO banner
-    (
+    INSERT INTO banner (
         id_admin,
         judul,
         subjudul,
@@ -86,8 +69,7 @@ $query = mysqli_query($conn, "
         created_at,
         updated_at
     )
-    VALUES
-    (
+    VALUES (
         '$id_admin',
         '$judul_db',
         '$subjudul_db',
@@ -98,11 +80,18 @@ $query = mysqli_query($conn, "
     )
 ");
 
-// ===========================
-// Response
-// ===========================
+$id_banner = mysqli_insert_id($conn);
 
 if ($query) {
+
+    // Menyimpan activity log
+    simpanActivityLog(
+        $conn,
+        $_SESSION['id_admin'],
+        "Menambah Banner",
+        "banner",
+        $id_banner
+    );
 
     unset($_SESSION['old']);
 
@@ -116,4 +105,3 @@ if ($query) {
 
 header("Location: index.php");
 exit;
-

@@ -3,6 +3,7 @@ session_start();
 require_once "../foto/helper.php";
 require_once "../foto/config.php";
 require_once "../../../config/database.php";
+require_once "../../../helpers/activity_log.php";
 
 // ==============================
 // Ambil Data
@@ -268,6 +269,15 @@ if (
     );
 
 }
+    
+    simpanActivityLog(
+        $conn,
+        $_SESSION['id_admin'],
+        "Mengubah Inventaris",
+        "inventaris",
+        $id_inventaris
+    );
+
     unset($_SESSION['old']);
 
     $_SESSION['success'] = "Data Inventaris berhasil diperbarui.";

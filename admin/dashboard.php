@@ -52,16 +52,106 @@ $rusak = mysqli_fetch_assoc(
 );
 
 // ==============================
-// Monitoring (Dummy Data)
+// Monitoring Peminjaman
 // ==============================
 
-$menunggu = 5;
+// Menunggu Persetujuan
+$menunggu = mysqli_fetch_assoc(
+    mysqli_query($conn, "
+        SELECT COUNT(*) AS total
+        FROM peminjaman
+        WHERE status = 'Menunggu'
+    ")
+);
 
-$dipinjam = 12;
+// Sedang Dipinjam
+$dipinjam = mysqli_fetch_assoc(
+    mysqli_query($conn, "
+        SELECT COUNT(*) AS total
+        FROM peminjaman
+        WHERE status = 'Dipinjam'
+    ")
+);
 
-$terlambat = 2;
+// Terlambat Mengembalikan
+$terlambat = mysqli_fetch_assoc(
+    mysqli_query($conn, "
+        SELECT COUNT(*) AS total
+        FROM peminjaman
+        WHERE
+            status = 'Dipinjam'
+        AND
+            tanggal_kembali < CURDATE()
+    ")
+);
 
-$stockTerakhir = "20 Juli 2026";
+// ==============================
+// Activity Log Terbaru
+// ==============================
+
+$queryActivity = mysqli_query($conn, "
+    SELECT
+        al.aktivitas,
+        al.created_at,
+        a.nama_admin
+    FROM activity_log al
+    INNER JOIN admin a
+        ON al.id_admin = a.id_admin
+    ORDER BY al.created_at DESC
+    LIMIT 1
+");
+
+$activity = mysqli_fetch_assoc($queryActivity);
+
+// Menunggu Persetujuan
+$queryMenunggu = mysqli_query($conn, "
+    SELECT
+        p.id_peminjaman,
+        p.kode_peminjaman,
+        p.nama_peminjam,
+        COUNT(dp.id_detail) AS total_barang
+    FROM peminjaman p
+    INNER JOIN detail_peminjaman dp
+        ON p.id_peminjaman = dp.id_peminjaman
+    WHERE p.status = 'Menunggu'
+    GROUP BY
+        p.id_peminjaman,
+        p.kode_peminjaman,
+        p.nama_peminjam
+    ORDER BY p.created_at DESC
+    LIMIT 5
+");
+
+// ==============================
+// Stock Opname Terakhir
+// ==============================
+
+$queryStockTerakhir = mysqli_query($conn, "
+    SELECT tanggal
+    FROM stock_opname
+    WHERE status = 'Selesai'
+    ORDER BY tanggal DESC
+    LIMIT 1
+");
+
+$dataStock = mysqli_fetch_assoc($queryStockTerakhir);
+
+if ($dataStock) {
+
+    $stockTerakhir = date(
+        'd F Y',
+        strtotime($dataStock['tanggal'])
+    );
+
+    $jadwalBerikutnya = strtotime($dataStock['tanggal'] . ' +6 months');
+
+} else {
+
+    $stockTerakhir = "Belum Pernah";
+
+    $jadwalBerikutnya = null;
+
+}
 
 ?>
 
@@ -237,7 +327,7 @@ $stockTerakhir = "20 Juli 2026";
                             <h6 class="fw-bold">Menunggu Persetujuan</h6>
 
                             <h2 class="fw-bold">
-                                <?= $menunggu ?>
+                                <?= $menunggu['total']; ?>
                             </h2>
 
                             <span class="dashboard-link">
@@ -263,7 +353,7 @@ $stockTerakhir = "20 Juli 2026";
                             <h6 class="fw-bold">Sedang Dipinjam</h6>
 
                             <h2 class="fw-bold">
-                                <?= $dipinjam ?>
+                                <?= $dipinjam['total']; ?>
                             </h2>
 
                             <span class="dashboard-link">
@@ -289,7 +379,7 @@ $stockTerakhir = "20 Juli 2026";
                             <h6 class="fw-bold">Terlambat Mengembalikan</h6>
 
                             <h2 class="fw-bold">
-                                <?= $terlambat ?>
+                                <?= $terlambat['total']; ?>
                             </h2>
 
                             <span class="dashboard-link">
@@ -304,7 +394,7 @@ $stockTerakhir = "20 Juli 2026";
 
             <!-- Stock Opname -->
             <div class="col-lg-3 col-md-6 mb-4">
-                <a href="transaksi/stock-opname/index.php" class="text-decoration-none">
+                <a href="transaksi/stock_opname/riwayat.php" class="text-decoration-none">
                     <div class="card dashboard-card h-100">
                         <div class="card-body text-center">
 
@@ -314,18 +404,48 @@ $stockTerakhir = "20 Juli 2026";
 
                             <h6 class="fw-bold">Stock Opname</h6>
 
-                            <p class="mb-1 text-muted">
-                                Terakhir :
+                            <p class="fw-semibold text-dark mb-1">
+                                Terakhir Dilakukan
                             </p>
 
-                            <h5 class="fw-bold">
-                                <?= $stockTerakhir ?>
-                            </h5>
+                            <p class="fs-5 fw-semibold text-dark mb-4">
+                                <?= $stockTerakhir; ?>
+                            </p>
 
-                            <span class="dashboard-link">
-                                Lihat Detail
-                                <i class="bi bi-arrow-right"></i>
-                            </span>
+                            <p class="fw-semibold text-dark mb-1">
+                                Jadwal Berikutnya
+                            </p>
+
+                            <?php if ($jadwalBerikutnya != null) : ?>
+
+                                <?php if (time() >= $jadwalBerikutnya) : ?>
+
+                                    <h6 class="fs-5 fw-semibold text-danger mb-3">
+                                        Sudah Waktunya
+                                    </h6>
+
+                                <?php else : ?>
+
+                                    <p class="fs-5 fw-semibold text-dark mb-3">
+                                        <?= date('d F Y', $jadwalBerikutnya); ?>
+                                    </p>
+
+                                <?php endif; ?>
+
+                            <?php else : ?>
+
+                                <h6 class="fs-5 fw-semibold text-secondary mb-3">
+                                    Belum Ada Jadwal
+                                </h6>
+
+                            <?php endif; ?>
+
+                            <div class="mt-3">
+                                <span class="dashboard-link">
+                                    Lihat Detail
+                                    <i class="bi bi-arrow-right"></i>
+                                </span>
+                            </div>
 
                         </div>
                     </div>
@@ -387,21 +507,84 @@ $stockTerakhir = "20 Juli 2026";
                         <ul class="list-group list-group-flush">
 
                             <li class="list-group-item">
-                                ⚠ Barang rusak dilaporkan
-                                <br>
-                                <small class="text-muted">5 menit lalu</small>
+
+                                <?php if ($rusak['total'] > 0) : ?>
+
+                                    ⚠ Terdapat <strong><?= $rusak['total']; ?></strong> inventaris rusak
+                                    <br>
+                                    <small class="text-muted">
+                                        Segera lakukan pengecekan
+                                    </small>
+
+                                <?php else : ?>
+
+                                    ✅ Tidak ada inventaris rusak
+                                    <br>
+                                    <small class="text-muted">
+                                        Semua inventaris dalam kondisi baik
+                                    </small>
+
+                                <?php endif; ?>
+
                             </li>
 
                             <li class="list-group-item">
-                                📦 Pengajuan peminjaman baru
-                                <br>
-                                <small class="text-muted">20 menit lalu</small>
+
+                                <?php if ($activity) : ?>
+
+                                    🕒 <?= htmlspecialchars($activity['nama_admin']); ?>
+                                    <?= htmlspecialchars($activity['aktivitas']); ?>
+
+                                    <br>
+
+                                    <small class="text-muted">
+                                        <?= date('d M Y H:i', strtotime($activity['created_at'])); ?>
+                                    </small>
+
+                                <?php else : ?>
+
+                                    🕒 Belum ada aktivitas
+
+                                    <br>
+
+                                    <small class="text-muted">-</small>
+
+                                <?php endif; ?>
+
                             </li>
 
                             <li class="list-group-item">
-                                📋 Stock opname bulan ini belum dilakukan
-                                <br>
-                                <small class="text-muted">Hari ini</small>
+
+                                <?php if ($jadwalBerikutnya != null) : ?>
+
+                                    <?php if (time() >= $jadwalBerikutnya) : ?>
+
+                                        📋 Stock Opname sudah waktunya dilakukan
+                                        <br>
+                                        <small class="text-danger">
+                                            Segera lakukan stock opname
+                                        </small>
+
+                                    <?php else : ?>
+
+                                        📋 Stock Opname berikutnya
+                                        <br>
+                                        <small class="text-muted">
+                                            <?= date('d F Y', $jadwalBerikutnya); ?>
+                                        </small>
+
+                                    <?php endif; ?>
+
+                                <?php else : ?>
+
+                                    📋 Belum ada jadwal Stock Opname
+                                    <br>
+                                    <small class="text-muted">
+                                        Silakan lakukan stock opname pertama
+                                    </small>
+
+                                <?php endif; ?>
+
                             </li>
 
                         </ul>
@@ -428,36 +611,82 @@ $stockTerakhir = "20 Juli 2026";
 
                                 <thead>
 
-                                    <tr>
-                                        <th>Peminjam</th>
-                                        <th>Barang</th>
-                                        <th>Aksi</th>
-                                    </tr>
+                                <tr>
+
+                                    <th width="45%">
+                                        Kode / Peminjam
+                                    </th>
+
+                                    <th width="25%" class="text-center">
+                                        Jumlah Barang
+                                    </th>
+
+                                    <th width="30%" class="text-center">
+                                        Aksi
+                                    </th>
+
+                                </tr>
 
                                 </thead>
 
                                 <tbody>
 
+                            <?php if (mysqli_num_rows($queryMenunggu) > 0) : ?>
+
+                                <?php while ($row = mysqli_fetch_assoc($queryMenunggu)) : ?>
+
                                     <tr>
 
-                                        <td>Andi</td>
-                                        <td>Laptop Asus</td>
+                                        <td>
+                                            <strong><?= htmlspecialchars($row['kode_peminjaman']); ?></strong>
+                                            <br>
+                                            <small class="text-muted">
+                                                <?= htmlspecialchars($row['nama_peminjam']); ?>
+                                            </small>
+                                        </td>
+
+                                        <td class="text-center">
+
+                                            <span class="badge bg-primary">
+
+                                                <?= $row['total_barang']; ?> Barang
+
+                                            </span>
+
+                                        </td>
 
                                         <td>
 
-                                            <button class="btn btn-success btn-sm">
-                                                <i class="bi bi-check"></i>
-                                            </button>
+                                            <a
+                                                href="transaksi/peminjaman/detail.php?id=<?= $row['id_peminjaman']; ?>"
+                                                class="btn btn-info btn-sm">
 
-                                            <button class="btn btn-danger btn-sm">
-                                                <i class="bi bi-x"></i>
-                                            </button>
+                                                <i class="bi bi-eye"></i>
+                                                Detail
+
+                                            </a>
 
                                         </td>
 
                                     </tr>
 
-                                </tbody>
+                                <?php endwhile; ?>
+
+                            <?php else : ?>
+
+                                <tr>
+
+                                    <td colspan="3" class="text-center text-muted">
+
+                                        Tidak ada pengajuan peminjaman.
+
+                                    </td>
+
+                                </tr>
+
+                            <?php endif; ?>
+
+                            </tbody>
 
                             </table>
 

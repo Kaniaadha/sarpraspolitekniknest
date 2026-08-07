@@ -7,6 +7,7 @@ if (!isset($_SESSION['id_admin'])) {
 }
 
 require_once "../../../config/database.php";
+require_once "../../../helpers/activity_log.php";
 
 if (!isset($_GET['id'])) {
     header("Location: index.php");
@@ -37,6 +38,14 @@ $query = mysqli_query($conn, "
 ");
 
 if ($query) {
+
+    simpanActivityLog(
+        $conn,
+        $_SESSION['id_admin'],
+        "Menghapus Admin",
+        "admin",
+        $id_admin
+    );
 
     $_SESSION['success'] = "Data admin berhasil dihapus.";
 

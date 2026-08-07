@@ -7,6 +7,7 @@ if (!isset($_SESSION['id_admin'])) {
 }
 
 require_once "../../../config/database.php";
+require_once "../../../helpers/activity_log.php";
 require_once "../foto/helper.php";
 
 if (!isset($_GET['id'])) {
@@ -55,6 +56,15 @@ if (!empty($data['foto'])) {
         $uploadFolder . $data['foto']
     );
 }
+    
+    simpanActivityLog(
+        $conn,
+        $_SESSION['id_admin'],
+        "Menghapus Inventaris",
+        "inventaris",
+        $id_inventaris
+    );
+
     $_SESSION['success'] = "Data Inventaris berhasil dihapus.";
 
 } else {

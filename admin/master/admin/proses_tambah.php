@@ -2,6 +2,7 @@
 session_start();
 
 require_once "../../../config/database.php";
+require_once "../../../helpers/activity_log.php";
 
 // Ambil data dari form
 $nama_admin = trim($_POST['nama_admin']);
@@ -130,6 +131,16 @@ $query = mysqli_query($conn, "
 // Hasil
 // ==============================
 if ($query) {
+
+    $idAdminBaru = mysqli_insert_id($conn);
+
+    simpanActivityLog(
+        $conn,
+        $_SESSION['id_admin'],
+        "Menambah Admin",
+        "admin",
+        $idAdminBaru
+    );
 
     $_SESSION['success'] = "Admin berhasil ditambahkan.";
 

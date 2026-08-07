@@ -24,6 +24,7 @@ session_start();
 */
 
 require_once '../../../config/database.php';
+require_once '../../../helpers/activity_log.php';
 require_once 'service.php';
 require_once 'config.php';
 require_once 'helper.php';
@@ -242,6 +243,16 @@ if (!reorderGallery(
     */
 
     $conn->commit();
+
+    $namaModul = ucfirst(str_replace('_', ' ', $module));
+
+    simpanActivityLog(
+        $conn,
+        $_SESSION['id_admin'],
+        "Menghapus Foto {$namaModul}",
+        $table,
+        $id
+    );
 
     $_SESSION['success'] = uploadSuccess(
         $config,

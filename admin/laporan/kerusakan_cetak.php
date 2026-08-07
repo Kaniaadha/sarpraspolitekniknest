@@ -1,0 +1,219 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['id_admin'])) {
+    header("Location: ../../login.php");
+    exit;
+}
+
+require_once "../../config/database.php";
+
+$tanggalAwal  = $_GET['tanggal_awal'] ?? '';
+$tanggalAkhir = $_GET['tanggal_akhir'] ?? '';
+$status       = $_GET['status'] ?? '';
+
+$where = [];
+
+if (!empty($tanggalAwal)) {
+    $where[] = "DATE(k.tanggal_lapor) >= '$tanggalAwal'";
+}
+
+if (!empty($tanggalAkhir)) {
+    $where[] = "DATE(k.tanggal_lapor) <= '$tanggalAkhir'";
+}
+
+if (!empty($status)) {
+    $status = mysqli_real_escape_string($conn, $status);
+    $where[] = "k.status = '$status'";
+}
+
+$whereSQL = "";
+
+if (!empty($where)) {
+    $whereSQL = "WHERE " . implode(" AND ", $where);
+}
+
+$query = mysqli_query($conn, "
+SELECT
+    k.kode_kerusakan,
+    k.tanggal_lapor,
+    k.nama_pelapor,
+    k.status,
+
+    i.kode_inventaris,
+    i.nama_barang,
+
+    dk.bagian_rusak,
+    dk.jenis_kerusakan,
+    dk.tingkat_kerusakan
+
+FROM detail_kerusakan dk
+
+INNER JOIN kerusakan k
+ON dk.id_kerusakan = k.id_kerusakan
+
+INNER JOIN inventaris i
+ON dk.id_inventaris = i.id_inventaris
+
+$whereSQL
+
+ORDER BY
+k.tanggal_lapor DESC,
+k.kode_kerusakan DESC
+");
+?>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<meta charset="UTF-8">
+
+<title>Cetak Laporan Kerusakan</title>
+
+<style>
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:12px;
+    color:#000;
+}
+
+.header{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.header h2{
+    margin:0;
+}
+
+.header p{
+    margin:4px 0;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+table th,
+table td{
+    border:1px solid #000;
+    padding:7px;
+}
+
+th{
+    background:#efefef;
+}
+
+.text-center{
+    text-align:center;
+}
+
+.footer{
+    margin-top:40px;
+}
+
+.ttd{
+    float:right;
+    width:250px;
+    text-align:center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h2>POLITEKNIK NEST</h2>
+
+<p><strong>LAPORAN KERUSAKAN INVENTARIS</strong></p>
+
+<hr>
+
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th width="5%">No</th>
+<th>Kode</th>
+<th>Tanggal</th>
+<th>Barang</th>
+<th>Pelapor</th>
+<th>Bagian Rusak</th>
+<th>Jenis Kerusakan</th>
+<th>Tingkat</th>
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<?php
+
+$no = 1;
+
+while($row = mysqli_fetch_assoc($query)){
+
+echo "<tr>";
+
+echo "<td align='center'>".$no++."</td>";
+
+echo "<td>".$row['kode_kerusakan']."</td>";
+
+echo "<td align='center'>".date('d-m-Y',strtotime($row['tanggal_lapor']))."</td>";
+
+echo "<td>".$row['nama_barang']."<br><small>".$row['kode_inventaris']."</small></td>";
+
+echo "<td>".$row['nama_pelapor']."</td>";
+
+echo "<td>".$row['bagian_rusak']."</td>";
+
+echo "<td>".$row['jenis_kerusakan']."</td>";
+
+echo "<td align='center'>".$row['tingkat_kerusakan']."</td>";
+
+echo "<td align='center'>".$row['status']."</td>";
+
+echo "</tr>";
+
+}
+
+?>
+
+</tbody>
+
+</table>
+
+<div class="footer">
+
+<div class="ttd">
+
+<p>Sukoharjo, <?= date('d F Y'); ?></p>
+
+<br><br><br>
+
+<p><b>Administrator</b></p>
+
+</div>
+
+</div>
+
+<script>
+
+window.print();
+
+</script>
+
+</body>
+</html>

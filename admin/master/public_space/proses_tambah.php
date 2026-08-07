@@ -2,6 +2,7 @@
 session_start();
 
 require_once "../../../config/database.php";
+require_once "../../../helpers/activity_log.php";
 
 // ==============================
 // Ambil Data
@@ -141,6 +142,16 @@ $query = mysqli_query($conn, "
 // ==============================
 
 if ($query) {
+
+    $idPublicSpace = mysqli_insert_id($conn);
+
+    simpanActivityLog(
+        $conn,
+        $_SESSION['id_admin'],
+        "Menambah Public Space",
+        "public_space",
+        $idPublicSpace
+    );
 
     unset($_SESSION['old']);
 
