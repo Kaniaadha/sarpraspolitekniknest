@@ -10,16 +10,16 @@
 
 :root{
 
-    --primary:#F45B8D;
-    --primary-dark:#E04679;
+    --primary:#EC4899;
+    --primary-dark:#D9468C;
 
-    --secondary:#FF8A3D;
-    --secondary-light:#FFB36B;
+    --secondary:#FF7A48;
+    --secondary-dark:#F97316;
 
     --gradient:linear-gradient(
         135deg,
-        #F45B8D,
-        #FF8A3D
+        #EC4899,
+        #FF7A48
     );
 
     --background:#FFF8FB;
@@ -28,11 +28,14 @@
 
     --dark:#2D2D2D;
 
-    --text:#666;
+    --text:#666666;
 
-    --shadow:0 12px 30px rgba(244,91,141,.15);
+    --shadow:0 12px 30px rgba(236,72,153,.15);
+
+    --shadow-light:0 5px 15px rgba(0,0,0,.06);
 
 }
+
 
 
 /* ==========================================================
@@ -106,17 +109,18 @@ section{
 }
 
 
+
 /* ==========================================================
    TYPOGRAPHY
 ========================================================== */
 
 .section-title{
 
-    color:var(--dark);
-
     font-size:34px;
 
     font-weight:700;
+
+    color:var(--dark);
 
     margin-bottom:12px;
 
@@ -124,13 +128,13 @@ section{
 
 .section-subtitle{
 
-    color:#777;
-
     max-width:650px;
 
     margin:auto;
 
     margin-bottom:50px;
+
+    color:#777;
 
     font-size:16px;
 
@@ -138,11 +142,11 @@ section{
 
 .page-title{
 
-    color:var(--dark);
-
     font-size:40px;
 
     font-weight:700;
+
+    color:var(--dark);
 
 }
 
@@ -159,168 +163,217 @@ section{
 }
 
 
-/* ==========================================================
-   BUTTON
-========================================================== */
-
-.btn{
-
-    border-radius:10px;
-
-    padding:12px 28px;
-
-    font-weight:600;
-
-}
-
-.btn-primary{
-
-    background:var(--primary);
-
-    border:none;
-
-}
-
-.btn-primary:hover{
-
-    background:var(--primary-dark);
-
-    transform:translateY(-2px);
-
-}
-
-.btn-outline-primary{
-
-    border:2px solid var(--primary);
-
-    color:var(--primary);
-
-    background:#fff;
-
-}
-
-.btn-outline-primary:hover{
-
-    background:var(--primary);
-
-    color:#fff;
-
-}
-
-.btn-custom{
-
-    border-radius:50px;
-
-    padding:12px 30px;
-
-}
-
 
 /* ==========================================================
    NAVBAR
 ========================================================== */
 
-.navbar{
+.navbar-custom{
 
-    background:#fff;
+    background:linear-gradient(
+        90deg,
+        #f8deeb 10%,
+        #fae8db 100%,
+        #FFF3EE 
+    );
 
-    box-shadow:0 2px 15px rgba(0,0,0,.06);
+    border-bottom:1px solid rgba(236,72,153,.10);
 
-    padding:16px 0;
+    box-shadow:0 8px 24px rgba(236,72,153,.08);
 
 }
+
+/* Logo */
 
 .navbar-brand{
 
-    color:var(--dark);
+    display:flex;
 
-    font-size:30px;
+    align-items:center;
 
-    font-weight:700;
+    gap:10px;
+
+    text-decoration:none;
 
 }
 
-.navbar-brand:hover{
+.navbar-logo{
 
-    color:var(--primary);
+    width:40px;
+
+    height:40px;
+
+    object-fit:contain;
+
+}
+
+.brand-text{
+
+    display:flex;
+
+    flex-direction:column;
+
+    line-height:1.1;
+
+}
+
+.brand-title{
+
+    margin:0;
+
+    font-size:22px;
+
+    font-weight:800;
+
+    background:var(--gradient);
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+
+}
+
+.brand-subtitle{
+
+    font-size:11px;
+
+    color:#777;
+
+    margin-top:2px;
+
+}
+
+/* Menu */
+
+.navbar-collapse{
+
+    justify-content:flex-end;
 
 }
 
 .navbar-nav{
 
-    gap:10px;
+    display:flex;
+
+    align-items:center;
+
+    gap:3px;
+
+    margin-left:auto;
 
 }
 
-.nav-link{
+.navbar-nav .nav-item{
 
-    color:var(--dark);
+    display:flex;
 
-    font-weight:500;
+    align-items:center;
 
-    padding:10px 16px!important;
+}
+
+.navbar-nav .nav-link{
+
+    font-size:12.5px;
+
+    font-weight:600;
+
+    color:#444 !important;
+
+    padding:8px 11px !important;
+
+    border-radius:9px;
+
+    transition:.3s;
+
+    white-space:nowrap;
+
+}
+
+.navbar-nav .nav-link:hover{
+
+    background:#FCE7F3;
+
+    color:var(--primary) !important;
+
+}
+
+.navbar-nav .nav-link.active{
+
+    background:var(--gradient);
+
+    color:#fff !important;
+
+}
+
+/* Login */
+
+.btn-login{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:7px;
+
+    margin-left:10px;
+
+    padding:8px 18px;
 
     border-radius:10px;
 
-}
+    background:var(--gradient);
 
-.nav-link:hover{
+    color:#fff !important;
 
-    color:var(--primary);
+    font-size:12.5px;
 
-    background:#FFF1EB;
-
-}
-
-.nav-link.active{
-
-    background:var(--primary);
-
-    color:#fff!important;
-
-}
-
-.navbar .btn{
-
-    padding:10px 24px;
-
-}
-
-
-/* ==========================================================
-   GLOBAL CARD
-========================================================== */
-
-.card-custom{
-
-    background:#fff;
+    font-weight:600;
 
     border:none;
 
-    overflow:hidden;
-
-    box-shadow:var(--shadow);
+    transition:.3s;
 
 }
 
-/* ==========================================================
-   HERO
-========================================================== */
+.btn-login i{
 
-... SEMUA CSS HERO PUNYAMU TETAP ...
-
-
-
-/* ==========================================================
-   HERO RESPONSIVE
-========================================================== */
-
-@media (max-width:992px){
-
-    ...SEMUA RESPONSIVE HERO...
+    font-size:14px;
 
 }
 
+.btn-login:hover{
+
+    color:#fff !important;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 20px rgba(236,72,153,.25);
+
+    background:linear-gradient(
+        135deg,
+        #D9468C,
+        #F97316
+    );
+
+}
+
+/* Toggler */
+
+.navbar-toggler{
+
+    border:none;
+
+    box-shadow:none;
+
+}
+
+.navbar-toggler:focus{
+
+    box-shadow:none;
+
+}
 
 /* ==========================================================
    BREADCRUMB
@@ -340,9 +393,25 @@ section{
 
 }
 
+.breadcrumb-item{
+
+    font-size:15px;
+
+}
+
 .breadcrumb-item a{
 
     color:var(--primary);
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.breadcrumb-item a:hover{
+
+    color:var(--secondary);
 
 }
 
@@ -376,6 +445,18 @@ section{
 
     font-weight:700;
 
+    margin-bottom:10px;
+
+}
+
+.page-header p{
+
+    max-width:700px;
+
+    margin:auto;
+
+    color:rgba(255,255,255,.9);
+
 }
 
 
@@ -388,19 +469,41 @@ section{
 
     justify-content:center;
 
+    gap:8px;
+
 }
 
 .pagination .page-link{
 
+    width:42px;
+
+    height:42px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
     color:var(--primary);
+
+    background:#fff;
 
     border:none;
 
-    margin:0 4px;
-
-    border-radius:10px;
+    border-radius:12px;
 
     box-shadow:0 5px 15px rgba(0,0,0,.05);
+
+    transition:.3s;
+
+}
+
+.pagination .page-link:hover{
+
+    background:#FCE7F3;
+
+    color:var(--primary);
 
 }
 
@@ -464,6 +567,321 @@ section{
 
 }
 
+.text-gradient{
+
+    background:var(--gradient);
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+
+}
+
+.bg-gradient{
+
+    background:var(--gradient);
+
+}
+
+.bg-light-pink{
+
+    background:#FFF8FB;
+}
+
+/* ==========================================================
+   FOOTER
+========================================================== */
+
+.footer{
+
+    position:relative;
+
+    overflow:hidden;
+
+    padding:80px 0 25px;
+
+    background:var(--gradient);
+
+    color:#fff;
+
+}
+
+.footer::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:420px;
+
+    height:420px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.08);
+
+    top:-180px;
+
+    right:-120px;
+
+    filter:blur(5px);
+
+}
+
+.footer::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:280px;
+
+    height:280px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.05);
+
+    bottom:-100px;
+
+    left:-60px;
+
+}
+
+.footer .container{
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+/* ==========================
+   BRAND
+========================== */
+
+.footer-brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:22px;
+
+}
+
+.footer-logo{
+
+    width:60px;
+
+    height:60px;
+
+    background:#fff;
+
+    padding:8px;
+
+    border-radius:16px;
+
+    object-fit:contain;
+
+}
+
+.footer-brand h3{
+
+    margin:0;
+
+    font-size:28px;
+
+    font-weight:800;
+
+    color:#fff;
+
+}
+
+.footer-brand span{
+
+    font-size:13px;
+
+    color:rgba(255,255,255,.85);
+
+}
+
+.footer-desc{
+
+    color:rgba(255,255,255,.9);
+
+    line-height:1.8;
+
+    max-width:360px;
+
+}
+
+/* ==========================
+   TITLE
+========================== */
+
+.footer-title{
+
+    font-size:19px;
+
+    font-weight:700;
+
+    margin-bottom:22px;
+
+    color:#fff;
+
+}
+
+/* ==========================
+   MENU
+========================== */
+
+.footer-menu{
+
+    list-style:none;
+
+    padding:0;
+
+    margin:0;
+
+}
+
+.footer-menu li{
+
+    margin-bottom:14px;
+
+}
+
+.footer-menu a{
+
+    color:rgba(255,255,255,.88);
+
+    transition:.3s;
+
+}
+
+.footer-menu a:hover{
+
+    color:#fff;
+
+    padding-left:6px;
+
+}
+
+/* ==========================
+   CONTACT
+========================== */
+
+.footer-contact{
+
+    list-style:none;
+
+    padding:0;
+
+    margin:0;
+
+}
+
+.footer-contact li{
+
+    display:flex;
+
+    gap:14px;
+
+    margin-bottom:18px;
+
+    color:rgba(255,255,255,.9);
+
+}
+
+.footer-contact i{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.18);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    flex-shrink:0;
+
+}
+
+/* ==========================
+   SOCIAL
+========================== */
+
+.footer-social{
+
+    display:flex;
+
+    gap:12px;
+
+    flex-wrap:wrap;
+
+}
+
+.footer-social a{
+
+    width:45px;
+
+    height:45px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.18);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:#fff;
+
+    font-size:18px;
+
+    transition:.3s;
+
+}
+
+.footer-social a:hover{
+
+    background:#fff;
+
+    color:var(--primary);
+
+    transform:translateY(-3px);
+
+}
+
+.footer-divider{
+
+    border-color:rgba(255,255,255,.2);
+
+    margin:50px 0 25px;
+
+}
+
+.footer-bottom{
+
+    text-align:center;
+
+    color:rgba(255,255,255,.85);
+
+    font-size:14px;
+
+}
+
 
 
 /* ==========================================================
@@ -478,27 +896,37 @@ section{
 
     bottom:25px;
 
-    width:48px;
+    width:50px;
 
-    height:48px;
+    height:50px;
 
     border-radius:50%;
 
     background:var(--gradient);
 
-    color:#fff;
-
     display:flex;
+
+    justify-content:center;
 
     align-items:center;
 
-    justify-content:center;
+    color:#fff;
 
     text-decoration:none;
 
     box-shadow:var(--shadow);
 
+    transition:.3s;
+
     z-index:999;
+
+}
+
+.back-to-top:hover{
+
+    color:#fff;
+
+    transform:translateY(-4px);
 
 }
 
@@ -531,6 +959,12 @@ section{
     .section-title{
 
         font-size:30px;
+
+    }
+
+    .footer{
+
+        padding:70px 0 25px;
 
     }
 
@@ -567,6 +1001,40 @@ section{
         padding-left:18px;
 
         padding-right:18px;
+
+    }
+
+    .footer{
+
+        text-align:center;
+
+    }
+
+    .footer-brand{
+
+        flex-direction:column;
+
+        justify-content:center;
+
+    }
+
+    .footer-desc{
+
+        max-width:100%;
+
+    }
+
+    .footer-contact li{
+
+        justify-content:center;
+
+        text-align:left;
+
+    }
+
+    .footer-social{
+
+        justify-content:center;
 
     }
 

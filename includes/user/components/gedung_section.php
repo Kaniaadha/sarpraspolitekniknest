@@ -1,20 +1,12 @@
 <style>
 
-/*==================================================
-GEDUNG SECTION
-==================================================*/
-
 .gedung-section{
 
-    padding:100px 0;
+    padding:110px 0;
 
     background:#fff;
 
 }
-
-/*=================================
-HEADER
-=================================*/
 
 .gedung-header{
 
@@ -24,31 +16,25 @@ HEADER
 
     align-items:end;
 
+    margin-bottom:55px;
+
     flex-wrap:wrap;
 
-    gap:25px;
-
-    margin-bottom:55px;
+    gap:20px;
 
 }
 
 .gedung-subtitle{
 
-    display:inline-flex;
+    display:inline-block;
 
-    align-items:center;
-
-    gap:8px;
-
-    padding:10px 20px;
+    padding:10px 22px;
 
     border-radius:50px;
 
-    background:#FFE7F2;
+    background:rgba(236,72,153,.10);
 
     color:#EC4899;
-
-    font-size:14px;
 
     font-weight:600;
 
@@ -58,7 +44,7 @@ HEADER
 
 .gedung-title{
 
-    font-size:42px;
+    font-size:46px;
 
     font-weight:800;
 
@@ -72,27 +58,21 @@ HEADER
 
     max-width:620px;
 
-    color:#777;
+    color:#6b7280;
+
+    font-size:18px;
 
     line-height:1.8;
-
-    font-size:17px;
 
 }
 
 .gedung-link{
 
-    display:inline-flex;
-
-    align-items:center;
-
-    gap:8px;
-
     text-decoration:none;
 
-    color:#EC4899;
-
     font-weight:700;
+
+    color:#EC4899;
 
     transition:.3s;
 
@@ -104,10 +84,6 @@ HEADER
 
 }
 
-/*=================================
-GRID
-=================================*/
-
 .gedung-grid{
 
     display:grid;
@@ -118,27 +94,21 @@ GRID
 
 }
 
-/*=================================
-CARD
-=================================*/
-
 .gedung-card{
-
-    position:relative;
-
-    overflow:hidden;
 
     background:#fff;
 
-    border-radius:28px;
+    border-radius:26px;
+
+    overflow:hidden;
+
+    box-shadow:0 12px 35px rgba(0,0,0,.08);
+
+    transition:.35s;
 
     text-decoration:none;
 
     color:inherit;
-
-    transition:.35s;
-
-    box-shadow:0 15px 35px rgba(0,0,0,.08);
 
 }
 
@@ -146,13 +116,9 @@ CARD
 
     transform:translateY(-10px);
 
-    box-shadow:0 22px 50px rgba(236,72,153,.20);
+    box-shadow:0 20px 45px rgba(236,72,153,.20);
 
 }
-
-/*=================================
-IMAGE
-=================================*/
 
 .gedung-image{
 
@@ -172,7 +138,7 @@ IMAGE
 
     object-fit:cover;
 
-    transition:.45s;
+    transition:.5s;
 
 }
 
@@ -198,10 +164,6 @@ IMAGE
 
 }
 
-/*=================================
-BODY
-=================================*/
-
 .gedung-body{
 
     padding:26px;
@@ -214,24 +176,17 @@ BODY
 
     font-weight:700;
 
+    margin-bottom:22px;
+
     color:#222;
 
-    margin-bottom:20px;
-
 }
-
-/*=================================
-INFO
-=================================*/
 
 .gedung-info{
 
     display:flex;
-
-    justify-content:space-between;
-
-    gap:15px;
-
+    flex-direction:column;
+    gap:14px;
     margin-bottom:24px;
 
 }
@@ -239,48 +194,30 @@ INFO
 .gedung-item{
 
     display:flex;
-
     align-items:center;
-
-    gap:10px;
-
-    color:#666;
-
+    gap:12px;
+    color:#555;
     font-size:15px;
 
 }
 
 .gedung-item i{
 
-    width:42px;
-
-    height:42px;
-
+    width:36px;
+    height:36px;
     border-radius:50%;
-
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
     color:#fff;
-
     background:linear-gradient(
-
         135deg,
-
         #EC4899,
-
         #FF7A48
-
     );
+    flex-shrink:0;
 
 }
-
-/*=================================
-BUTTON
-=================================*/
 
 .gedung-button{
 
@@ -290,15 +227,9 @@ BUTTON
 
     align-items:center;
 
-    gap:8px;
-
     height:52px;
 
     border-radius:14px;
-
-    color:#fff;
-
-    font-weight:700;
 
     background:linear-gradient(
 
@@ -310,7 +241,11 @@ BUTTON
 
     );
 
-    transition:.35s;
+    color:#fff;
+
+    font-weight:700;
+
+    transition:.3s;
 
 }
 
@@ -319,15 +254,55 @@ BUTTON
     letter-spacing:.5px;
 
 }
-/*=================================
+/*==================================
 RESPONSIVE
-=================================*/
+==================================*/
 
-@media(max-width:1200px){
+@media(max-width:768px){
 
     .gedung-grid{
 
-        grid-template-columns:repeat(2,1fr);
+        display:flex;
+
+        overflow-x:auto;
+
+        gap:18px;
+
+        padding-bottom:10px;
+
+        scroll-snap-type:x mandatory;
+
+        scrollbar-width:none;
+
+    }
+
+    .gedung-grid::-webkit-scrollbar{
+
+        display:none;
+
+    }
+
+    .gedung-card{
+
+        min-width:250px;
+
+        max-width:250px;
+
+        flex:none;
+
+        scroll-snap-align:start;
+
+    }
+
+    .gedung-title{
+
+        font-size:32px;
+
+    }
+
+    .gedung-description{
+
+        font-size:15px;
 
     }
 
@@ -351,7 +326,7 @@ RESPONSIVE
 
     .gedung-title{
 
-        font-size:32px;
+        font-size:34px;
 
     }
 
@@ -383,184 +358,135 @@ RESPONSIVE
 
         flex-direction:column;
 
-        gap:15px;
+        gap:14px;
 
     }
 
 }
 
-.empty-gedung{
-
-    background:#fff;
-
-    border-radius:25px;
-
-    padding:60px 30px;
-
-    text-align:center;
-
-    box-shadow:0 12px 30px rgba(0,0,0,.08);
-
-}
-
-.empty-gedung i{
-
-    font-size:55px;
-
-    color:#EC4899;
-
-    margin-bottom:20px;
-
-}
-
-.empty-gedung h4{
-
-    font-size:24px;
-
-    color:#222;
-
-    margin-bottom:10px;
-
-}
-
-.empty-gedung p{
-
-    color:#777;
-
-}
-
 </style>
-
 <section class="gedung-section" id="gedung">
 
-<div class="container">
+    <div class="container">
 
-<div class="gedung-header">
+        <div class="gedung-header">
 
-<div>
+            <div>
 
-<span class="gedung-subtitle">
+                <span class="gedung-subtitle">
 
-<i class="bi bi-building"></i>
+                    <i class="bi bi-building"></i>
 
-Gedung Kampus
+                    Gedung Kampus
 
-</span>
+                </span>
 
-<h2 class="gedung-title">
+                <h2 class="gedung-title">
 
-Jelajahi Gedung Politeknik Nest
+                    Jelajahi Gedung Politeknik Nest
 
-</h2>
+                </h2>
 
-<p class="gedung-description">
+                <p class="gedung-description">
 
-Temukan informasi gedung, jumlah lantai, serta jumlah ruangan yang tersedia di lingkungan Politeknik Nest.
+                    Temukan informasi gedung beserta jumlah lantai dan ruangan yang tersedia di lingkungan Politeknik Nest.
 
-</p>
+                </p>
 
-</div>
+            </div>
 
-<a href="gedung.php" class="gedung-link">
+            <a href="gedung.php" class="gedung-link">
 
-Lihat Semua
+                Lihat Semua
 
-<i class="bi bi-arrow-right"></i>
+                <i class="bi bi-arrow-right"></i>
 
-</a>
+            </a>
 
-</div>
+        </div>
 
-<div class="gedung-grid">
+        <div class="gedung-grid">
 
-<?php if(!empty($lokasiList)): ?>
+            <?php if(!empty($lokasiList)): ?>
 
-<?php foreach($lokasiList as $lokasi): ?>
+                <?php foreach($lokasiList as $lokasi): ?>
 
-<a
-href="gedung.php?id=<?= $lokasi['id_lokasi']; ?>"
-class="gedung-card">
+                    <a
+                        href="detail_gedung.php?id=<?= $lokasi['id_lokasi']; ?>"
+                        class="gedung-card">
 
-<div class="gedung-image">
+                        <div class="gedung-image">
 
-<img
-src="<?= $baseUrl ?>assets/uploads/lokasi/<?= htmlspecialchars($lokasi['nama_file']); ?>"
-alt="<?= htmlspecialchars($lokasi['nama_lokasi']); ?>">
+                            <img
+                                src="<?= $baseUrl ?>assets/uploads/lokasi/<?= htmlspecialchars($lokasi['nama_file']); ?>"
+                                alt="<?= htmlspecialchars($lokasi['nama_lokasi']); ?>">
 
-<div class="gedung-overlay"></div>
+                            <div class="gedung-overlay"></div>
 
-</div>
+                        </div>
 
-<div class="gedung-body">
+                        <div class="gedung-body">
 
-<h3 class="gedung-name">
+                            <h3 class="gedung-name">
 
-<?= htmlspecialchars($lokasi['nama_lokasi']); ?>
+                                <?= htmlspecialchars($lokasi['nama_lokasi']); ?>
 
-</h3>
+                            </h3>
 
-<div class="gedung-info">
+                            <div class="gedung-info">
 
-<div class="gedung-item">
+                                <div class="gedung-item">
 
-<i class="bi bi-layers"></i>
+                                    <i class="bi bi-layers"></i>
 
-<?= $lokasi['jumlah_lantai']; ?>
+                                    <?= $lokasi['jumlah_lantai']; ?>
 
-Lantai
+                                    Lantai
 
-</div>
+                                </div>
 
-<div class="gedung-item">
+                                <div class="gedung-item">
 
-<i class="bi bi-door-open"></i>
+                                    <i class="bi bi-door-open"></i>
 
-<?= $lokasi['jumlah_ruangan']; ?>
+                                    <?= $lokasi['jumlah_ruangan']; ?>
 
-Ruangan
+                                    Ruangan
 
-</div>
+                                </div>
 
-</div>
+                            </div>
 
-<div class="gedung-button">
+                            <div class="gedung-button">
 
-Lihat Detail
+                                Lihat Detail
 
-<i class="bi bi-arrow-right"></i>
+                                <i class="bi bi-arrow-right ms-2"></i>
 
-</div>
+                            </div>
 
-</div>
+                        </div>
 
-</a>
+                    </a>
 
-<?php endforeach; ?>
+                <?php endforeach; ?>
 
-<?php else: ?>
+            <?php else: ?>
 
-<div class="empty-gedung">
+                <div class="col-12">
 
-<i class="bi bi-building"></i>
+                    <div class="alert alert-light text-center rounded-4 shadow-sm">
 
-<h4>
+                        Belum ada data gedung.
 
-Belum Ada Gedung
+                    </div>
 
-</h4>
+                </div>
 
-<p>
+            <?php endif; ?>
 
-Data gedung belum tersedia.
+        </div>
 
-</p>
-
-</div>
-
-<?php endif; ?>
-
-</div>
-
-</div>
+    </div>
 
 </section>

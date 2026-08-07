@@ -1,7 +1,7 @@
 <style>
-/* ==========================================================
-   SEARCH SECTION
-========================================================== */
+/*==================================================
+SEARCH SECTION
+==================================================*/
 
 .search-section{
 
@@ -9,21 +9,23 @@
 
     margin-top:-70px;
 
-    z-index:50;
+    z-index:30;
 
 }
 
 .search-card{
 
-    background:#fff;
-
-    border-radius:30px;
-
-    padding:50px;
-
-    box-shadow:0 20px 50px rgba(0,0,0,.08);
+    position:relative;
 
     overflow:hidden;
+
+    background:#fff;
+
+    border-radius:32px;
+
+    padding:55px;
+
+    box-shadow:0 20px 45px rgba(0,0,0,.08);
 
 }
 
@@ -33,23 +35,21 @@
 
     position:absolute;
 
-    top:0;
+    width:260px;
 
-    right:0;
-
-    width:220px;
-
-    height:220px;
-
-    background:linear-gradient(
-        135deg,
-        rgba(244,91,141,.08),
-        rgba(255,138,61,.08)
-    );
+    height:260px;
 
     border-radius:50%;
 
-    transform:translate(40%,-40%);
+    background:linear-gradient(
+        135deg,
+        rgba(244,91,141,.10),
+        rgba(255,138,61,.10)
+    );
+
+    right:-100px;
+
+    top:-120px;
 
 }
 
@@ -63,47 +63,57 @@
 
 .search-badge{
 
-    display:inline-block;
+    display:inline-flex;
 
-    background:#FFE7F0;
+    align-items:center;
 
-    color:#F45B8D;
+    gap:8px;
 
-    padding:8px 18px;
+    padding:10px 20px;
 
     border-radius:50px;
 
-    font-size:14px;
+    background:#FFE8F2;
+
+    color:#F45B8D;
 
     font-weight:600;
 
-    margin-bottom:18px;
+    font-size:14px;
+
+    margin-bottom:20px;
 
 }
 
 .search-title{
 
-    color:#2D2D2D;
-
-    font-size:38px;
+    font-size:40px;
 
     font-weight:700;
 
-    margin-bottom:12px;
+    color:#2D2D2D;
+
+    margin-bottom:15px;
 
 }
 
 .search-description{
 
+    max-width:650px;
+
     color:#777;
 
     font-size:17px;
 
+    line-height:1.8;
+
     margin-bottom:35px;
 
-    max-width:650px;
-
 }
+
+/*=========================
+SEARCH BOX
+=========================*/
 
 .search-box{
 
@@ -111,15 +121,26 @@
 
     align-items:center;
 
-    border:1px solid #eee;
+    overflow:hidden;
 
     border-radius:60px;
 
-    overflow:hidden;
-
     background:#fff;
 
-    box-shadow:0 10px 25px rgba(0,0,0,.04);
+    border:1px solid #eee;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.05);
+
+    transition:.3s;
+
+}
+
+.search-box:focus-within{
+
+    border-color:#F45B8D;
+
+    box-shadow:
+    0 0 0 5px rgba(244,91,141,.10);
 
 }
 
@@ -127,9 +148,11 @@
 
     flex:1;
 
-    height:70px;
+    height:72px;
 
     border:none;
+
+    outline:none;
 
     padding:0 28px;
 
@@ -137,11 +160,7 @@
 
     color:#444;
 
-}
-
-.search-box input:focus{
-
-    outline:none;
+    background:transparent;
 
 }
 
@@ -155,11 +174,15 @@
 
     width:85px;
 
-    height:70px;
+    height:72px;
 
     border:none;
 
     cursor:pointer;
+
+    color:#fff;
+
+    font-size:22px;
 
     background:linear-gradient(
         135deg,
@@ -167,36 +190,43 @@
         #FF8A3D
     );
 
-    color:#fff;
-
-    font-size:20px;
-
-    transition:.3s;
+    transition:.35s;
 
 }
 
 .search-box button:hover{
 
-    opacity:.9;
+    transform:scale(1.05);
 
 }
 
+/*=========================
+RESPONSIVE
+=========================*/
 
-/* ==========================================================
-   RESPONSIVE
-========================================================== */
+@media(max-width:992px){
+
+    .search-card{
+
+        padding:40px;
+
+    }
+
+}
 
 @media(max-width:768px){
 
     .search-section{
 
-        margin-top:-40px;
+        margin-top:-30px;
 
     }
 
     .search-card{
 
-        padding:30px;
+        padding:28px;
+
+        border-radius:25px;
 
     }
 
@@ -214,15 +244,11 @@
 
     .search-box{
 
-        flex-direction:column;
-
         border-radius:20px;
 
     }
 
     .search-box input{
-
-        width:100%;
 
         height:60px;
 
@@ -230,7 +256,7 @@
 
     .search-box button{
 
-        width:100%;
+        width:70px;
 
         height:60px;
 
@@ -263,7 +289,7 @@
 
                 <p class="search-description">
 
-                    Temukan informasi gedung, ruangan, public space maupun inventaris Politeknik Nest secara cepat dan mudah.
+                    Temukan gedung, ruangan, public space, maupun inventaris Politeknik Nest hanya dengan sekali pencarian.
 
                 </p>
 

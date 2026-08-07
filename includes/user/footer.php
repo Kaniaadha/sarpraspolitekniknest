@@ -2,69 +2,212 @@
 
     <div class="container">
 
-        <div class="row g-5">
+        <div class="row gy-5">
 
-            <div class="col-lg-5">
+            <!-- ==========================
+                 BRAND
+            =========================== -->
 
-                <h5>SISARPRAS Politeknik Nest</h5>
+            <div class="col-lg-4">
 
-                <p>
+                <div class="footer-brand">
+
+                    <img
+                        src="<?= $baseUrl; ?>assets/img/logo/logo-polnest.png"
+                        alt="Logo Politeknik Nest"
+                        class="footer-logo">
+
+                    <div>
+
+                        <h3>SISARPRAS</h3>
+
+                        <span>Politeknik Nest</span>
+
+                    </div>
+
+                </div>
+
+                <p class="footer-desc">
+
                     Sistem Informasi Sarana dan Prasarana
-                    yang digunakan untuk memudahkan
-                    pengelolaan data fasilitas kampus,
-                    inventaris, serta proses peminjaman
-                    secara digital.
+                    Politeknik Nest yang digunakan untuk
+                    memudahkan pengelolaan gedung,
+                    ruangan, public space, inventaris,
+                    proses peminjaman, serta pelaporan
+                    kerusakan secara digital.
+
                 </p>
 
             </div>
 
+            <!-- ==========================
+                 MENU
+            =========================== -->
+
             <div class="col-lg-3">
 
-                <h5>Menu</h5>
+                <h5 class="footer-title">
 
-                <ul>
+                    Menu
 
-                    <li><a href="<?= $baseUrl; ?>index.php">Beranda</a></li>
+                </h5>
 
-                    <li><a href="<?= $baseUrl; ?>user/gedung.php">Gedung</a></li>
+                <ul class="footer-menu">
 
-                    <li><a href="<?= $baseUrl; ?>user/ruangan.php">Ruangan</a></li>
+                    <li>
+                        <a href="<?= $baseUrl; ?>index.php">
+                            Beranda
+                        </a>
+                    </li>
 
-                    <li><a href="<?= $baseUrl; ?>user/public_space.php">Public Space</a></li>
+                    <li>
+                        <a href="<?= $baseUrl; ?>user/gedung.php">
+                            Gedung
+                        </a>
+                    </li>
 
-                    <li><a href="<?= $baseUrl; ?>user/inventaris.php">Inventaris</a></li>
+                    <li>
+                        <a href="<?= $baseUrl; ?>user/ruangan.php">
+                            Ruangan
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="<?= $baseUrl; ?>user/public_space.php">
+                            Public Space
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="<?= $baseUrl; ?>user/inventaris.php">
+                            Inventaris
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="<?= $baseUrl; ?>user/peminjaman.php">
+                            Peminjaman
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="<?= $baseUrl; ?>user/lapor_kerusakan.php">
+                            Lapor Kerusakan
+                        </a>
+                    </li>
 
                 </ul>
 
             </div>
 
-            <div class="col-lg-4">
+            <!-- ==========================
+                 KONTAK
+            =========================== -->
 
-                <h5>Kontak</h5>
+            <div class="col-lg-3">
 
-                <p><i class="bi bi-geo-alt-fill me-2"></i>Politeknik Nest</p>
+                <h5 class="footer-title">
 
-                <p><i class="bi bi-envelope-fill me-2"></i>info@polinest.ac.id</p>
+                    Kontak
 
-                <p><i class="bi bi-telephone-fill me-2"></i>(0271) 000000</p>
+                </h5>
+
+                <ul class="footer-contact">
+
+                    <li>
+
+                        <i class="bi bi-geo-alt-fill"></i>
+
+                        <span>
+
+                            Jl. Raya Solo - Sukoharjo,
+                            Jawa Tengah
+
+                        </span>
+
+                    </li>
+
+                    <li>
+
+                        <i class="bi bi-envelope-fill"></i>
+
+                        <span>
+
+                            info@polinest.ac.id
+
+                        </span>
+
+                    </li>
+
+                    <li>
+
+                        <i class="bi bi-telephone-fill"></i>
+
+                        <span>
+
+                            (0271) 000000
+
+                        </span>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <!-- ==========================
+                 SOCIAL
+            =========================== -->
+
+            <div class="col-lg-2">
+
+                <h5 class="footer-title">
+
+                    Ikuti Kami
+
+                </h5>
+
+                <div class="footer-social">
+
+                    <a href="#">
+
+                        <i class="bi bi-instagram"></i>
+
+                    </a>
+
+                    <a href="#">
+
+                        <i class="bi bi-facebook"></i>
+
+                    </a>
+
+                    <a href="#">
+
+                        <i class="bi bi-globe"></i>
+
+                    </a>
+
+                    <a href="#">
+
+                        <i class="bi bi-youtube"></i>
+
+                    </a>
+
+                </div>
 
             </div>
 
         </div>
 
-        <hr>
+        <hr class="footer-divider">
 
-        <div class="text-center">
+        <div class="footer-bottom">
 
-            <p class="mb-0">
+            © <?= date('Y'); ?>
 
-                © <?= date('Y'); ?>
+            SISARPRAS Politeknik Nest.
 
-                SISARPRAS Politeknik Nest.
-
-                All Rights Reserved.
-
-            </p>
+            All Rights Reserved.
 
         </div>
 

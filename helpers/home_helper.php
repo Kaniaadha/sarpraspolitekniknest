@@ -117,6 +117,49 @@ function getLatestLokasi($conn, $limit = 4)
 
     return $data;
 }
+
+function getAllLokasi($conn)
+{
+    $sql = "
+        SELECT
+            l.*,
+            fl.nama_file,
+
+            (
+                SELECT COUNT(*)
+                FROM lantai lt
+                WHERE lt.id_lokasi = l.id_lokasi
+            ) AS jumlah_lantai,
+
+            (
+                SELECT COUNT(*)
+                FROM ruangan r
+                INNER JOIN lantai lt
+                    ON lt.id_lantai = r.id_lantai
+                WHERE lt.id_lokasi = l.id_lokasi
+            ) AS jumlah_ruangan
+
+        FROM lokasi l
+
+        LEFT JOIN foto_lokasi fl
+            ON fl.id_lokasi = l.id_lokasi
+            AND fl.is_cover = 1
+
+        WHERE l.status='aktif'
+
+        ORDER BY l.nama_lokasi ASC
+    ";
+
+    $query = mysqli_query($conn, $sql);
+
+    $data = [];
+
+    while ($row = mysqli_fetch_assoc($query)) {
+        $data[] = $row;
+    }
+
+    return $data;
+}
 /**
  * ==========================================================
  * PUBLIC SPACE
@@ -158,9 +201,21 @@ function getLatestPublicSpace($conn, $limit = 4)
 function getLatestInventaris($conn, $limit = 4)
 {
     $sql = "
-        SELECT *
-        FROM inventaris
-        ORDER BY id_inventaris DESC
+        SELECT
+
+            i.*,
+
+            k.nama_kategori
+
+        FROM inventaris i
+
+        LEFT JOIN kategori k
+            ON i.id_kategori = k.id_kategori
+
+        WHERE i.status='Aktif'
+
+        ORDER BY i.id_inventaris DESC
+
         LIMIT $limit
     ";
 
@@ -168,8 +223,74 @@ function getLatestInventaris($conn, $limit = 4)
 
     $data = [];
 
-    while ($row = mysqli_fetch_assoc($result)) {
-        $data[] = $row;
+    if($result){
+
+        while($row = mysqli_fetch_assoc($result)){
+
+            $data[] = $row;
+
+        }
+
+    }
+
+    return $data;
+}
+/**
+ * ==========================================================
+ * RUANGAN
+ * ==========================================================
+ */
+
+function getLatestRuangan($conn, $limit = 4)
+{
+    $sql = "
+        SELECT
+            r.id_ruangan,
+            r.kode_ruangan,
+            r.nama_ruangan,
+            r.luas,
+            r.kapasitas,
+            r.deskripsi,
+
+            l.nama_lantai,
+
+            lk.nama_lokasi,
+
+            fr.nama_file
+
+        FROM ruangan r
+
+        INNER JOIN lantai l
+            ON r.id_lantai = l.id_lantai
+
+        INNER JOIN lokasi lk
+            ON l.id_lokasi = lk.id_lokasi
+
+        LEFT JOIN foto_ruangan fr
+            ON r.id_ruangan = fr.id_ruangan
+            AND fr.is_cover = 1
+
+        WHERE r.status = 'Aktif'
+
+        GROUP BY r.id_ruangan
+
+        ORDER BY r.id_ruangan DESC
+
+        LIMIT $limit
+    ";
+
+    $result = mysqli_query($conn, $sql);
+
+    $data = [];
+
+    if ($result) {
+
+        while ($row = mysqli_fetch_assoc($result)) {
+
+            $data[] = $row;
+
+        }
+
     }
 
     return $data;

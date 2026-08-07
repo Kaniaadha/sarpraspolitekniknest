@@ -319,11 +319,81 @@ INVENTARIS
 RESPONSIVE
 =================================*/
 
-@media(max-width:1200px){
+@media(max-width:768px){
+
+    .statistik-section{
+
+        padding:60px 0;
+
+        overflow:hidden;
+
+    }
+
+    .statistik-title{
+
+        font-size:30px;
+
+    }
+
+    .statistik-subtitle{
+
+        font-size:15px;
+
+        padding:0 15px;
+
+    }
 
     .statistik-grid{
 
-        grid-template-columns:repeat(2,1fr);
+        display:flex;
+
+        flex-wrap:nowrap;
+
+        overflow-x:auto;
+
+        gap:18px;
+
+        padding:10px 20px;
+
+        scroll-snap-type:x mandatory;
+
+        -webkit-overflow-scrolling:touch;
+
+        scrollbar-width:none;
+
+    }
+
+    .statistik-grid::-webkit-scrollbar{
+
+        display:none;
+
+    }
+
+    .stat-card{
+
+        flex:0 0 220px;
+
+        max-width:220px;
+
+        padding:28px;
+
+        scroll-snap-align:start;
+
+    }
+
+    .stat-icon{
+
+        width:68px;
+
+        height:68px;
+
+        font-size:28px;
+
+    }
+
+    .stat-number{
+
+        font-size:36px;
 
     }
 

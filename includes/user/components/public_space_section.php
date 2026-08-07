@@ -388,11 +388,37 @@ RESPONSIVE
 
 @media(max-width:1200px){
 
-    .public-grid{
+   .public-grid{
 
-        grid-template-columns:repeat(2,1fr);
+    display:flex;
 
-    }
+    overflow-x:auto;
+
+    gap:18px;
+
+    padding-bottom:10px;
+
+    scroll-snap-type:x mandatory;
+
+    scrollbar-width:none;
+
+}
+
+.public-grid::-webkit-scrollbar{
+
+    display:none;
+
+}
+
+.public-card{
+
+    min-width:250px;
+
+    max-width:250px;
+
+    flex:none;
+
+    scroll-snap-align:start;
 
 }
 

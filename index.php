@@ -26,6 +26,7 @@ $statistik = getStatistik($conn);
 $lokasiList = getLatestLokasi($conn);
 
 $publicSpaceList = getLatestPublicSpace($conn);
+$ruanganList = getLatestRuangan($conn);
 
 $inventarisList = getLatestInventaris($conn);
 $heroTitle = $banner['judul'] ?? 'Sistem Informasi Sarana & Prasarana';
