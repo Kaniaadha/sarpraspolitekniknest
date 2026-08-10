@@ -293,7 +293,7 @@ RESPONSIVE
 
                 </p>
 
-                <form action="pencarian.php" method="GET">
+                <form action="user/pencarian.php" method="GET">
 
                     <div class="search-box">
 

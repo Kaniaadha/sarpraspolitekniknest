@@ -418,7 +418,7 @@ BUTTON
 
             </div>
 
-            <a href="ruangan.php" class="ruangan-link">
+            <a href="user/ruangan.php" class="ruangan-link">
 
                 Lihat Semua
 
@@ -444,7 +444,7 @@ BUTTON
                     ?>
 
                     <a
-                        href="detail_ruangan.php?id=<?= $ruangan['id_ruangan']; ?>"
+                        href="user/detail_ruangan.php?id=<?= $ruangan['id_ruangan']; ?>"
                         class="ruangan-card">
 
                         <!-- Foto -->

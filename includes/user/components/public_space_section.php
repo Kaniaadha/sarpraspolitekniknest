@@ -545,7 +545,7 @@ Temukan berbagai area publik di lingkungan Politeknik Nest yang dapat digunakan 
 </div>
 
 <a
-href="public_space.php"
+href="user/public_space.php"
 class="public-link">
 
 Lihat Semua
@@ -563,7 +563,7 @@ Lihat Semua
 <?php foreach($publicSpaceList as $public): ?>
 
 <a
-href="public_space.php?id=<?= $public['id_public_space']; ?>"
+href="user/public_space.php?id=<?= $public['id_public_space']; ?>"
 class="public-card">
 
 <div class="public-image">

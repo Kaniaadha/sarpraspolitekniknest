@@ -21,11 +21,9 @@ INVENTARIS SECTION
     position:absolute;
 
     top:0;
-
     left:0;
 
     width:100%;
-
     height:220px;
 
     background:linear-gradient(
@@ -38,11 +36,14 @@ INVENTARIS SECTION
 
 }
 
+
 /*==================================================
 HEADER
 ==================================================*/
 
 .inventaris-header{
+
+    position:relative;
 
     display:flex;
 
@@ -50,9 +51,9 @@ HEADER
 
     align-items:end;
 
-    gap:25px;
-
     flex-wrap:wrap;
+
+    gap:25px;
 
     margin-bottom:55px;
 
@@ -92,6 +93,8 @@ HEADER
 
     margin-bottom:14px;
 
+    line-height:1.2;
+
 }
 
 .inventaris-description{
@@ -103,6 +106,8 @@ HEADER
     font-size:17px;
 
     line-height:1.8;
+
+    margin:0;
 
 }
 
@@ -130,6 +135,7 @@ HEADER
 
 }
 
+
 /*==================================================
 GRID
 ==================================================*/
@@ -142,13 +148,18 @@ GRID
 
     gap:28px;
 
+    position:relative;
+
 }
+
 
 /*==================================================
 CARD
 ==================================================*/
 
 .inventaris-card{
+
+    display:block;
 
     background:#fff;
 
@@ -174,9 +185,11 @@ CARD
 
     border-color:#FB923C;
 
-    box-shadow:0 25px 50px rgba(251,146,60,.22);
+    box-shadow:
+        0 25px 50px rgba(251,146,60,.22);
 
 }
+
 
 /*==================================================
 IMAGE
@@ -204,7 +217,7 @@ IMAGE
 
 }
 
-.inventaris-card:hover img{
+.inventaris-card:hover .inventaris-image img{
 
     transform:scale(1.08);
 
@@ -217,14 +230,12 @@ IMAGE
     inset:0;
 
     background:linear-gradient(
-
         rgba(0,0,0,0),
-
         rgba(0,0,0,.45)
-
     );
 
 }
+
 
 /*==================================================
 BODY
@@ -244,7 +255,7 @@ BODY
 
     color:#222;
 
-    margin-bottom:8px;
+    margin-bottom:10px;
 
     line-height:1.4;
 
@@ -252,7 +263,11 @@ BODY
 
 .inventaris-category{
 
-    display:inline-block;
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:7px;
 
     padding:6px 14px;
 
@@ -266,9 +281,14 @@ BODY
 
     font-weight:600;
 
-    margin-bottom:18px;
+    margin-bottom:20px;
 
 }
+
+
+/*==================================================
+INFO
+==================================================*/
 
 .inventaris-info{
 
@@ -313,18 +333,21 @@ BODY
     color:#fff;
 
     background:linear-gradient(
-
         135deg,
-
         #EC4899,
-
         #FB923C
-
     );
 
     flex-shrink:0;
 
 }
+
+.inventaris-item span{
+
+    line-height:1.5;
+
+}
+
 
 /*==================================================
 BADGE KONDISI
@@ -334,13 +357,15 @@ BADGE KONDISI
 
     display:inline-block;
 
-    padding:6px 14px;
+    padding:5px 12px;
 
     border-radius:30px;
 
-    font-size:13px;
+    font-size:12px;
 
     font-weight:700;
+
+    margin-left:3px;
 
 }
 
@@ -368,6 +393,7 @@ BADGE KONDISI
 
 }
 
+
 /*==================================================
 BUTTON
 ==================================================*/
@@ -391,13 +417,9 @@ BUTTON
     font-weight:700;
 
     background:linear-gradient(
-
         135deg,
-
         #EC4899,
-
         #FB923C
-
     );
 
     transition:.35s;
@@ -408,207 +430,11 @@ BUTTON
 
     letter-spacing:.5px;
 
-    box-shadow:0 15px 35px rgba(251,146,60,.25);
+    box-shadow:
+        0 15px 35px rgba(251,146,60,.25);
 
 }
 
-</style>
-
-<section class="inventaris-section" id="inventaris">
-
-    <div class="container">
-
-        <!-- Header -->
-        <div class="inventaris-header">
-
-            <div>
-
-                <span class="inventaris-subtitle">
-
-                    <i class="fas fa-box-open"></i>
-
-                    Inventaris Kampus
-
-                </span>
-
-                <h2 class="inventaris-title">
-
-                    Inventaris <br>
-                    Politeknik Nest
-
-                </h2>
-
-                <p class="inventaris-description">
-
-                    Lihat berbagai inventaris yang dimiliki Politeknik Nest,
-                    mulai dari peralatan pembelajaran, elektronik,
-                    hingga fasilitas pendukung lainnya.
-
-                </p>
-
-            </div>
-
-            <a href="inventaris.php" class="inventaris-link">
-
-                Lihat Semua
-
-                <i class="fas fa-arrow-right"></i>
-
-            </a>
-
-        </div>
-
-        <!-- Grid -->
-        <div class="inventaris-grid">
-
-            <?php if (!empty($inventarisList)) : ?>
-
-                <?php foreach ($inventarisList as $inventaris) : ?>
-
-                    <?php
-
-                    $foto = !empty($inventaris['foto'])
-                        ? "assets/uploads/inventaris/" . $inventaris['foto']
-                        : "assets/images/no-image.jpg";
-
-                    ?>
-
-                    <a
-                        href="detail_inventaris.php?id=<?= $inventaris['id_inventaris']; ?>"
-                        class="inventaris-card">
-
-                        <!-- Foto -->
-                        <div class="inventaris-image">
-
-                            <img
-                                src="<?= $foto; ?>"
-                                alt="<?= htmlspecialchars($inventaris['nama_barang']); ?>">
-
-                            <div class="inventaris-overlay"></div>
-
-                        </div>
-
-                        <!-- Body -->
-                        <div class="inventaris-body">
-
-                            <h3 class="inventaris-name">
-
-                                <?= htmlspecialchars($inventaris['nama_barang']); ?>
-
-                            </h3>
-
-                            <span class="inventaris-category">
-
-                                <i class="fas fa-tag"></i>
-
-                                <?= htmlspecialchars($inventaris['nama_kategori']); ?>
-
-                            </span>
-
-                            <div class="inventaris-info">
-
-                                <!-- Merk -->
-                                <div class="inventaris-item">
-
-                                    <i class="fas fa-copyright"></i>
-
-                                    <span>
-
-                                        <strong>Merk :</strong>
-
-                                        <?= !empty($inventaris['merk'])
-                                            ? htmlspecialchars($inventaris['merk'])
-                                            : '-'; ?>
-
-                                    </span>
-
-                                </div>
-
-                                <!-- Jumlah -->
-                                <div class="inventaris-item">
-
-                                    <i class="fas fa-boxes"></i>
-
-                                    <span>
-
-                                        <strong>Jumlah :</strong>
-
-                                        <?= $inventaris['jumlah']; ?> Unit
-
-                                    </span>
-
-                                </div>
-
-                                <!-- Kondisi -->
-                                <div class="inventaris-item">
-
-                                    <i class="fas fa-circle-check"></i>
-
-                                    <span>
-
-                                        <strong>Kondisi :</strong>
-
-                                        <?php
-
-                                        if ($inventaris['kondisi'] == 'Baik') {
-
-                                            echo '<span class="badge-kondisi badge-baik">Baik</span>';
-
-                                        } elseif ($inventaris['kondisi'] == 'Rusak Ringan') {
-
-                                            echo '<span class="badge-kondisi badge-ringan">Rusak Ringan</span>';
-
-                                        } else {
-
-                                            echo '<span class="badge-kondisi badge-berat">Rusak Berat</span>';
-
-                                        }
-
-                                        ?>
-
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-                            <div class="inventaris-button">
-
-                                Lihat Detail
-
-                                <i class="fas fa-arrow-right"></i>
-
-                            </div>
-
-                                                        </div>
-
-                        </a>
-
-                    <?php endforeach; ?>
-
-                <?php else : ?>
-
-                    <div class="empty-inventaris">
-
-                        <i class="fas fa-box-open"></i>
-
-                        <h3>Belum Ada Data Inventaris</h3>
-
-                        <p>
-                            Data inventaris belum tersedia saat ini.
-                        </p>
-
-                    </div>
-
-                <?php endif; ?>
-
-        </div>
-
-    </div>
-
-</section>
-
-<style>
 
 /*==================================================
 EMPTY STATE
@@ -660,7 +486,10 @@ EMPTY STATE
 
     font-size:16px;
 
+    margin:0;
+
 }
+
 
 /*==================================================
 RESPONSIVE
@@ -670,37 +499,40 @@ RESPONSIVE
 
     .inventaris-grid{
 
-    display:flex;
+        display:flex;
 
-    overflow-x:auto;
+        overflow-x:auto;
 
-    gap:18px;
+        gap:18px;
 
-    padding-bottom:10px;
+        padding-bottom:10px;
 
-    scroll-snap-type:x mandatory;
+        scroll-snap-type:x mandatory;
 
-    scrollbar-width:none;
+        scrollbar-width:none;
+
+    }
+
+    .inventaris-grid::-webkit-scrollbar{
+
+        display:none;
+
+    }
+
+    .inventaris-card{
+
+        min-width:250px;
+
+        max-width:250px;
+
+        flex:none;
+
+        scroll-snap-align:start;
+
+    }
 
 }
 
-.inventaris-grid::-webkit-scrollbar{
-
-    display:none;
-
-}
-
-.inventaris-card{
-
-    min-width:250px;
-
-    max-width:250px;
-
-    flex:none;
-
-    scroll-snap-align:start;
-
-}
 
 @media(max-width:992px){
 
@@ -720,17 +552,12 @@ RESPONSIVE
 
 }
 
+
 @media(max-width:768px){
 
     .inventaris-section{
 
         padding:60px 0;
-
-    }
-
-    .inventaris-grid{
-
-        grid-template-columns:1fr;
 
     }
 
@@ -753,6 +580,7 @@ RESPONSIVE
     }
 
 }
+
 
 @media(max-width:576px){
 
@@ -779,3 +607,276 @@ RESPONSIVE
 }
 
 </style>
+
+
+<section class="inventaris-section" id="inventaris">
+
+    <div class="container">
+
+        <!-- HEADER -->
+
+        <div class="inventaris-header">
+
+            <div>
+
+                <span class="inventaris-subtitle">
+
+                    <i class="fas fa-box-open"></i>
+
+                    Inventaris Kampus
+
+                </span>
+
+                <h2 class="inventaris-title">
+
+                    Inventaris <br>
+                    Politeknik Nest
+
+                </h2>
+
+                <p class="inventaris-description">
+
+                    Lihat berbagai inventaris yang dimiliki
+                    Politeknik Nest, mulai dari peralatan
+                    pembelajaran, elektronik, hingga fasilitas
+                    pendukung lainnya.
+
+                </p>
+
+            </div>
+
+
+            <a
+                href="user/inventaris.php"
+                class="inventaris-link">
+
+                Lihat Semua
+
+                <i class="fas fa-arrow-right"></i>
+
+            </a>
+
+        </div>
+
+
+        <!-- GRID -->
+
+        <div class="inventaris-grid">
+
+            <?php if (!empty($inventarisList)) : ?>
+
+                <?php foreach ($inventarisList as $inventaris) : ?>
+
+                    <?php
+
+                    $foto = !empty($inventaris['foto'])
+                        ? "assets/uploads/inventaris/" . $inventaris['foto']
+                        : "assets/images/no-image.jpg";
+
+                    ?>
+
+
+                    <a
+                        href="user/inventaris.php"
+                        class="inventaris-card">
+
+
+                        <!-- FOTO -->
+
+                        <div class="inventaris-image">
+
+                            <img
+                                src="<?= $foto; ?>"
+                                alt="<?= htmlspecialchars(
+                                    $inventaris['nama_barang']
+                                ); ?>">
+
+                            <div class="inventaris-overlay"></div>
+
+                        </div>
+
+
+                        <!-- BODY -->
+
+                        <div class="inventaris-body">
+
+
+                            <!-- NAMA -->
+
+                            <h3 class="inventaris-name">
+
+                                <?= htmlspecialchars(
+                                    $inventaris['nama_barang']
+                                ); ?>
+
+                            </h3>
+
+
+                            <!-- KATEGORI -->
+
+                            <span class="inventaris-category">
+
+                                <i class="fas fa-tag"></i>
+
+                                <?= htmlspecialchars(
+                                    $inventaris['nama_kategori']
+                                ); ?>
+
+                            </span>
+
+
+                            <!-- INFO -->
+
+                            <div class="inventaris-info">
+
+
+                                <!-- MERK -->
+
+                                <div class="inventaris-item">
+
+                                    <i class="fas fa-copyright"></i>
+
+                                    <span>
+
+                                        <strong>Merk :</strong>
+
+                                        <?= !empty(
+                                            $inventaris['merk']
+                                        )
+                                            ? htmlspecialchars(
+                                                $inventaris['merk']
+                                            )
+                                            : '-'; ?>
+
+                                    </span>
+
+                                </div>
+
+
+                                <!-- JUMLAH -->
+
+                                <div class="inventaris-item">
+
+                                    <i class="fas fa-boxes"></i>
+
+                                    <span>
+
+                                        <strong>Jumlah :</strong>
+
+                                        <?= (int) $inventaris['jumlah']; ?>
+
+                                        Unit
+
+                                    </span>
+
+                                </div>
+
+
+                                <!-- KONDISI -->
+
+                                <div class="inventaris-item">
+
+                                    <i class="fas fa-circle-check"></i>
+
+                                    <span>
+
+                                        <strong>Kondisi :</strong>
+
+                                        <?php
+
+                                        if (
+                                            $inventaris['kondisi']
+                                            == 'Baik'
+                                        ) {
+
+                                            echo '
+                                                <span class="
+                                                    badge-kondisi
+                                                    badge-baik
+                                                ">
+                                                    Baik
+                                                </span>
+                                            ';
+
+                                        } elseif (
+                                            $inventaris['kondisi']
+                                            == 'Rusak Ringan'
+                                        ) {
+
+                                            echo '
+                                                <span class="
+                                                    badge-kondisi
+                                                    badge-ringan
+                                                ">
+                                                    Rusak Ringan
+                                                </span>
+                                            ';
+
+                                        } else {
+
+                                            echo '
+                                                <span class="
+                                                    badge-kondisi
+                                                    badge-berat
+                                                ">
+                                                    Rusak Berat
+                                                </span>
+                                            ';
+
+                                        }
+
+                                        ?>
+
+                                    </span>
+
+                                </div>
+
+
+                            </div>
+
+
+                            <!-- BUTTON -->
+
+                            <div class="inventaris-button">
+
+                                Lihat Detail
+
+                                <i class="fas fa-arrow-right"></i>
+
+                            </div>
+
+
+                        </div>
+
+                    </a>
+
+
+                <?php endforeach; ?>
+
+
+            <?php else : ?>
+
+
+                <div class="empty-inventaris">
+
+                    <i class="fas fa-box-open"></i>
+
+                    <h3>
+                        Belum Ada Data Inventaris
+                    </h3>
+
+                    <p>
+                        Data inventaris belum tersedia
+                        saat ini.
+                    </p>
+
+                </div>
+
+
+            <?php endif; ?>
+
+        </div>
+
+    </div>
+
+</section>
