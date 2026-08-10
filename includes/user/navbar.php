@@ -35,73 +35,143 @@
         </button>
 
         <!-- Menu -->
-        <div class="collapse navbar-collapse"
+        <div class="collapse navbar-collapse justify-content-end"
             id="navbarMenu">
 
             <ul class="navbar-nav align-items-lg-center">
 
                 <li class="nav-item">
-                    <a class="nav-link <?= ($currentPage == 'home') ? 'active' : ''; ?>"
+
+                    <a
+                        class="nav-link <?= ($currentPage == 'home') ? 'active' : ''; ?>"
                         href="<?= $baseUrl; ?>index.php">
 
                         Beranda
 
                     </a>
+
                 </li>
 
+
                 <li class="nav-item">
-                    <a class="nav-link <?= ($currentPage == 'gedung') ? 'active' : ''; ?>"
+
+                    <a
+                        class="nav-link <?= ($currentPage == 'gedung') ? 'active' : ''; ?>"
                         href="<?= $baseUrl; ?>user/gedung.php">
 
                         Gedung
 
                     </a>
+
                 </li>
 
+
                 <li class="nav-item">
-                    <a class="nav-link <?= ($currentPage == 'ruangan') ? 'active' : ''; ?>"
+
+                    <a
+                        class="nav-link <?= ($currentPage == 'ruangan') ? 'active' : ''; ?>"
                         href="<?= $baseUrl; ?>user/ruangan.php">
 
                         Ruangan
 
                     </a>
+
                 </li>
 
+
                 <li class="nav-item">
-                    <a class="nav-link <?= ($currentPage == 'public_space') ? 'active' : ''; ?>"
+
+                    <a
+                        class="nav-link <?= ($currentPage == 'public_space') ? 'active' : ''; ?>"
                         href="<?= $baseUrl; ?>user/public_space.php">
 
                         Public Space
 
                     </a>
+
                 </li>
 
+
                 <li class="nav-item">
-                    <a class="nav-link <?= ($currentPage == 'inventaris') ? 'active' : ''; ?>"
+
+                    <a
+                        class="nav-link <?= ($currentPage == 'inventaris') ? 'active' : ''; ?>"
                         href="<?= $baseUrl; ?>user/inventaris.php">
 
                         Inventaris
 
                     </a>
+
                 </li>
 
+
                 <li class="nav-item">
-                    <a class="nav-link <?= ($currentPage == 'peminjaman') ? 'active' : ''; ?>"
+
+                    <a
+                        class="nav-link <?= ($currentPage == 'peminjaman') ? 'active' : ''; ?>"
                         href="<?= $baseUrl; ?>user/peminjaman.php">
 
                         Peminjaman
 
                     </a>
+
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link <?= ($currentPage == 'lapor') ? 'active' : ''; ?>"
-                        href="<?= $baseUrl; ?>user/lapor_kerusakan.php">
 
-                        Lapor Kerusakan
+                <!-- ==========================================
+                     LAPORAN
+                =========================================== -->
+
+                <li class="nav-item dropdown">
+
+                    <a
+                        class="nav-link dropdown-toggle <?= ($currentPage == 'lapor') ? 'active' : ''; ?>"
+                        href="#"
+                        id="laporanDropdown"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+
+                        Laporan
 
                     </a>
+
+
+                    <ul
+                        class="dropdown-menu"
+                        aria-labelledby="laporanDropdown">
+
+                        <li>
+
+                            <a
+                                class="dropdown-item"
+                                href="<?= $baseUrl; ?>user/lapor_kerusakan.php">
+
+                                Laporan Kerusakan
+
+                            </a>
+
+                        </li>
+
+
+                        <li>
+
+                            <a
+                                class="dropdown-item"
+                                href="<?= $baseUrl; ?>user/lapor_kehilangan.php">
+
+                                Laporan Kehilangan
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
                 </li>
+
+
+                <!-- Login -->
 
                 <li class="nav-item ms-lg-3 mt-3 mt-lg-0">
 

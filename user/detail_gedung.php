@@ -660,6 +660,185 @@ height:320px;
 
 }
 
+/*==================================================
+DROPDOWN LANTAI
+==================================================*/
+
+.floor-card-wrapper {
+    margin-bottom: 18px;
+}
+
+.floor-card {
+    position: relative;
+}
+
+.floor-card.active {
+    border-radius: 24px 24px 0 0;
+}
+
+.floor-card.active .floor-arrow i {
+    transform: rotate(180deg);
+}
+
+.floor-arrow i {
+    transition: transform .3s ease;
+}
+
+/*==================================================
+ISI DROPDOWN
+==================================================*/
+
+.floor-content {
+    display: none;
+
+    background: #FFFFFF;
+
+    border-radius: 0 0 24px 24px;
+
+    padding: 0 28px 28px;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,.06);
+}
+
+.floor-card.active + .floor-content {
+    display: block;
+}
+
+.floor-content-inner {
+    border-top: 1px solid #F1F1F1;
+
+    padding-top: 24px;
+}
+/*==================================================
+ITEM RUANGAN & PUBLIC SPACE
+==================================================*/
+
+.floor-item-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+}
+
+
+.floor-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 12px 14px;
+
+    background: #FFF8FB;
+
+    border: 1px solid #FCE7F3;
+
+    border-radius: 12px;
+
+    transition: all .2s ease;
+
+}
+
+
+.floor-item:hover {
+
+    background: #FFF0F6;
+
+    transform: translateX(3px);
+
+}
+
+
+.floor-item-icon {
+
+    width: 36px;
+
+    height: 36px;
+
+    min-width: 36px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        135deg,
+        #EC4899,
+        #FF7A45
+    );
+
+    color: #FFFFFF;
+
+}
+
+
+.floor-item-info {
+
+    min-width: 0;
+
+}
+
+
+.floor-item-name {
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #27364B;
+
+}
+
+
+.floor-item-code {
+
+    margin-top: 2px;
+
+    font-size: 12px;
+
+    color: #9CA3AF;
+
+}
+
+/*==================================================
+EMPTY DATA
+==================================================*/
+
+.empty-floor {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    background: #FFF8FB;
+
+    color: #9CA3AF;
+
+    font-size: 14px;
+
+}
+
+
+.empty-floor i {
+
+    color: #EC4899;
+
+}
 </style>
 
 </head>
@@ -667,7 +846,6 @@ height:320px;
 <body>
 
 <?php include "../includes/user/navbar.php"; ?>
-
 
 <section class="detail-hero">
 
@@ -718,7 +896,7 @@ height:320px;
 <?php if($cover){ ?>
 
 <img
-src="<?= $baseUrl; ?>uploads/foto_lokasi/<?= $cover['nama_file']; ?>"
+src="<?= $baseUrl; ?>assets/uploads/lokasi/<?= $cover['nama_file']; ?>"
 alt="<?= htmlspecialchars($gedung['nama_lokasi']); ?>">
 
 <?php }else{ ?>
@@ -822,7 +1000,7 @@ alt="No Image">
 <div class="gallery-item">
 
 <img
-src="<?= $baseUrl; ?>uploads/foto_lokasi/<?= $foto['nama_file']; ?>"
+src="<?= $baseUrl; ?>assets/uploads/lokasi/<?= $foto['nama_file']; ?>"
 alt="Gallery">
 
 </div>
@@ -923,72 +1101,272 @@ alt="Gallery">
 
 <div class="floor-list">
 
-<?php foreach($lantai as $lt): ?>
+    <?php foreach($lantai as $lt): ?>
 
-<?php
+        <?php
 
-$jumlahRuangan=count(
-getRuanganPerLantai($conn,$lt['id_lantai'])
-);
+        $jumlahRuangan = count(
+            getRuanganPerLantai($conn, $lt['id_lantai'])
+        );
 
-$jumlahPublic=count(
-getPublicSpacePerLantai($conn,$lt['id_lantai'])
-);
+        $jumlahPublic = count(
+            getPublicSpacePerLantai($conn, $lt['id_lantai'])
+        );
 
-?>
+        ?>
 
-<div
-class="floor-card"
-data-id="<?= $lt['id_lantai']; ?>">
+        <div class="floor-card-wrapper">
 
-<div class="floor-left">
+            <!-- CARD LANTAI -->
 
-<div class="floor-icon">
+            <div
+                class="floor-card"
+                data-id="<?= $lt['id_lantai']; ?>">
 
-<i class="bi bi-building"></i>
+                <div class="floor-left">
+
+                    <div class="floor-icon">
+
+                        <i class="bi bi-building"></i>
+
+                    </div>
+
+                    <div>
+
+                        <div class="floor-name">
+
+                            <?= htmlspecialchars($lt['nama_lantai']); ?>
+
+                        </div>
+
+                        <div class="floor-desc">
+
+                            <span>
+                                🚪 <?= $jumlahRuangan; ?> Ruangan
+                            </span>
+
+                            <span>
+                                🌳 <?= $jumlahPublic; ?> Public Space
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="floor-arrow">
+
+                    <i class="bi bi-chevron-down"></i>
+
+                </div>
+
+            </div>
+
+
+            <!-- ISI DROPDOWN -->
+
+            <div class="floor-content">
+
+    <div class="floor-content-inner">
+
+        <?php
+
+        $ruangan = getRuanganPerLantai(
+            $conn,
+            $lt['id_lantai']
+        );
+
+        $publicSpace = getPublicSpacePerLantai(
+            $conn,
+            $lt['id_lantai']
+        );
+
+        ?>
+
+
+        <div class="row g-4">
+
+
+            <!-- ==============================
+                 RUANGAN
+            =============================== -->
+
+            <div class="col-lg-7">
+
+                <div class="content-title">
+
+                    <i class="bi bi-door-open-fill"></i>
+
+                    <h3>
+                        Ruangan
+                    </h3>
+
+                </div>
+
+
+                <?php if (!empty($ruangan)): ?>
+
+                    <div class="floor-item-list">
+
+                        <?php foreach ($ruangan as $r): ?>
+
+                            <div class="floor-item">
+
+                                <div class="floor-item-icon">
+
+                                    <i class="bi bi-door-open"></i>
+
+                                </div>
+
+                                <div class="floor-item-info">
+
+                                    <div class="floor-item-name">
+
+                                        <?= htmlspecialchars(
+                                            $r['nama_ruangan']
+                                        ); ?>
+
+                                    </div>
+
+                                    <?php if (!empty($r['kode_ruangan'])): ?>
+
+                                        <div class="floor-item-code">
+
+                                            <?= htmlspecialchars(
+                                                $r['kode_ruangan']
+                                            ); ?>
+
+                                        </div>
+
+                                    <?php endif; ?>
+
+                                </div>
+
+                            </div>
+
+                        <?php endforeach; ?>
+
+                    </div>
+
+                <?php else: ?>
+
+                    <div class="empty-floor">
+
+                        <i class="bi bi-door-open"></i>
+
+                        <span>
+                            Belum ada ruangan
+                        </span>
+
+                    </div>
+
+                <?php endif; ?>
+
+            </div>
+
+
+            <!-- ==============================
+                 PUBLIC SPACE
+            =============================== -->
+
+            <div class="col-lg-5">
+
+                <div class="content-title">
+
+                    <i class="bi bi-tree-fill"></i>
+
+                    <h3>
+                        Public Space
+                    </h3>
+
+                </div>
+
+
+                <?php if (!empty($publicSpace)): ?>
+
+                    <div class="floor-item-list">
+
+                        <?php foreach ($publicSpace as $ps): ?>
+
+                            <div class="floor-item">
+
+                                <div class="floor-item-icon">
+
+                                    <i class="bi bi-geo-alt-fill"></i>
+
+                                </div>
+
+                                <div class="floor-item-info">
+
+                                    <div class="floor-item-name">
+
+                                        <?= htmlspecialchars(
+                                            $ps['nama_public_space']
+                                        ); ?>
+
+                                    </div>
+
+                                    <?php if (!empty($ps['kode_public_space'])): ?>
+
+                                        <div class="floor-item-code">
+
+                                            <?= htmlspecialchars(
+                                                $ps['kode_public_space']
+                                            ); ?>
+
+                                        </div>
+
+                                    <?php endif; ?>
+
+                                </div>
+
+                            </div>
+
+                        <?php endforeach; ?>
+
+                    </div>
+
+                <?php else: ?>
+
+                    <div class="empty-floor">
+
+                        <i class="bi bi-tree"></i>
+
+                        <span>
+                            Belum ada public space
+                        </span>
+
+                    </div>
+
+                <?php endif; ?>
+
+            </div>
+
+
+        </div>
+
+    </div>
 
 </div>
-
-<div>
-
-<div class="floor-name">
-
-<?= htmlspecialchars($lt['nama_lantai']); ?>
-
-</div>
-
-<div class="floor-desc">
-
-<span>
-
-🚪 <?= $jumlahRuangan; ?> Ruangan
-
-</span>
-
-<span>
-
-🌳 <?= $jumlahPublic; ?> Public Space
-
-</span>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="floor-arrow">
-
-<i class="bi bi-chevron-down"></i>
-
-</div>
-
-</div>
-
-<?php endforeach; ?>
+    <?php endforeach; ?>
 
 </div>
 
 </div>
 
 </section>
+
+<script>
+
+document.querySelectorAll('.floor-card').forEach(function(card) {
+
+    card.addEventListener('click', function() {
+
+        this.classList.toggle('active');
+
+    });
+
+});
+
+</script>
