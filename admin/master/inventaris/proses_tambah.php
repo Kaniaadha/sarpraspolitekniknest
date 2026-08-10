@@ -5,33 +5,33 @@ require_once "../../../config/database.php";
 require_once "../../../helpers/activity_log.php";
 require_once "../foto/helper.php";
 require_once "../foto/config.php";
-require_once "../../../helpers/generate_kode.php";
+
 
 // ==============================
 // Ambil Data
 // ==============================
 
-$kode_inventaris = generateKode(
-    $conn,
-    "inventaris",
-    "kode_inventaris",
-    "INV"
-);
-$id_kategori       = (int) $_POST['id_kategori'];
-$nama_barang       = trim($_POST['nama_barang']);
-$merk              = trim($_POST['merk']);
-$spesifikasi       = trim($_POST['spesifikasi']);
+$kode_inventaris  = trim($_POST['kode_inventaris'] ?? '');
+$id_kategori      = (int) ($_POST['id_kategori'] ?? 0);
+$nama_barang      = trim($_POST['nama_barang'] ?? '');
+$merk             = trim($_POST['merk'] ?? '');
+$spesifikasi      = trim($_POST['spesifikasi'] ?? '');
 
-$jenis_penempatan  = $_POST['jenis_penempatan'];
+$jenis_penempatan = $_POST['jenis_penempatan'] ?? '';
 
-$id_ruangan        = !empty($_POST['id_ruangan']) ? (int) $_POST['id_ruangan'] : NULL;
-$id_public_space   = !empty($_POST['id_public_space']) ? (int) $_POST['id_public_space'] : NULL;
+$id_ruangan = !empty($_POST['id_ruangan'])
+    ? (int) $_POST['id_ruangan']
+    : NULL;
 
-$jumlah            = (int) $_POST['jumlah'];
-$kondisi           = $_POST['kondisi'];
-$tahun_perolehan   = trim($_POST['tahun_perolehan']);
-$sumber_perolehan  = trim($_POST['sumber_perolehan']);
-$status            = $_POST['status'];
+$id_public_space = !empty($_POST['id_public_space'])
+    ? (int) $_POST['id_public_space']
+    : NULL;
+
+$jumlah           = (int) ($_POST['jumlah'] ?? 0);
+$kondisi          = $_POST['kondisi'] ?? '';
+$tahun_perolehan  = trim($_POST['tahun_perolehan'] ?? '');
+$sumber_perolehan = trim($_POST['sumber_perolehan'] ?? '');
+$status           = $_POST['status'] ?? '';
 
 $currentYear = date('Y');
 /*
@@ -75,9 +75,9 @@ if (
 // Validasi Format Kode
 // ==============================
 
-if (!preg_match('/^INV\d{3}$/', $kode_inventaris)) {
+if (!preg_match('/^\.NBK\..+$/', $kode_inventaris)) {
 
-    $_SESSION['error'] = "Kode Inventaris harus berformat INV001.";
+    $_SESSION['error'] = "Kode Inventaris harus diawali dengan .NBK.";
 
     header("Location: tambah.php");
     exit;
@@ -159,20 +159,35 @@ else {
 // Validasi Kode Unik
 // ==============================
 
-$cekKode = mysqli_query($conn, "
-    SELECT id_inventaris
-    FROM inventaris
-    WHERE kode_inventaris='$kode_inventaris'
-");
+$stmtCek = mysqli_prepare(
+    $conn,
+    "SELECT id_inventaris
+     FROM inventaris
+     WHERE kode_inventaris = ?
+     LIMIT 1"
+);
 
-if (mysqli_num_rows($cekKode) > 0) {
+mysqli_stmt_bind_param(
+    $stmtCek,
+    "s",
+    $kode_inventaris
+);
+
+mysqli_stmt_execute($stmtCek);
+
+$resultCek = mysqli_stmt_get_result($stmtCek);
+
+if (mysqli_num_rows($resultCek) > 0) {
+
+    mysqli_stmt_close($stmtCek);
 
     $_SESSION['error'] = "Kode Inventaris sudah digunakan.";
 
     header("Location: tambah.php");
     exit;
-
 }
+
+mysqli_stmt_close($stmtCek);
 /*
 |--------------------------------------------------------------------------
 | Upload Foto
@@ -229,48 +244,92 @@ if ($foto !== null) {
 // Simpan Database
 // ==============================
 
-$id_ruangan_sql = is_null($id_ruangan) ? "NULL" : "'$id_ruangan'";
-$id_public_sql  = is_null($id_public_space) ? "NULL" : "'$id_public_space'";
-$tahun_sql      = ($tahun_perolehan === "") ? "NULL" : "'$tahun_perolehan'";
+$id_ruangan_sql = is_null($id_ruangan)
+    ? "NULL"
+    : "'$id_ruangan'";
 
-$query = mysqli_query($conn, "
-    INSERT INTO inventaris
-    (
-        kode_inventaris,
-        id_kategori,
-        id_ruangan,
-        id_public_space,
-        nama_barang,
-        merk,
-        spesifikasi,
-        jumlah,
-        kondisi,
-        tahun_perolehan,
-        sumber_perolehan,
-        status,
-        foto,
-        created_at,
-        updated_at
-    )
-    VALUES
-    (
-        '$kode_inventaris',
-        '$id_kategori',
-        $id_ruangan_sql,
-        $id_public_sql,
-        '$nama_barang',
-        '$merk',
-        '$spesifikasi',
-        '$jumlah',
-        '$kondisi',
-        $tahun_sql,
-        '$sumber_perolehan',
-       '$status',
-        " . ($foto ? "'$foto'" : "NULL") . ",
-        NOW(),
-        NOW()
-            )
-        ");
+$id_public_sql = is_null($id_public_space)
+    ? "NULL"
+    : "'$id_public_space'";
+
+$tahun_sql = ($tahun_perolehan === "")
+    ? "NULL"
+    : "'$tahun_perolehan'";
+
+try {
+
+    $query = mysqli_query($conn, "
+        INSERT INTO inventaris
+        (
+            kode_inventaris,
+            id_kategori,
+            id_ruangan,
+            id_public_space,
+            nama_barang,
+            merk,
+            spesifikasi,
+            jumlah,
+            kondisi,
+            tahun_perolehan,
+            sumber_perolehan,
+            status,
+            foto,
+            created_at,
+            updated_at
+        )
+        VALUES
+        (
+            '$kode_inventaris',
+            '$id_kategori',
+            $id_ruangan_sql,
+            $id_public_sql,
+            '$nama_barang',
+            '$merk',
+            '$spesifikasi',
+            '$jumlah',
+            '$kondisi',
+            $tahun_sql,
+            '$sumber_perolehan',
+            '$status',
+            " . ($foto ? "'$foto'" : "NULL") . ",
+            NOW(),
+            NOW()
+        )
+    ");
+
+} catch (mysqli_sql_exception $e) {
+
+    // Duplicate kode inventaris
+    if ($e->getCode() == 1062) {
+
+        if (
+            isset($destination) &&
+            file_exists($destination)
+        ) {
+            deletePhysicalFile($destination);
+        }
+
+        $_SESSION['error'] =
+            "Kode Inventaris sudah digunakan.";
+
+        header("Location: tambah.php");
+        exit;
+    }
+
+    // Error database lainnya
+    if (
+        isset($destination) &&
+        file_exists($destination)
+    ) {
+        deletePhysicalFile($destination);
+    }
+
+    $_SESSION['error'] =
+        "Data Inventaris gagal ditambahkan.";
+
+    header("Location: tambah.php");
+    exit;
+}
 
 // ==============================
 // Hasil
