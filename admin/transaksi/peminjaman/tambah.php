@@ -4,8 +4,6 @@ session_start();
 $menu = "peminjaman";
 
 // Cek login admin
- = "peminjaman";
-
 if (!isset($_SESSION['id_admin'])) {
     header("Location: ../../../login.php");
     exit;
