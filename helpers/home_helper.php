@@ -46,19 +46,54 @@ function getStatistik($conn)
     return [
 
         'lokasi' => mysqli_fetch_assoc(
-            mysqli_query($conn, "SELECT COUNT(*) AS total FROM lokasi WHERE status='aktif'")
+            mysqli_query(
+                $conn,
+                "SELECT COUNT(*) AS total
+                 FROM lokasi
+                 WHERE status='aktif'"
+            )
         )['total'],
+
 
         'ruangan' => mysqli_fetch_assoc(
-            mysqli_query($conn, "SELECT COUNT(*) AS total FROM ruangan WHERE status='aktif'")
+            mysqli_query(
+                $conn,
+                "SELECT COUNT(*) AS total
+                 FROM ruangan
+                 WHERE status='aktif'"
+            )
         )['total'],
+
 
         'public_space' => mysqli_fetch_assoc(
-            mysqli_query($conn, "SELECT COUNT(*) AS total FROM public_space WHERE status='aktif'")
+            mysqli_query(
+                $conn,
+                "SELECT COUNT(*) AS total
+                 FROM public_space
+                 WHERE status='aktif'"
+            )
         )['total'],
 
+
         'inventaris' => mysqli_fetch_assoc(
-            mysqli_query($conn, "SELECT COUNT(*) AS total FROM inventaris")
+            mysqli_query(
+                $conn,
+                "SELECT COUNT(*) AS total
+                 FROM inventaris"
+            )
+        )['total'],
+
+
+        'apar' => mysqli_fetch_assoc(
+            mysqli_query(
+                $conn,
+                "SELECT COALESCE(SUM(i.jumlah), 0) AS total
+                 FROM inventaris i
+                 INNER JOIN kategori k
+                     ON i.id_kategori = k.id_kategori
+                 WHERE k.nama_kategori = 'APAR'
+                 AND i.status = 'Aktif'"
+            )
         )['total']
 
     ];

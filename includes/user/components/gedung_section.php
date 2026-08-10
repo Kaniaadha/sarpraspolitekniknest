@@ -517,7 +517,7 @@ SMALL MOBILE
 
             </div>
 
-            <a href="gedung.php" class="gedung-link">
+            <a href="user/gedung.php" class="gedung-link">
 
                 Lihat Semua
 
@@ -534,7 +534,7 @@ SMALL MOBILE
                 <?php foreach($lokasiList as $lokasi): ?>
 
                     <a
-                        href="detail_gedung.php?id=<?= $lokasi['id_lokasi']; ?>"
+                        href="user/detail_gedung.php?id=<?= $lokasi['id_lokasi']; ?>"
                         class="gedung-card">
 
                         <div class="gedung-image">
