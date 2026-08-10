@@ -113,10 +113,10 @@ require_once "../../../includes/sidebar.php";
                         <thead class="table-secondary">
 
                             <tr>
-                                <th width="5%">No</th>
+                                <th width="5%" class="dt-type-string">No</th>
                                 <th>Kode Peminjaman</th>
                                 <th>Nama Peminjam</th>
-                                <th>NIM / NIP</th>
+                                <th class="dt-type-string">NIM / NIP</th>
                                 <th>Tanggal Pinjam</th>
                                 <th>Tanggal Kembali</th>
                                 <th>Status</th>
@@ -135,7 +135,7 @@ require_once "../../../includes/sidebar.php";
 
                                 <tr>
 
-                                    <td><?= $no++; ?></td>
+                                    <td class="text-start"><?= $no++; ?></td>
 
                                     <td>
                                         <strong><?= htmlspecialchars($row['kode_peminjaman']); ?></strong>
@@ -149,7 +149,7 @@ require_once "../../../includes/sidebar.php";
                                         </small>
                                     </td>
 
-                                    <td><?= htmlspecialchars($row['nim_nip']); ?></td>
+                                    <td class="text-start"><?= htmlspecialchars($row['nim_nip']); ?></td>
 
                                     <td><?= date('d-m-Y', strtotime($row['tanggal_pinjam'])); ?></td>
 
@@ -173,11 +173,11 @@ require_once "../../../includes/sidebar.php";
                                                 break;
 
                                             case "Selesai":
-                                                echo '<span class="badge bg-success">Selesai</span>';
+                                                echo '<span class="badge bg-success rounded-pill">Selesai</span>';
                                                 break;
 
                                             case "Ditolak":
-                                                echo '<span class="badge bg-danger">Ditolak</span>';
+                                                echo '<span class="badge bg-danger rounded-pill">Ditolak</span>';
                                                 break;
 
                                             default:
