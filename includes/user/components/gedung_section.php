@@ -1,14 +1,49 @@
 <style>
 
+/*==================================================
+GEDUNG
+==================================================*/
+
 .gedung-section{
 
-    padding:110px 0;
+    padding:60px 0 90px;
 
-    background:#fff;
+    background:#FFF9FC;
+
+    position:relative;
 
 }
 
+.gedung-section::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:220px;
+
+    background:linear-gradient(
+        180deg,
+        rgba(236,72,153,.05),
+        transparent
+    );
+
+    pointer-events:none;
+
+}
+
+
+/*==================================================
+HEADER
+==================================================*/
+
 .gedung-header{
+
+    position:relative;
 
     display:flex;
 
@@ -16,25 +51,31 @@
 
     align-items:end;
 
-    margin-bottom:55px;
-
     flex-wrap:wrap;
 
-    gap:20px;
+    gap:25px;
+
+    margin-bottom:55px;
 
 }
 
 .gedung-subtitle{
 
-    display:inline-block;
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
 
     padding:10px 22px;
 
     border-radius:50px;
 
-    background:rgba(236,72,153,.10);
+    background:#FCE7F3;
 
-    color:#EC4899;
+    color:#DB2777;
+
+    font-size:14px;
 
     font-weight:600;
 
@@ -44,13 +85,13 @@
 
 .gedung-title{
 
-    font-size:46px;
+    font-size:44px;
 
     font-weight:800;
 
     color:#222;
 
-    margin-bottom:12px;
+    margin-bottom:14px;
 
 }
 
@@ -58,31 +99,42 @@
 
     max-width:620px;
 
-    color:#6b7280;
-
-    font-size:18px;
+    color:#6B7280;
 
     line-height:1.8;
+
+    font-size:17px;
 
 }
 
 .gedung-link{
 
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:10px;
+
     text-decoration:none;
+
+    color:#DB2777;
 
     font-weight:700;
 
-    color:#EC4899;
-
-    transition:.3s;
+    transition:.35s;
 
 }
 
 .gedung-link:hover{
 
-    color:#FF7A48;
+    color:#FB923C;
 
 }
+
+
+/*==================================================
+GRID
+==================================================*/
 
 .gedung-grid{
 
@@ -94,21 +146,30 @@
 
 }
 
+
+/*==================================================
+CARD
+==================================================*/
+
 .gedung-card{
 
-    background:#fff;
-
-    border-radius:26px;
+    position:relative;
 
     overflow:hidden;
 
-    box-shadow:0 12px 35px rgba(0,0,0,.08);
+    background:#fff;
 
-    transition:.35s;
+    border-radius:28px;
+
+    border:1px solid #FCE7F3;
 
     text-decoration:none;
 
     color:inherit;
+
+    transition:.35s;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
 
 }
 
@@ -116,17 +177,25 @@
 
     transform:translateY(-10px);
 
-    box-shadow:0 20px 45px rgba(236,72,153,.20);
+    border-color:#FB923C;
+
+    box-shadow:
+        0 25px 50px rgba(251,146,60,.22);
 
 }
+
+
+/*==================================================
+IMAGE
+==================================================*/
 
 .gedung-image{
 
     position:relative;
 
-    overflow:hidden;
+    height:210px;
 
-    height:240px;
+    overflow:hidden;
 
 }
 
@@ -155,18 +224,20 @@
     inset:0;
 
     background:linear-gradient(
-
         rgba(0,0,0,0),
-
-        rgba(0,0,0,.55)
-
+        rgba(0,0,0,.45)
     );
 
 }
 
+
+/*==================================================
+BODY
+==================================================*/
+
 .gedung-body{
 
-    padding:26px;
+    padding:24px;
 
 }
 
@@ -176,17 +247,25 @@
 
     font-weight:700;
 
-    margin-bottom:22px;
-
     color:#222;
 
+    margin-bottom:16px;
+
 }
+
+
+/*==================================================
+INFO
+==================================================*/
 
 .gedung-info{
 
     display:flex;
+
     flex-direction:column;
+
     gap:14px;
+
     margin-bottom:24px;
 
 }
@@ -194,9 +273,13 @@
 .gedung-item{
 
     display:flex;
+
     align-items:center;
+
     gap:12px;
+
     color:#555;
+
     font-size:15px;
 
 }
@@ -204,20 +287,33 @@
 .gedung-item i{
 
     width:36px;
+
     height:36px;
+
     border-radius:50%;
+
     display:flex;
+
     justify-content:center;
+
     align-items:center;
+
     color:#fff;
+
     background:linear-gradient(
         135deg,
         #EC4899,
-        #FF7A48
+        #FB923C
     );
+
     flex-shrink:0;
 
 }
+
+
+/*==================================================
+BUTTON
+==================================================*/
 
 .gedung-button{
 
@@ -227,38 +323,41 @@
 
     align-items:center;
 
-    height:52px;
+    gap:8px;
+
+    height:48px;
 
     border-radius:14px;
-
-    background:linear-gradient(
-
-        135deg,
-
-        #EC4899,
-
-        #FF7A48
-
-    );
 
     color:#fff;
 
     font-weight:700;
 
-    transition:.3s;
+    background:linear-gradient(
+        135deg,
+        #EC4899,
+        #FB923C
+    );
+
+    transition:.35s;
 
 }
 
 .gedung-card:hover .gedung-button{
 
-    letter-spacing:.5px;
+    letter-spacing:.4px;
+
+    box-shadow:
+        0 15px 35px rgba(251,146,60,.28);
 
 }
-/*==================================
-RESPONSIVE
-==================================*/
 
-@media(max-width:768px){
+
+/*==================================================
+RESPONSIVE
+==================================================*/
+
+@media(max-width:1200px){
 
     .gedung-grid{
 
@@ -294,6 +393,50 @@ RESPONSIVE
 
     }
 
+}
+
+
+/*==================================================
+TABLET
+==================================================*/
+
+@media(max-width:992px){
+
+    .gedung-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .gedung-title{
+
+        font-size:38px;
+
+    }
+
+}
+
+
+/*==================================================
+MOBILE
+==================================================*/
+
+@media(max-width:768px){
+
+    .gedung-section{
+
+        padding:60px 0;
+
+    }
+
+    .gedung-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
     .gedung-title{
 
         font-size:32px;
@@ -306,59 +449,38 @@ RESPONSIVE
 
     }
 
-}
-
-@media(max-width:768px){
-
-    .gedung-section{
-
-        padding:80px 0;
-
-    }
-
-    .gedung-header{
-
-        flex-direction:column;
-
-        align-items:flex-start;
-
-    }
-
-    .gedung-title{
-
-        font-size:34px;
-
-    }
-
-    .gedung-description{
-
-        font-size:15px;
-
-    }
-
-    .gedung-grid{
-
-        grid-template-columns:1fr;
-
-    }
-
     .gedung-image{
 
         height:220px;
 
     }
 
+}
+
+
+/*==================================================
+SMALL MOBILE
+==================================================*/
+
+@media(max-width:576px){
+
     .gedung-body{
 
-        padding:22px;
+        padding:20px;
 
     }
 
-    .gedung-info{
+    .gedung-name{
 
-        flex-direction:column;
+        font-size:22px;
 
-        gap:14px;
+    }
+
+    .gedung-button{
+
+        height:45px;
+
+        font-size:15px;
 
     }
 

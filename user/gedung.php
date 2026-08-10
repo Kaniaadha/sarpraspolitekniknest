@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+$currentPage = 'gedung';
 require_once '../config/database.php';
 require_once '../helpers/gedung_helper.php';
 
