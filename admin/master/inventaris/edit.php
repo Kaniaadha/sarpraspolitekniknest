@@ -166,18 +166,23 @@ value="<?= $data['foto']; ?>">
 
 <div class="col-md-4 mb-3">
 
-<label class="form-label">
+    <label class="form-label">
+        Kode Inventaris
+    </label>
 
-Kode Inventaris
+    <input
+        type="text"
+        name="kode_inventaris"
+        class="form-control"
+        value="<?= htmlspecialchars(
+            $old['kode_inventaris'] ?? $data['kode_inventaris']
+        ); ?>"
+        placeholder=".NBK.L3.22"
+        required>
 
-</label>
-
-<input
-type="text"
-name="kode_inventaris"
-class="form-control"
-value="<?= htmlspecialchars($old['kode_inventaris'] ?? $data['kode_inventaris']); ?>"
-readonly>
+    <div class="form-text">
+        Kode harus diawali dengan <strong>.NBK.</strong>
+    </div>
 
 </div>
 
