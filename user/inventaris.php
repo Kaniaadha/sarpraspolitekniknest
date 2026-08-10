@@ -7,6 +7,7 @@ $currentPage = 'inventaris';
 require_once '../config/database.php';
 
 $baseUrl = "../";
+$detailId = isset($_GET['id']) ? (int) $_GET['id'] : 0;                                                                        $detailId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 /*
 |--------------------------------------------------------------------------
 | DATA INVENTARIS
@@ -2800,7 +2801,28 @@ document.addEventListener('DOMContentLoaded', function () {
     );
 
 });
+/* ==================================================
+   AUTO OPEN DETAIL FROM URL
+================================================== */
 
+document.addEventListener('DOMContentLoaded', function () {
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const detailId = urlParams.get('id');
+
+    if (!detailId) {
+        return;
+    }
+
+    const detailButton = document.querySelector(
+        '.btn-detail[data-id="' + detailId + '"]'
+    );
+
+    if (detailButton) {
+        detailButton.click();
+    }
+
+});
 </script>
 
 

@@ -4,6 +4,7 @@
 
         <div class="row gy-5">
 
+
             <!-- ==========================
                  BRAND
             =========================== -->
@@ -27,6 +28,7 @@
 
                 </div>
 
+
                 <p class="footer-desc">
 
                     Sistem Informasi Sarana dan Prasarana
@@ -34,11 +36,12 @@
                     memudahkan pengelolaan gedung,
                     ruangan, public space, inventaris,
                     proses peminjaman, serta pelaporan
-                    kerusakan secara digital.
+                    kerusakan dan kehilangan secara digital.
 
                 </p>
 
             </div>
+
 
             <!-- ==========================
                  MENU
@@ -52,53 +55,101 @@
 
                 </h5>
 
+
                 <ul class="footer-menu">
 
                     <li>
+
                         <a href="<?= $baseUrl; ?>index.php">
+
                             Beranda
+
                         </a>
+
                     </li>
 
+
                     <li>
+
                         <a href="<?= $baseUrl; ?>user/gedung.php">
+
                             Gedung
+
                         </a>
+
                     </li>
 
+
                     <li>
+
                         <a href="<?= $baseUrl; ?>user/ruangan.php">
+
                             Ruangan
+
                         </a>
+
                     </li>
 
+
                     <li>
+
                         <a href="<?= $baseUrl; ?>user/public_space.php">
+
                             Public Space
+
                         </a>
+
                     </li>
 
+
                     <li>
+
                         <a href="<?= $baseUrl; ?>user/inventaris.php">
+
                             Inventaris
+
                         </a>
+
                     </li>
 
+
                     <li>
+
                         <a href="<?= $baseUrl; ?>user/peminjaman.php">
+
                             Peminjaman
+
                         </a>
+
                     </li>
 
+
                     <li>
+
                         <a href="<?= $baseUrl; ?>user/lapor_kerusakan.php">
+
                             Lapor Kerusakan
+
                         </a>
+
                     </li>
+
+
+                    <li>
+
+                        <a href="<?= $baseUrl; ?>user/lapor/laporan_kehilangan/">
+
+                            Lapor Kehilangan
+
+                        </a>
+
+                    </li>
+
 
                 </ul>
 
             </div>
+
 
             <!-- ==========================
                  KONTAK
@@ -112,7 +163,11 @@
 
                 </h5>
 
+
                 <ul class="footer-contact">
+
+
+                    <!-- ALAMAT -->
 
                     <li>
 
@@ -120,12 +175,20 @@
 
                         <span>
 
-                            Jl. Raya Solo - Sukoharjo,
-                            Jawa Tengah
+                            Jl. Raya Telukan - Cuplik Km.1,
+                            Dkh. Padas Mas Sudimoro
+                            Rt 003/010, Kel. Parangjoro,
+                            Kec. Grogol ~ Indonesia,
+                            Sawah, Parangjoro,
+                            Kec. Sukoharjo,
+                            Prop, Jawa Tengah 57552
 
                         </span>
 
                     </li>
+
+
+                    <!-- EMAIL -->
 
                     <li>
 
@@ -133,11 +196,19 @@
 
                         <span>
 
-                            info@polinest.ac.id
+                            <a
+                                href="mailto:marketing@politekniknest.ac.id">
+
+                                marketing@politekniknest.ac.id
+
+                            </a>
 
                         </span>
 
                     </li>
+
+
+                    <!-- TELEPON -->
 
                     <li>
 
@@ -145,15 +216,43 @@
 
                         <span>
 
-                            (0271) 000000
+                            <a href="tel:08112951003">
+
+                                0811 2951003
+
+                            </a>
 
                         </span>
 
                     </li>
 
+
+                    <!-- WEBSITE -->
+
+                    <li>
+
+                        <i class="bi bi-globe"></i>
+
+                        <span>
+
+                            <a
+                                href="https://politekniknest.ac.id"
+                                target="_blank"
+                                rel="noopener noreferrer">
+
+                                politekniknest.ac.id
+
+                            </a>
+
+                        </span>
+
+                    </li>
+
+
                 </ul>
 
             </div>
+
 
             <!-- ==========================
                  SOCIAL
@@ -167,39 +266,72 @@
 
                 </h5>
 
+
                 <div class="footer-social">
 
-                    <a href="#">
+
+                    <!-- INSTAGRAM -->
+
+                    <a
+                        href="https://www.instagram.com/politekniknest?igsh=ZXAwdW5rcGljOTFl"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Instagram Politeknik NEST">
 
                         <i class="bi bi-instagram"></i>
 
                     </a>
 
-                    <a href="#">
+
+                    <!-- FACEBOOK -->
+
+                    <a
+                        href="https://www.facebook.com/share/1GnkpXruPT/?mibextid=wwXIfr"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Facebook Politeknik NEST">
 
                         <i class="bi bi-facebook"></i>
 
                     </a>
 
-                    <a href="#">
+
+                    <!-- WEBSITE -->
+
+                    <a
+                        href="https://politekniknest.ac.id"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Website Politeknik NEST">
 
                         <i class="bi bi-globe"></i>
 
                     </a>
 
-                    <a href="#">
+
+                    <!-- YOUTUBE -->
+
+                    <a
+                        href="https://youtube.com/@politekniknest.official?si=MzuuWgkdX3AnxxPq"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="YouTube Politeknik NEST">
 
                         <i class="bi bi-youtube"></i>
 
                     </a>
 
+
                 </div>
 
             </div>
 
+
         </div>
 
+
         <hr class="footer-divider">
+
 
         <div class="footer-bottom">
 
@@ -211,13 +343,16 @@
 
         </div>
 
+
     </div>
 
 </footer>
 
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script src="<?= $baseUrl; ?>assets/js/user/main.js"></script>
+
 
 </body>
 
