@@ -106,10 +106,8 @@
 
 
                 <li class="nav-item">
-
-                    <a
-                        class="nav-link <?= ($currentPage == 'peminjaman') ? 'active' : ''; ?>"
-                        href="<?= $baseUrl; ?>user/peminjaman.php">
+                    <a class="nav-link <?= ($currentPage == 'peminjaman') ? 'active' : ''; ?>"
+                        href="<?= $baseUrl; ?>user/peminjaman/index.php">
 
                         Peminjaman
 
