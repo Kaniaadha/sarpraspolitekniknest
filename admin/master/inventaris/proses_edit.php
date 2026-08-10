@@ -76,9 +76,9 @@ if (
 // Validasi Format Kode
 // ==============================
 
-if (!preg_match('/^INV\d{3}$/', $kode_inventaris)) {
+if (!preg_match('/^\.NBK\..+$/', $kode_inventaris)) {
 
-    $_SESSION['error'] = "Kode Inventaris harus berformat INV001.";
+    $_SESSION['error'] = "Kode Inventaris harus diawali dengan .NBK.";
 
     header("Location: edit.php?id=$id_inventaris");
     exit;

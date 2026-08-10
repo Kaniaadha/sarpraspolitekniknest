@@ -1,4 +1,26 @@
+<?php
+
+/*==================================================
+  DATA APAR
+==================================================*/
+
+$apar = mysqli_fetch_assoc(
+    mysqli_query($conn, "
+        SELECT COALESCE(SUM(i.jumlah), 0) AS total
+        FROM inventaris i
+        INNER JOIN kategori k
+            ON i.id_kategori = k.id_kategori
+        WHERE k.nama_kategori = 'APAR'
+    ")
+);
+
+$statistik['apar'] = $apar['total'];
+
+?>
+
+
 <style>
+
 /*==================================================
 STATISTIK
 ==================================================*/
@@ -14,6 +36,11 @@ STATISTIK
     );
 
 }
+
+
+/*==================================================
+HEADER
+==================================================*/
 
 .statistik-header{
 
@@ -69,19 +96,17 @@ STATISTIK
 
 }
 
+
 /*=================================
 GRID
 =================================*/
 
 .statistik-grid{
-
     display:grid;
-
-    grid-template-columns:repeat(4,1fr);
-
-    gap:28px;
-
+    grid-template-columns:repeat(5,1fr);
+    gap:20px;
 }
+
 
 /*=================================
 CARD
@@ -139,6 +164,7 @@ CARD
 
 }
 
+
 /*=================================
 ICON
 =================================*/
@@ -175,6 +201,7 @@ ICON
 
 }
 
+
 /*=================================
 NUMBER
 =================================*/
@@ -193,6 +220,7 @@ NUMBER
 
 }
 
+
 /*=================================
 TITLE
 =================================*/
@@ -206,6 +234,7 @@ TITLE
     color:#444;
 
 }
+
 
 /*=================================
 LINK
@@ -235,6 +264,7 @@ LINK
 
 }
 
+
 /*=================================
 GEDUNG
 =================================*/
@@ -254,6 +284,7 @@ GEDUNG
     );
 
 }
+
 
 /*=================================
 RUANGAN
@@ -275,6 +306,7 @@ RUANGAN
 
 }
 
+
 /*=================================
 PUBLIC SPACE
 =================================*/
@@ -295,6 +327,7 @@ PUBLIC SPACE
 
 }
 
+
 /*=================================
 INVENTARIS
 =================================*/
@@ -314,6 +347,28 @@ INVENTARIS
     );
 
 }
+
+
+/*=================================
+APAR
+=================================*/
+
+.card-apar::before{
+
+    background:#EF4444;
+
+}
+
+.card-apar .stat-icon{
+
+    background:linear-gradient(
+        135deg,
+        #EF4444,
+        #F97316
+    );
+
+}
+
 
 /*=================================
 RESPONSIVE
@@ -399,11 +454,16 @@ RESPONSIVE
 
 }
 
-@media(max-width:768px){
+
+/*=================================
+SMALL MOBILE
+=================================*/
+
+@media(max-width:576px){
 
     .statistik-section{
 
-        padding:70px 0;
+        padding:60px 0;
 
     }
 
@@ -416,12 +476,6 @@ RESPONSIVE
     .statistik-subtitle{
 
         font-size:15px;
-
-    }
-
-    .statistik-grid{
-
-        grid-template-columns:1fr;
 
     }
 
@@ -451,176 +505,250 @@ RESPONSIVE
 
 </style>
 
+
 <section class="statistik-section">
 
-<div class="container">
+    <div class="container">
 
-<div class="statistik-header">
 
-<span class="statistik-badge">
+        <!-- ================= HEADER ================= -->
 
-<i class="bi bi-bar-chart-fill"></i>
+        <div class="statistik-header">
 
-Statistik Kampus
+            <span class="statistik-badge">
 
-</span>
+                <i class="bi bi-bar-chart-fill"></i>
 
-<h2 class="statistik-title">
+                Statistik Kampus
 
-Data Sarana & Prasarana
+            </span>
 
-</h2>
 
-<p class="statistik-subtitle">
+            <h2 class="statistik-title">
 
-Lihat ringkasan jumlah gedung, ruangan, public space, dan inventaris
-yang tersedia di lingkungan Politeknik Nest.
+                Data Sarana & Prasarana
 
-</p>
+            </h2>
 
-</div>
 
-<div class="statistik-grid">
+            <p class="statistik-subtitle">
 
-<!-- ================= GEDUNG ================= -->
+                Lihat ringkasan jumlah gedung, ruangan,
+                public space, inventaris, dan APAR
+                yang tersedia di lingkungan Politeknik Nest.
 
-<a href="gedung.php"
+            </p>
 
-class="stat-card card-gedung">
+        </div>
 
-<div class="stat-icon">
 
-<i class="bi bi-building"></i>
+        <!-- ================= GRID ================= -->
 
-</div>
+        <div class="statistik-grid">
 
-<div class="stat-number">
 
-<?= number_format($statistik['lokasi']) ?>
+            <!-- ================= GEDUNG ================= -->
 
-</div>
+            <a
+                href="user/gedung.php"
+                class="stat-card card-gedung">
 
-<div class="stat-label">
+                <div class="stat-icon">
 
-Gedung
+                    <i class="bi bi-building"></i>
 
-</div>
+                </div>
 
-<div class="stat-link">
 
-Lihat Detail
+                <div class="stat-number">
 
-<i class="bi bi-arrow-right"></i>
+                    <?= number_format(
+                        $statistik['lokasi']
+                    ); ?>
 
-</div>
+                </div>
 
-</a>
 
-<!-- ================= RUANGAN ================= -->
+                <div class="stat-label">
 
-<a href="ruangan.php"
+                    Gedung
 
-class="stat-card card-ruangan">
+                </div>
 
-<div class="stat-icon">
 
-<i class="bi bi-door-open"></i>
+                <div class="stat-link">
 
-</div>
+                    Lihat Detail
 
-<div class="stat-number">
+                    <i class="bi bi-arrow-right"></i>
 
-<?= number_format($statistik['ruangan']) ?>
+                </div>
 
-</div>
+            </a>
 
-<div class="stat-label">
 
-Ruangan
+            <!-- ================= RUANGAN ================= -->
 
-</div>
+            <a
+                href="user/ruangan.php"
+                class="stat-card card-ruangan">
 
-<div class="stat-link">
+                <div class="stat-icon">
 
-Lihat Detail
+                    <i class="bi bi-door-open"></i>
 
-<i class="bi bi-arrow-right"></i>
+                </div>
 
-</div>
 
-</a>
+                <div class="stat-number">
 
-<!-- ================= PUBLIC SPACE ================= -->
+                    <?= number_format(
+                        $statistik['ruangan']
+                    ); ?>
 
-<a href="public_space.php"
+                </div>
 
-class="stat-card card-public">
 
-<div class="stat-icon">
+                <div class="stat-label">
 
-<i class="bi bi-tree"></i>
+                    Ruangan
 
-</div>
+                </div>
 
-<div class="stat-number">
 
-<?= number_format($statistik['public_space']) ?>
+                <div class="stat-link">
 
-</div>
+                    Lihat Detail
 
-<div class="stat-label">
+                    <i class="bi bi-arrow-right"></i>
 
-Public Space
+                </div>
 
-</div>
+            </a>
 
-<div class="stat-link">
 
-Lihat Detail
+            <!-- ================= PUBLIC SPACE ================= -->
 
-<i class="bi bi-arrow-right"></i>
+            <a
+                href="user/public_space.php"
+                class="stat-card card-public">
 
-</div>
+                <div class="stat-icon">
 
-</a>
+                    <i class="bi bi-tree"></i>
 
+                </div>
 
-<!-- ================= INVENTARIS ================= -->
 
-<a href="inventaris.php"
+                <div class="stat-number">
 
-class="stat-card card-inventaris">
+                    <?= number_format(
+                        $statistik['public_space']
+                    ); ?>
 
-<div class="stat-icon">
+                </div>
 
-<i class="bi bi-box-seam"></i>
 
-</div>
+                <div class="stat-label">
 
-<div class="stat-number">
+                    Public Space
 
-<?= number_format($statistik['inventaris']) ?>
+                </div>
 
-</div>
 
-<div class="stat-label">
+                <div class="stat-link">
 
-Inventaris
+                    Lihat Detail
 
-</div>
+                    <i class="bi bi-arrow-right"></i>
 
-<div class="stat-link">
+                </div>
 
-Lihat Detail
+            </a>
 
-<i class="bi bi-arrow-right"></i>
 
-</div>
+            <!-- ================= INVENTARIS ================= -->
 
-</a>
+            <a
+                href="user/inventaris.php"
+                class="stat-card card-inventaris">
 
-</div>
+                <div class="stat-icon">
 
-</div>
+                    <i class="bi bi-box-seam"></i>
+
+                </div>
+
+
+                <div class="stat-number">
+
+                    <?= number_format(
+                        $statistik['inventaris']
+                    ); ?>
+
+                </div>
+
+
+                <div class="stat-label">
+
+                    Inventaris
+
+                </div>
+
+
+                <div class="stat-link">
+
+                    Lihat Detail
+
+                    <i class="bi bi-arrow-right"></i>
+
+                </div>
+
+            </a>
+
+
+            <!-- ================= APAR ================= -->
+
+            <a
+                href="user/inventaris.php"
+                class="stat-card card-apar">
+
+                <div class="stat-icon">
+
+                    <i class="bi bi-fire"></i>
+
+                </div>
+
+
+                <div class="stat-number">
+
+                    <?= number_format(
+                        $statistik['apar']
+                    ); ?>
+
+                </div>
+
+
+                <div class="stat-label">
+
+                    APAR
+
+                </div>
+
+
+                <div class="stat-link">
+
+                    Lihat Detail
+
+                    <i class="bi bi-arrow-right"></i>
+
+                </div>
+
+            </a>
+
+
+        </div>
+
+    </div>
 
 </section>

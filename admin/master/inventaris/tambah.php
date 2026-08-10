@@ -9,14 +9,7 @@ if (!isset($_SESSION['id_admin'])) {
 }
 
 require_once "../../../config/database.php";
-require_once "../../../helpers/generate_kode.php";
 
-$kodeInventaris = generateKode(
-    $conn,
-    "inventaris",
-    "kode_inventaris",
-    "INV"
-);
 $old = $_SESSION['old'] ?? [];
 
 // ======================
@@ -146,17 +139,21 @@ Form Tambah Inventaris
 
 <div class="col-md-4 mb-3">
 
-<label class="form-label">
-Kode Inventaris
-</label>
+    <label class="form-label">
+        Kode Inventaris
+    </label>
 
-<input
-type="text"
-name="kode_inventaris"
-class="form-control"
-value="<?= htmlspecialchars($old['kode_inventaris'] ?? $kodeInventaris); ?>"
-readonly
-required>
+    <input
+        type="text"
+        name="kode_inventaris"
+        class="form-control"
+        value="<?= htmlspecialchars($old['kode_inventaris'] ?? '') ?>"
+        placeholder=".NBK.L3.22"
+        required>
+
+    <div class="form-text">
+        Kode harus diawali dengan <strong>.NBK.</strong>
+    </div>
 
 </div>
 
