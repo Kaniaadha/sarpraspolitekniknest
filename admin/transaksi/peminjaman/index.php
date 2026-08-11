@@ -28,9 +28,16 @@ if ($status == "Menunggu") {
 } elseif ($status == "Terlambat") {
     $where = "
         WHERE
+        (
             p.status = 'Dipinjam'
-        AND
-            p.tanggal_kembali < CURDATE()
+            AND p.tanggal_kembali < CURDATE()
+        )
+        OR
+        (
+            p.status = 'Selesai'
+            AND p.tanggal_pengembalian IS NOT NULL
+            AND p.tanggal_pengembalian > p.tanggal_kembali
+        )
     ";
 }
 
@@ -187,6 +194,7 @@ require_once "../../../includes/sidebar.php";
                                                 break;
                                         }
 
+                                        // Terlambat dan belum dikembalikan
                                         if (
                                             $row['status'] == "Dipinjam" &&
                                             strtotime($row['tanggal_kembali']) < strtotime(date('Y-m-d'))
@@ -199,7 +207,32 @@ require_once "../../../includes/sidebar.php";
                                             echo '<br>';
                                             echo '<span class="badge bg-danger mt-1">
                                                     Terlambat ' . $hariTerlambat . ' Hari
-                                                  </span>';
+                                                </span>';
+
+                                            echo '<br>';
+                                            echo '<small class="text-danger">
+                                                    Belum dikembalikan
+                                                </small>';
+                                        }
+
+                                        // Sudah dikembalikan tetapi terlambat
+                                        if (
+                                            $row['status'] == "Selesai" &&
+                                            !empty($row['tanggal_pengembalian']) &&
+                                            strtotime($row['tanggal_pengembalian']) > strtotime($row['tanggal_kembali'])
+                                        ) {
+
+                                            $hariTerlambat = floor(
+                                                (
+                                                    strtotime($row['tanggal_pengembalian']) -
+                                                    strtotime($row['tanggal_kembali'])
+                                                ) / 86400
+                                            );
+
+                                            echo '<br>';
+                                            echo '<span class="badge bg-warning text-dark mt-1">
+                                                    Dikembalikan Terlambat ' . $hariTerlambat . ' Hari
+                                                </span>';
                                         }
                                         ?>
 
