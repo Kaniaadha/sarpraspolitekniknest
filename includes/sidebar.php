@@ -119,6 +119,14 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="<?= BASE_URL; ?>/admin/transaksi/pelaporan/index.php"
+                        class="nav-link <?= (isset($menu) && $menu == 'pelaporan') ? 'active' : ''; ?>">
+                        <i class="nav-icon bi bi-megaphone-fill"></i>
+                        <p>Pelaporan</p>
+                    </a>
+                </li>
+
                 <!-- LAPORAN -->
                 <li class="nav-header">LAPORAN</li>
 

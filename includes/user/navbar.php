@@ -115,59 +115,15 @@
 
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link <?= ($currentPage == 'lapor') ? 'active' : ''; ?>"
+                        href="<?= $baseUrl; ?>user/lapor.php">
 
-                <!-- ==========================================
-                     LAPORAN
-                =========================================== -->
-
-                <li class="nav-item dropdown">
-
-                    <a
-                        class="nav-link dropdown-toggle <?= ($currentPage == 'lapor') ? 'active' : ''; ?>"
-                        href="#"
-                        id="laporanDropdown"
-                        role="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false">
-
-                        Laporan
+                        Lapor
 
                     </a>
 
-
-                    <ul
-                        class="dropdown-menu"
-                        aria-labelledby="laporanDropdown">
-
-                        <li>
-
-                            <a
-                                class="dropdown-item"
-                                href="<?= $baseUrl; ?>user/lapor_kerusakan.php">
-
-                                Laporan Kerusakan
-
-                            </a>
-
-                        </li>
-
-
-                        <li>
-
-                            <a
-                                class="dropdown-item"
-                                href="<?= $baseUrl; ?>user/lapor_kehilangan.php">
-
-                                Laporan Kehilangan
-
-                            </a>
-
-                        </li>
-
-                    </ul>
-
                 </li>
-
 
                 <!-- Login -->
 
