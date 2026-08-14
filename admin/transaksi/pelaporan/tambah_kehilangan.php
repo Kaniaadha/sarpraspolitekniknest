@@ -3,6 +3,7 @@ session_start();
 
 $menu = "pelaporan";
 
+// Cek login admin
 if (!isset($_SESSION['id_admin'])) {
     header("Location: ../../../login.php");
     exit;
@@ -18,43 +19,24 @@ require_once "../../../helpers/activity_log.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $nama_pelapor       = trim($_POST['nama_pelapor'] ?? '');
-    $id_inventaris      = (int) ($_POST['id_inventaris'] ?? 0);
-    $bagian_rusak       = trim($_POST['bagian_rusak'] ?? '');
-    $jenis_kerusakan    = trim($_POST['jenis_kerusakan'] ?? '');
-    $tingkat_kerusakan  = trim($_POST['tingkat_kerusakan'] ?? '');
-    $kronologi          = trim($_POST['kronologi'] ?? '');
-
-    $foto = $_FILES['foto'] ?? null;
+    $nama_pelapor      = trim($_POST['nama_pelapor'] ?? '');
+    $id_inventaris     = (int) ($_POST['id_inventaris'] ?? 0);
+    $lokasi_kehilangan = trim($_POST['lokasi_kehilangan'] ?? '');
+    $kronologi         = trim($_POST['kronologi'] ?? '');
 
 
     // ==========================================
-    // VALIDASI
+    // VALIDASI DATA
     // ==========================================
 
     if (
         $nama_pelapor === '' ||
         $id_inventaris <= 0 ||
-        $bagian_rusak === '' ||
-        $jenis_kerusakan === '' ||
-        $tingkat_kerusakan === '' ||
+        $lokasi_kehilangan === '' ||
         $kronologi === ''
     ) {
         $_SESSION['error'] = "Semua data wajib diisi.";
-        header("Location: tambah_kerusakan.php");
-        exit;
-    }
-
-
-    // ==========================================
-    // VALIDASI TINGKAT KERUSAKAN
-    // ==========================================
-
-    $tingkatValid = ['Ringan', 'Sedang', 'Berat'];
-
-    if (!in_array($tingkat_kerusakan, $tingkatValid, true)) {
-        $_SESSION['error'] = "Tingkat kerusakan tidak valid.";
-        header("Location: tambah_kerusakan.php");
+        header("Location: tambah_kehilangan.php");
         exit;
     }
 
@@ -85,101 +67,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         mysqli_stmt_close($stmtInventaris);
 
-        $_SESSION['error'] = "Inventaris tidak ditemukan atau tidak aktif.";
-        header("Location: tambah_kerusakan.php");
+        $_SESSION['error'] =
+            "Inventaris tidak ditemukan atau tidak aktif.";
+
+        header("Location: tambah_kehilangan.php");
         exit;
     }
 
     mysqli_stmt_close($stmtInventaris);
-
-
-    // ==========================================
-    // VALIDASI FOTO
-    // ==========================================
-
-    if (!$foto || $foto['error'] !== UPLOAD_ERR_OK) {
-
-        $_SESSION['error'] = "Foto kerusakan wajib diunggah.";
-        header("Location: tambah_kerusakan.php");
-        exit;
-    }
-
-
-    $maxSize = 5 * 1024 * 1024;
-
-    if ($foto['size'] > $maxSize) {
-
-        $_SESSION['error'] = "Ukuran foto maksimal 5 MB.";
-        header("Location: tambah_kerusakan.php");
-        exit;
-    }
-
-
-    $mimeValid = [
-        'image/jpeg' => 'jpg',
-        'image/png'  => 'png',
-        'image/webp' => 'webp'
-    ];
-
-    $finfo = finfo_open(FILEINFO_MIME_TYPE);
-    $mimeType = finfo_file($finfo, $foto['tmp_name']);
-    finfo_close($finfo);
-
-
-    if (!isset($mimeValid[$mimeType])) {
-
-        $_SESSION['error'] = "Format foto harus JPG, PNG, atau WEBP.";
-        header("Location: tambah_kerusakan.php");
-        exit;
-    }
-
-
-    // ==========================================
-    // FOLDER UPLOAD
-    // ==========================================
-
-    $folderUpload = __DIR__ . "/../../../uploads/kerusakan/";
-
-    if (!is_dir($folderUpload)) {
-
-        if (!mkdir($folderUpload, 0755, true)) {
-
-            $_SESSION['error'] =
-                "Folder penyimpanan foto tidak dapat dibuat.";
-
-            header("Location: tambah_kerusakan.php");
-            exit;
-        }
-    }
-
-
-    // ==========================================
-    // NAMA FILE
-    // ==========================================
-
-    $ekstensi = $mimeValid[$mimeType];
-
-    $namaFile =
-        bin2hex(random_bytes(16)) . '.' . $ekstensi;
-
-    $pathFile =
-        $folderUpload . $namaFile;
-
-    $pathDatabase =
-        'uploads/kerusakan/' . $namaFile;
-
-
-    // ==========================================
-    // UPLOAD FOTO
-    // ==========================================
-
-    if (!move_uploaded_file($foto['tmp_name'], $pathFile)) {
-
-        $_SESSION['error'] = "Foto gagal diunggah.";
-
-        header("Location: tambah_kerusakan.php");
-        exit;
-    }
 
 
     // ==========================================
@@ -191,28 +86,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
 
         // ======================================
-        // Generate Kode Laporan
-        // Format: KRS-YYMMDD-001
+        // GENERATE KODE LAPORAN
+        // Format: KHL-YYMMDD-001
         // ======================================
 
         $tanggalKode = date('ymd');
 
         $stmtKode = mysqli_prepare($conn, "
             SELECT MAX(
-                CAST(SUBSTRING_INDEX(kode_kerusakan, '-', -1) AS UNSIGNED)
+                CAST(SUBSTRING_INDEX(kode_kehilangan, '-', -1) AS UNSIGNED)
             ) AS nomor_terakhir
-            FROM kerusakan
+            FROM kehilangan
             WHERE tanggal_lapor = CURDATE()
-            AND kode_kerusakan LIKE ?
+            AND kode_kehilangan LIKE ?
         ");
 
         if (!$stmtKode) {
             throw new Exception(
-                "Gagal membuat kode laporan kerusakan."
+                "Gagal membuat kode laporan kehilangan."
             );
         }
 
-        $patternKode = 'KRS-' . $tanggalKode . '-%';
+        $patternKode = 'KHL-' . $tanggalKode . '-%';
 
         mysqli_stmt_bind_param(
             $stmtKode,
@@ -230,8 +125,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         mysqli_stmt_close($stmtKode);
 
-        $kodeKerusakan =
-            'KRS-' .
+        $kodeKehilangan =
+            'KHL-' .
             $tanggalKode .
             '-' .
             str_pad(
@@ -246,67 +141,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // SIMPAN DATA UTAMA
         // ======================================
 
-        $stmtKerusakan = mysqli_prepare($conn, "
-            INSERT INTO kerusakan
+        $stmtKehilangan = mysqli_prepare($conn, "
+            INSERT INTO kehilangan
             (
-                kode_kerusakan,
+                kode_kehilangan,
                 tanggal_lapor,
-                nama_pelapor,
-                status
+                nama_pelapor
             )
             VALUES
             (
                 ?,
                 CURDATE(),
-                ?,
-                'Menunggu'
+                ?
             )
         ");
 
-        if (!$stmtKerusakan) {
+        if (!$stmtKehilangan) {
             throw new Exception(
                 "Gagal menyiapkan data laporan."
             );
         }
 
+
         mysqli_stmt_bind_param(
-            $stmtKerusakan,
+            $stmtKehilangan,
             "ss",
-            $kodeKerusakan,
+            $kodeKehilangan,
             $nama_pelapor
         );
 
-        if (!mysqli_stmt_execute($stmtKerusakan)) {
+
+        if (!mysqli_stmt_execute($stmtKehilangan)) {
             throw new Exception(
-                "Gagal menyimpan laporan kerusakan."
+                "Gagal menyimpan laporan kehilangan."
             );
         }
 
-        $idKerusakan = mysqli_insert_id($conn);
 
-        mysqli_stmt_close($stmtKerusakan);
+        $idKehilangan = mysqli_insert_id($conn);
+
+        mysqli_stmt_close($stmtKehilangan);
 
 
         // ======================================
-        // SIMPAN DETAIL
+        // SIMPAN DETAIL KEHILANGAN
         // ======================================
 
         $stmtDetail = mysqli_prepare($conn, "
-            INSERT INTO detail_kerusakan
+            INSERT INTO detail_kehilangan
             (
-                id_kerusakan,
+                id_kehilangan,
                 id_inventaris,
-                bagian_rusak,
-                jenis_kerusakan,
-                tingkat_kerusakan,
-                kronologi,
-                foto
+                lokasi_kehilangan,
+                kronologi
             )
             VALUES
             (
-                ?,
-                ?,
-                ?,
                 ?,
                 ?,
                 ?,
@@ -320,23 +210,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
         }
 
+
         mysqli_stmt_bind_param(
             $stmtDetail,
-            "iisssss",
-            $idKerusakan,
+            "iiss",
+            $idKehilangan,
             $id_inventaris,
-            $bagian_rusak,
-            $jenis_kerusakan,
-            $tingkat_kerusakan,
-            $kronologi,
-            $pathDatabase
+            $lokasi_kehilangan,
+            $kronologi
         );
+
 
         if (!mysqli_stmt_execute($stmtDetail)) {
             throw new Exception(
-                "Gagal menyimpan detail kerusakan."
+                "Gagal menyimpan detail kehilangan."
             );
         }
+
 
         mysqli_stmt_close($stmtDetail);
 
@@ -350,16 +240,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         simpanActivityLog(
             $conn,
             $_SESSION['id_admin'],
-            "Menambah Laporan Kerusakan",
-            "kerusakan",
-            $idKerusakan
+            "Menambah Laporan Kehilangan",
+            "kehilangan",
+            $idKehilangan
         );
 
         $_SESSION['success'] =
-            "Laporan kerusakan berhasil ditambahkan. Kode laporan: "
-            . $kodeKerusakan;
+            "Laporan kehilangan berhasil ditambahkan. Kode laporan: "
+            . $kodeKehilangan;
 
-        header("Location: kerusakan.php");
+
+        header("Location: kehilangan.php");
         exit;
 
 
@@ -367,16 +258,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         mysqli_rollback($conn);
 
+        $_SESSION['error'] =
+            $e->getMessage();
 
-        // Hapus foto apabila database gagal
-        if (file_exists($pathFile)) {
-            unlink($pathFile);
-        }
-
-
-        $_SESSION['error'] = $e->getMessage();
-
-        header("Location: tambah_kerusakan.php");
+        header("Location: tambah_kehilangan.php");
         exit;
     }
 }
@@ -409,6 +294,7 @@ require_once "../../../includes/sidebar.php";
 
 <main class="app-main">
 
+
     <!-- HEADER -->
 
     <div class="app-content-header">
@@ -418,32 +304,43 @@ require_once "../../../includes/sidebar.php";
             <div class="d-flex justify-content-between align-items-center">
 
                 <h2 class="fw-bold mb-0">
-                    Tambah Laporan Kerusakan
+                    Tambah Laporan Kehilangan
                 </h2>
+
 
                 <ol class="breadcrumb mb-0">
 
                     <li class="breadcrumb-item">
+
                         <a href="<?= BASE_URL; ?>/admin/dashboard.php">
                             Dashboard
                         </a>
+
                     </li>
+
 
                     <li class="breadcrumb-item">
                         Transaksi
                     </li>
 
+
                     <li class="breadcrumb-item">
+
                         <a href="<?= BASE_URL; ?>/admin/transaksi/pelaporan/index.php">
                             Pelaporan
                         </a>
+
                     </li>
 
+
                     <li class="breadcrumb-item">
-                        <a href="kerusakan.php">
-                            Kerusakan
+
+                        <a href="kehilangan.php">
+                            Kehilangan
                         </a>
+
                     </li>
+
 
                     <li class="breadcrumb-item active">
                         Tambah
@@ -458,25 +355,29 @@ require_once "../../../includes/sidebar.php";
     </div>
 
 
+
     <!-- CONTENT -->
 
     <div class="app-content">
 
         <div class="container-fluid">
 
+
             <div class="card border-0 shadow-sm">
+
 
                 <div class="card-header bg-white py-3">
 
                     <h5 class="fw-bold mb-0">
 
-                        <i class="bi bi-tools text-danger me-2"></i>
+                        <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>
 
-                        Form Laporan Kerusakan
+                        Form Laporan Kehilangan
 
                     </h5>
 
                 </div>
+
 
 
                 <div class="card-body p-4">
@@ -499,8 +400,7 @@ require_once "../../../includes/sidebar.php";
 
 
                     <form
-                        method="POST"
-                        enctype="multipart/form-data">
+                        method="POST">
 
 
                         <div class="row g-4">
@@ -517,6 +417,7 @@ require_once "../../../includes/sidebar.php";
 
                                 </label>
 
+
                                 <input
                                     type="text"
                                     name="nama_pelapor"
@@ -525,6 +426,7 @@ require_once "../../../includes/sidebar.php";
                                     required>
 
                             </div>
+
 
 
                             <!-- INVENTARIS -->
@@ -538,6 +440,7 @@ require_once "../../../includes/sidebar.php";
 
                                 </label>
 
+
                                 <select
                                     name="id_inventaris"
                                     class="form-select"
@@ -547,7 +450,13 @@ require_once "../../../includes/sidebar.php";
                                         Pilih inventaris
                                     </option>
 
-                                    <?php while ($inventaris = mysqli_fetch_assoc($queryInventaris)) : ?>
+
+                                    <?php while (
+                                        $inventaris =
+                                        mysqli_fetch_assoc(
+                                            $queryInventaris
+                                        )
+                                    ) : ?>
 
                                         <option
                                             value="<?= $inventaris['id_inventaris']; ?>">
@@ -557,6 +466,7 @@ require_once "../../../includes/sidebar.php";
                                             ); ?>
 
                                             -
+
                                             <?= htmlspecialchars(
                                                 $inventaris['kode_inventaris']
                                             ); ?>
@@ -570,115 +480,28 @@ require_once "../../../includes/sidebar.php";
                             </div>
 
 
-                            <!-- BAGIAN RUSAK -->
+
+                            <!-- LOKASI KEHILANGAN -->
 
                             <div class="col-md-6">
 
                                 <label class="form-label fw-semibold">
 
-                                    Bagian yang Rusak
+                                    Lokasi Kehilangan
                                     <span class="text-danger">*</span>
 
                                 </label>
+
 
                                 <input
                                     type="text"
-                                    name="bagian_rusak"
+                                    name="lokasi_kehilangan"
                                     class="form-control"
-                                    placeholder="Contoh: Layar, kabel, roda"
+                                    placeholder="Contoh: Ruang 201, Gedung A"
                                     required>
 
                             </div>
 
-
-                            <!-- JENIS KERUSAKAN -->
-
-                            <div class="col-md-6">
-
-                                <label class="form-label fw-semibold">
-
-                                    Jenis Kerusakan
-                                    <span class="text-danger">*</span>
-
-                                </label>
-
-                                <input
-                                    type="text"
-                                    name="jenis_kerusakan"
-                                    class="form-control"
-                                    placeholder="Contoh: Pecah, tidak menyala"
-                                    required>
-
-                            </div>
-
-
-                            <!-- TINGKAT -->
-
-                            <div class="col-md-6">
-
-                                <label class="form-label fw-semibold">
-
-                                    Tingkat Kerusakan
-                                    <span class="text-danger">*</span>
-
-                                </label>
-
-                                <select
-                                    name="tingkat_kerusakan"
-                                    class="form-select"
-                                    required>
-
-                                    <option value="">
-                                        Pilih tingkat kerusakan
-                                    </option>
-
-                                    <option value="Ringan">
-                                        Ringan
-                                    </option>
-
-                                    <option value="Sedang">
-                                        Sedang
-                                    </option>
-
-                                    <option value="Berat">
-                                        Berat
-                                    </option>
-
-                                </select>
-
-                                <small class="text-muted">
-                                    Ringan: masih dapat digunakan.
-                                    Sedang: fungsi terganggu.
-                                    Berat: tidak dapat digunakan.
-                                </small>
-
-                            </div>
-
-
-                            <!-- FOTO -->
-
-                            <div class="col-md-6">
-
-                                <label class="form-label fw-semibold">
-
-                                    Foto Kerusakan
-                                    <span class="text-danger">*</span>
-
-                                </label>
-
-                                <input
-                                    type="file"
-                                    name="foto"
-                                    class="form-control"
-                                    accept="image/jpeg,image/png,image/webp"
-                                    required>
-
-                                <small class="text-muted">
-                                    Foto wajib diunggah sebagai bukti kerusakan.
-                                    Format JPG, PNG, atau WEBP. Maksimal 5 MB.
-                                </small>
-
-                            </div>
 
 
                             <!-- KRONOLOGI -->
@@ -687,20 +510,22 @@ require_once "../../../includes/sidebar.php";
 
                                 <label class="form-label fw-semibold">
 
-                                    Kronologi Kerusakan
+                                    Kronologi Kehilangan
                                     <span class="text-danger">*</span>
 
                                 </label>
+
 
                                 <textarea
                                     name="kronologi"
                                     class="form-control"
                                     rows="5"
                                     maxlength="2000"
-                                    placeholder="Jelaskan kondisi atau kronologi terjadinya kerusakan..."
+                                    placeholder="Jelaskan kronologi terjadinya kehilangan..."
                                     required></textarea>
 
                             </div>
+
 
 
                             <!-- BUTTON -->
@@ -709,10 +534,12 @@ require_once "../../../includes/sidebar.php";
 
                                 <hr>
 
+
                                 <div class="d-flex justify-content-end gap-2">
 
+
                                     <a
-                                        href="kerusakan.php"
+                                        href="kehilangan.php"
                                         class="btn btn-secondary">
 
                                         <i class="bi bi-arrow-left me-1"></i>
@@ -720,6 +547,7 @@ require_once "../../../includes/sidebar.php";
                                         Batal
 
                                     </a>
+
 
                                     <button
                                         type="submit"
@@ -731,9 +559,11 @@ require_once "../../../includes/sidebar.php";
 
                                     </button>
 
+
                                 </div>
 
                             </div>
+
 
                         </div>
 
@@ -742,6 +572,7 @@ require_once "../../../includes/sidebar.php";
                 </div>
 
             </div>
+
 
         </div>
 

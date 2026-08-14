@@ -9,6 +9,7 @@ if (!isset($_SESSION['id_admin'])) {
 }
 
 require_once "../../../config/database.php";
+require_once "../../../helpers/activity_log.php";
 
 
 // ==========================================
@@ -99,6 +100,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ubah_status'])) {
             );
 
             if (mysqli_stmt_execute($stmtUpdate)) {
+
+                simpanActivityLog(
+                    $conn,
+                    $_SESSION['id_admin'],
+                    "Memperbarui Laporan Kerusakan",
+                    "kerusakan",
+                    $id
+                );
 
                 $_SESSION['success'] =
                     "Laporan berhasil diperbarui.";
