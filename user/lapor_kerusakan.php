@@ -202,10 +202,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // ==========================================
         // Generate Kode Laporan
-        // Format: KRS-YYYYMMDD-001
+        // Format: KRS-YYMMDD-001
         // ==========================================
 
-        $tanggalKode = date('Ymd');
+        $tanggalKode = date('ymd');
 
         $stmtKode = mysqli_prepare($conn, "
             SELECT MAX(
@@ -215,6 +215,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             WHERE tanggal_lapor = CURDATE()
             AND kode_kerusakan LIKE ?
         ");
+
+        if (!$stmtKode) {
+            throw new Exception(
+                "Gagal membuat kode laporan kerusakan."
+            );
+        }
 
         $patternKode = 'KRS-' . $tanggalKode . '-%';
 
@@ -647,7 +653,13 @@ textarea.form-control{
         <div class="container">
 
             <div class="breadcrumb-custom">
-                <a href="<?= $baseUrl ?>index.php">Beranda</a>
+                <a href="<?= $baseUrl ?>index.php">
+                    Beranda
+                </a>
+                <span>/</span>
+                <a href="<?= $baseUrl ?>user/lapor.php">
+                    Lapor
+                </a>
                 <span>/</span>
                 <span>Lapor Kerusakan</span>
             </div>

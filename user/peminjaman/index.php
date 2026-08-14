@@ -423,10 +423,10 @@ RESPONSIVE
 }
 @media(max-width:768px){
     .page-hero{
-        padding:55px 0 100px;
+        padding:45px 0 75px;
     }
     .hero-title{
-        font-size:40px;
+        font-size:36px;
     }
     .barang-grid{
         grid-template-columns:repeat(2,1fr);
@@ -563,11 +563,36 @@ CEK PEMINJAMAN
     box-shadow:0 8px 20px rgba(236,72,153,.2);
 }
 @media(max-width:768px){
+
+    .statistik-section{
+        margin-top:-35px;
+    }
+    .cek-peminjaman-section{
+        margin-top:-100px;
+    }
+
     .cek-peminjaman-card{
         flex-direction:column;
         align-items:flex-start;
         padding:22px;
+        gap:18px;
     }
+
+    .cek-peminjaman-info{
+        width:100%;
+        align-items:flex-start;
+    }
+
+    .cek-peminjaman-info h5{
+        font-size:17px;
+        line-height:1.4;
+    }
+
+    .cek-peminjaman-info p{
+        font-size:13px;
+        line-height:1.6;
+    }
+
     .btn-cek-peminjaman{
         width:100%;
     }
