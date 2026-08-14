@@ -148,7 +148,7 @@ Form Tambah Inventaris
         name="kode_inventaris"
         class="form-control"
         value="<?= htmlspecialchars($old['kode_inventaris'] ?? '') ?>"
-        placeholder=".NBK.L3.22"
+        placeholder=".NBK.xx.xx.xx.xxxx"
         required>
 
     <div class="form-text">

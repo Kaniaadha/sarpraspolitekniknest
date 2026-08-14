@@ -346,7 +346,10 @@ require_once "../../../includes/sidebar.php";
     }
 
     .app-content-header .d-flex {
-        display: block !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px;
     }
 
     .app-content-header h2 {

@@ -287,7 +287,10 @@ require_once "../../../includes/sidebar.php";
     }
 
     .app-content-header .d-flex {
-        display: block !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px;
     }
 
     .app-content-header h2 {
@@ -297,6 +300,9 @@ require_once "../../../includes/sidebar.php";
 
     .app-content-header .breadcrumb {
         font-size: 13px;
+        margin: 0 !important;
+        padding: 0 !important;
+        flex-wrap: wrap;
     }
 
     .app-content {

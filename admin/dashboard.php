@@ -216,6 +216,19 @@ if ($dataStock) {
 
 ?>
 
+<style>
+@media (max-width: 575.98px) {
+    .row.g-3 > [class*="col-xl"] {
+        flex: 0 0 100%;
+        max-width: 100%;
+        width: 100%;
+    }
+    .row.mt-4 > .col-lg-6 {
+        margin-bottom: 24px;
+    }
+}
+</style>
+
 <main class="app-main">
 
     <div class="app-content-header">
@@ -762,8 +775,6 @@ if ($dataStock) {
         </div>
 
     </div>
-
-</main>
 
 </main>
 

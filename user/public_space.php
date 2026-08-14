@@ -258,29 +258,30 @@ foreach ($lantaiList as $lantai) {
 .public-content {
     padding: 65px 0 90px;
 }
-
 .section-header {
     margin-bottom: 40px;
 }
-
 .section-badge {
     color: #EC4899;
     font-size: 14px;
     font-weight: 700;
 }
-
 .section-header h2 {
     margin: 8px 0;
     color: #243653;
     font-size: 30px;
     font-weight: 800;
 }
-
 .section-header p {
     margin: 0;
     color: #718096;
 }
-
+.section-label {
+    color: #EC4899 !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    letter-spacing: 1.5px !important;
+}
 
 /* ==========================================================
    LANTAI
@@ -606,11 +607,8 @@ foreach ($lantaiList as $lantai) {
 
         <div class="section-header">
 
-            <span class="section-badge">
-
-                <i class="bi bi-buildings-fill"></i>
-
-                Public Space Politeknik Nest
+            <span class="section-label">
+                DATA PUBLIC SPACE
 
             </span>
 
@@ -706,7 +704,6 @@ foreach ($lantaiList as $lantai) {
                             </span>
 
                         </div>
-
 
 
                         <!-- CARD -->

@@ -36,6 +36,59 @@ require_once "../../../includes/navbar.php";
 require_once "../../../includes/sidebar.php";
 ?>
 
+<style>
+@media (max-width: 767.98px) {
+
+    /* =========================
+       JUDUL + BREADCRUMB
+       ========================= */
+
+    .app-content-header .d-flex {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px;
+    }
+
+    .app-content-header h2 {
+        margin-bottom: 0 !important;
+    }
+
+    .app-content-header .breadcrumb {
+        margin: 0 !important;
+        padding: 0 !important;
+        flex-wrap: wrap;
+    }
+
+
+    /* =========================
+       HEADER DAFTAR BANNER
+       ========================= */
+
+    .card-header > .d-flex {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 12px;
+    }
+
+    .card-header .btn {
+        width: 100%;
+    }
+
+
+    /* =========================
+       TOMBOL AKSI
+       ========================= */
+
+    .datatable td:last-child .btn {
+        display: block;
+        width: 36px;
+        margin: 4px auto !important;
+    }
+
+}
+</style>
+
 <main class="app-main">
 
     <!-- Header -->
@@ -50,7 +103,11 @@ require_once "../../../includes/sidebar.php";
                 </h2>
 
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item">Dashboard</li>
+                    <li class="breadcrumb-item">
+                        <a href="<?= BASE_URL; ?>/admin/dashboard.php">
+                            Dashboard
+                        </a>
+                    </li>
                     <li class="breadcrumb-item">Setting</li>
                     <li class="breadcrumb-item active">Banner</li>
                 </ol>

@@ -29,13 +29,13 @@ $query = mysqli_query($conn, "
             <div class="d-flex justify-content-between align-items-center">
 
                 <h2 class="mb-0 fw-bold">
-                    Data Lokasi
+                    Data Gedung
                 </h2>
 
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item">Dashboard</li>
                     <li class="breadcrumb-item">Master</li>
-                    <li class="breadcrumb-item active">Lokasi</li>
+                    <li class="breadcrumb-item active">Gedung</li>
                 </ol>
 
             </div>
@@ -54,12 +54,12 @@ $query = mysqli_query($conn, "
 
                     <h5 class="mb-0 fw-semibold">
                         <i class="bi bi-geo-alt-fill me-2"></i>
-                        Daftar Lokasi
+                        Daftar Gedung
                     </h5>
 
                     <a href="tambah.php" class="btn btn-primary">
                         <i class="bi bi-plus-circle me-1"></i>
-                        Tambah Lokasi
+                        Tambah Gedung
                     </a>
 
                 </div>
@@ -81,11 +81,11 @@ $query = mysqli_query($conn, "
                                 </th>
 
                                 <th width="15%">
-                                    Kode Lokasi
+                                    Kode Gedung
                                 </th>
 
                                 <th>
-                                    Nama Lokasi
+                                    Nama Gedung
                                 </th>
 
                                 <th>
@@ -150,7 +150,7 @@ $query = mysqli_query($conn, "
 
                                     <td class="text-center">
                                         <a
-                                            href="../foto/index.php?tipe=lokasi&id=<?= $row['id_lokasi']; ?>"
+                                            href="../foto/index.php?tipe=Gedung&id=<?= $row['id_lokasi']; ?>"
                                             class="btn btn-info btn-sm me-1"
                                             title="Gallery Foto">
                                             <i class="bi bi-images"></i>
@@ -202,7 +202,7 @@ function hapusLokasi(id){
 
         title: 'Hapus Data?',
 
-        text: 'Data lokasi yang dihapus tidak dapat dikembalikan.',
+        text: 'Data Gedung yang dihapus tidak dapat dikembalikan.',
 
         icon: 'warning',
 

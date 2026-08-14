@@ -83,6 +83,32 @@ require_once "../../../includes/navbar.php";
 require_once "../../../includes/sidebar.php";
 ?>
 
+<style>
+@media (max-width: 575.98px) {
+
+    /* Judul halaman dan breadcrumb */
+    .app-content-header .container-fluid > .d-flex {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px;
+    }
+
+    .app-content-header .container-fluid > .d-flex h2 {
+        width: 100%;
+        margin-bottom: 0 !important;
+    }
+
+    .app-content-header .container-fluid > .d-flex .breadcrumb {
+        width: 100%;
+        margin: 0 !important;
+        padding: 0 !important;
+        flex-wrap: wrap;
+    }
+
+}
+</style>
+
 <main class="app-main">
 
     <!-- Header -->

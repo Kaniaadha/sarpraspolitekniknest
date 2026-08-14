@@ -13,15 +13,6 @@ $currentPage = "ruangan";
 |  DATA RUANGAN
 ========================================================== */
 
-/*
-| Struktur:
-| Lantai
-|   └── Ruangan
-|
-| Setiap lantai tetap menampilkan nama lokasi/gedung
-| sebagai informasi pendukung.
-*/
-
 $sql = "
     SELECT
         l.id_lantai,
@@ -1040,9 +1031,16 @@ RESPONSIVE
         height:180px;
 
     }
-
 }
-
+.section-label {
+    color: #EC4899 !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    letter-spacing: 1.5px !important;
+}
+.section-title {
+    font-weight: 700;
+}
 </style>
 
 <main class="ruangan-page">
@@ -1152,16 +1150,12 @@ RESPONSIVE
 
             <div>
 
-                <span class="section-badge">
-
-                    <i class="bi bi-buildings-fill"></i>
-
-                    Ruangan Politeknik Nest
+                <span class="section-label">
+                    DATA RUANGAN
 
                 </span>
 
-                <h2>
-
+                <h2 class="section-title">
                     Daftar Ruangan
 
                 </h2>

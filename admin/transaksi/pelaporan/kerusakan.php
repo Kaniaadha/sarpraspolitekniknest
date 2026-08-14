@@ -48,6 +48,28 @@ if (!$queryKerusakan) {
 }
 ?>
 
+<style>
+@media (max-width: 767.98px) {
+
+    .app-content-header .d-flex {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px;
+    }
+
+    .app-content-header h2 {
+        margin-bottom: 0 !important;
+    }
+
+    .app-content-header .breadcrumb {
+        margin: 0 !important;
+        padding: 0 !important;
+        flex-wrap: wrap;
+    }
+
+}
+</style>
 
 <main class="app-main">
 

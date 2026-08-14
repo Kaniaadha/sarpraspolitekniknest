@@ -737,6 +737,12 @@ RESPONSIVE
 }
 
 }
+.section-label {
+    color: #EC4899 !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    letter-spacing: 1.5px !important;
+}
 
 </style>
 
@@ -783,7 +789,9 @@ RESPONSIVE
 
             <input
                 type="text"
-                placeholder="Cari nama gedung...">
+                id="searchGedung"
+                placeholder="Cari nama gedung..."
+                autocomplete="off">
 
         </div>
 
@@ -871,11 +879,9 @@ DAFTAR GEDUNG
 
             <div>
 
-                <span class="section-badge">
+                <span class="section-label">
 
-                    <i class="bi bi-buildings-fill"></i>
-
-                    Gedung Politeknik Nest
+                    DATA GEDUNG
 
                 </span>
 
@@ -900,7 +906,8 @@ DAFTAR GEDUNG
 
             <?php foreach($gedungList as $gedung): ?>
 
-            <div class="gedung-card">
+            <div class="gedung-card"
+                data-nama="<?= htmlspecialchars(strtolower($gedung['nama_lokasi']), ENT_QUOTES, 'UTF-8'); ?>">
 
                 <div class="gedung-image">
 
@@ -996,6 +1003,33 @@ DAFTAR GEDUNG
 <?php include '../includes/user/footer.php'; ?>
 
 </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const searchGedung = document.getElementById('searchGedung');
+    const cards = document.querySelectorAll('.gedung-card');
+
+    if (!searchGedung) return;
+
+    searchGedung.addEventListener('input', function () {
+
+        const keyword = this.value.toLowerCase().trim();
+
+        cards.forEach(function (card) {
+
+            const namaGedung = card.getAttribute('data-nama') || '';
+
+            card.style.display = namaGedung.includes(keyword)
+                ? ''
+                : 'none';
+
+        });
+
+    });
+
+});
+</script>
 
 </body>
 </html>

@@ -17,6 +17,7 @@ $queryInventaris = mysqli_query($conn, "
         i.nama_barang,
         i.jumlah,
         i.kondisi,
+        i.foto,
 
         (
             i.jumlah -
@@ -298,6 +299,12 @@ BARANG GRID
         );
     color:#EC4899;
     font-size:55px;
+}
+.barang-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .barang-body{
@@ -942,14 +949,24 @@ MODAL CEK PEMINJAMAN
 
                     <?php while ($barang = mysqli_fetch_assoc($queryInventaris)) : ?>
 
-                        <div
-                            class="barang-card"
-                            data-nama="<?= strtolower(htmlspecialchars($barang['nama_barang'])); ?>"
-                            data-kode="<?= strtolower(htmlspecialchars($barang['kode_inventaris'])); ?>">
+                    <div
+                        class="barang-card"
+                        data-nama="<?= strtolower(htmlspecialchars($barang['nama_barang'])); ?>"
+                        data-kode="<?= strtolower(htmlspecialchars($barang['kode_inventaris'])); ?>">
 
-                            <div class="barang-icon">
+                        <div class="barang-icon">
 
-                                <i class="bi bi-box-seam-fill"></i>
+                                <?php if (!empty($barang['foto'])) : ?>
+
+                                    <img
+                                        src="../../assets/uploads/inventaris/<?= htmlspecialchars($barang['foto']); ?>"
+                                        alt="<?= htmlspecialchars($barang['nama_barang']); ?>">
+
+                                <?php else : ?>
+
+                                    <i class="bi bi-box-seam-fill"></i>
+
+                                <?php endif; ?>
 
                             </div>
 

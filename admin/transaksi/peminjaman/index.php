@@ -55,6 +55,58 @@ require_once "../../../includes/navbar.php";
 require_once "../../../includes/sidebar.php";
 ?>
 
+<style>
+@media (max-width: 575.98px) {
+
+    /* ==============================
+       HEADER HALAMAN
+       ============================== */
+
+    .app-content-header .d-flex {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+
+    .app-content-header h2 {
+        margin-bottom: 8px !important;
+    }
+
+    .app-content-header .breadcrumb {
+        margin-top: 0;
+    }
+
+
+    /* ==============================
+       HEADER CARD PEMINJAMAN
+       ============================== */
+
+    .card-header > .d-flex {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+
+    .card-header h5 {
+        margin-bottom: 12px !important;
+    }
+
+    .card-header .btn {
+        width: 100%;
+    }
+
+
+    /* ==============================
+       TOMBOL AKSI TABEL
+       ============================== */
+
+    .datatable td:last-child .btn {
+        display: block;
+        width: 32px;
+        margin: 4px auto !important;
+    }
+
+}
+</style>
+
 <main class="app-main">
 
     <!-- Header -->

@@ -56,7 +56,7 @@
                     <a href="<?= BASE_URL; ?>/admin/master/lokasi/index.php"
                         class="nav-link <?= (isset($menu) && $menu == 'lokasi') ? 'active' : ''; ?>">
                         <i class="nav-icon bi bi-geo-alt-fill"></i>
-                        <p>Lokasi</p>
+                        <p>Gedung</p>
                     </a>
                 </li>
 

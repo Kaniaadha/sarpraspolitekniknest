@@ -115,7 +115,7 @@
 
                     <li>
 
-                        <a href="<?= $baseUrl; ?>user/peminjaman.php">
+                        <a href="<?= $baseUrl; ?>user/peminjaman/index.php">
 
                             Peminjaman
 
