@@ -86,6 +86,67 @@ $terlambat = mysqli_fetch_assoc(
 );
 
 // ==============================
+// Data Grafik Dashboard
+// ==============================
+
+// Inventaris per Kategori
+$queryKategori = mysqli_query($conn, "
+    SELECT
+        k.nama_kategori,
+        COUNT(i.id_inventaris) AS total
+    FROM kategori k
+    LEFT JOIN inventaris i
+        ON i.id_kategori = k.id_kategori
+    GROUP BY
+        k.id_kategori,
+        k.nama_kategori
+    ORDER BY total DESC
+");
+
+$kategoriLabels = [];
+$kategoriData = [];
+
+while ($row = mysqli_fetch_assoc($queryKategori)) {
+    $kategoriLabels[] = $row['nama_kategori'];
+    $kategoriData[] = (int) $row['total'];
+}
+
+
+// Statistik Peminjaman per Bulan
+$queryPeminjamanBulan = mysqli_query($conn, "
+    SELECT
+        MONTH(created_at) AS bulan,
+        COUNT(*) AS total
+    FROM peminjaman
+    WHERE YEAR(created_at) = YEAR(CURDATE())
+    GROUP BY MONTH(created_at)
+    ORDER BY MONTH(created_at)
+");
+
+$peminjamanBulanan = array_fill(1, 12, 0);
+
+while ($row = mysqli_fetch_assoc($queryPeminjamanBulan)) {
+    $peminjamanBulanan[(int) $row['bulan']] = (int) $row['total'];
+}
+
+$peminjamanData = array_values($peminjamanBulanan);
+
+$namaBulan = [
+    'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember'
+];
+
+// ==============================
 // Activity Log Terbaru
 // ==============================
 
@@ -704,8 +765,130 @@ if ($dataStock) {
 
 </main>
 
-<?php
+</main>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    // ==========================================
+    // GRAFIK INVENTARIS PER KATEGORI
+    // ==========================================
+
+    const kategoriCanvas = document.getElementById('kategoriChart');
+
+    if (kategoriCanvas) {
+
+        new Chart(kategoriCanvas, {
+            type: 'bar',
+
+            data: {
+                labels: <?= json_encode($kategoriLabels); ?>,
+
+                datasets: [{
+                    label: 'Jumlah Inventaris',
+                    data: <?= json_encode($kategoriData); ?>,
+
+                    backgroundColor: [
+                        '#FF8A00',
+                        '#EC4899',
+                        '#8B5CF6',
+                        '#10B981',
+                        '#3B82F6',
+                        '#EF4444',
+                        '#F59E0B',
+                        '#06B6D4'
+                    ],
+
+                    borderRadius: 8
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+
+    // ==========================================
+    // GRAFIK PEMINJAMAN PER BULAN
+    // ==========================================
+
+    const peminjamanCanvas =
+        document.getElementById('peminjamanChart');
+
+    if (peminjamanCanvas) {
+
+        new Chart(peminjamanCanvas, {
+            type: 'line',
+
+            data: {
+                labels: <?= json_encode($namaBulan); ?>,
+
+                datasets: [{
+                    label: 'Jumlah Peminjaman',
+                    data: <?= json_encode($peminjamanData); ?>,
+
+                    borderColor: '#EC4899',
+                    backgroundColor: 'rgba(236, 72, 153, 0.10)',
+
+                    borderWidth: 3,
+
+                    tension: 0.35,
+
+                    fill: true,
+
+                    pointRadius: 4,
+
+                    pointHoverRadius: 6
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+
+                scales: {
+                    y: {
+                        beginAtZero: true,
+
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+});
+</script>
+
+<?php
 require_once "../includes/footer.php";
 require_once "../includes/scripts.php";
 ?>
