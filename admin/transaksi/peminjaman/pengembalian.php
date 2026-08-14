@@ -242,7 +242,7 @@ require_once "../../../includes/sidebar.php";
 
                     <div class="row mb-4">
 
-<!-- Data Barang -->
+            <!-- Data Barang -->
 
             <?php if (mysqli_num_rows($queryDetail) > 0) : ?>
 

@@ -44,172 +44,185 @@ $queryDetail = mysqli_query($conn, "
 ");
 ?>
 
-?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <meta charset="UTF-8">
+    <title>Cetak Laporan Stock Opname</title>
 
-<meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+        }
 
-<title>Cetak Laporan Stock Opname</title>
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-<style>
+        .header h2 {
+            margin: 0;
+        }
 
-body{
-    font-family:Arial,Helvetica,sans-serif;
-    font-size:12px;
-}
+        .header p {
+            margin: 5px 0;
+        }
 
-.header{
-    text-align:center;
-    margin-bottom:20px;
-}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-.header h2{
-    margin:0;
-}
+        table th,
+        table td {
+            border: 1px solid #000;
+            padding: 8px;
+        }
 
-.header p{
-    margin:5px 0;
-}
+        th {
+            background: #efefef;
+        }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-}
+        .text-center {
+            text-align: center;
+        }
 
-table th,
-table td{
-    border:1px solid #000;
-    padding:8px;
-}
+        .footer {
+            margin-top: 40px;
+        }
 
-th{
-    background:#efefef;
-}
+        .ttd {
+            width: 250px;
+            float: right;
+            text-align: center;
+        }
 
-.footer{
-    margin-top:40px;
-}
+        .info-table {
+            width: 60%;
+            margin-bottom: 20px;
+            border: none;
+        }
 
-.ttd{
-    width:250px;
-    float:right;
-    text-align:center;
-}
-
-</style>
-
+        .info-table td {
+            border: none;
+            padding: 3px;
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="header">
+    <!-- Header -->
+    <div class="header">
+        <h2>POLITEKNIK NEST</h2>
+        <p><strong>LAPORAN STOCK OPNAME</strong></p>
+        <hr>
+    </div>
 
-<h2>POLITEKNIK NEST</h2>
+    <!-- Informasi Stock Opname -->
+    <table class="info-table">
+        <tr>
+            <td><b>Kode Stock Opname</b></td>
+            <td>:</td>
+            <td><?= htmlspecialchars($stockOpname['kode_stock_opname']); ?></td>
+        </tr>
 
-<p><strong>LAPORAN STOCK OPNAME</strong></p>
+        <tr>
+            <td><b>Tanggal</b></td>
+            <td>:</td>
+            <td>
+                <?= date('d F Y', strtotime($stockOpname['tanggal'])); ?>
+            </td>
+        </tr>
 
-<hr>
+        <tr>
+            <td><b>Petugas</b></td>
+            <td>:</td>
+            <td><?= htmlspecialchars($stockOpname['nama_admin']); ?></td>
+        </tr>
 
-<table style="width:60%; margin-bottom:20px; border:none;">
-    <tr>
-        <td style="border:none;"><b>Kode Stock Opname</b></td>
-        <td style="border:none;">:</td>
-        <td style="border:none;"><?= $stockOpname['kode_stock_opname']; ?></td>
-    </tr>
+        <tr>
+            <td><b>Status</b></td>
+            <td>:</td>
+            <td><?= htmlspecialchars($stockOpname['status']); ?></td>
+        </tr>
+    </table>
 
-    <tr>
-        <td style="border:none;"><b>Tanggal</b></td>
-        <td style="border:none;">:</td>
-        <td style="border:none;">
-            <?= date('d F Y', strtotime($stockOpname['tanggal'])); ?>
-        </td>
-    </tr>
+    <!-- Detail Stock Opname -->
+    <table>
+        <thead>
+            <tr>
+                <th width="5%">No</th>
+                <th>Kode Barang</th>
+                <th>Nama Barang</th>
+                <th>Stok Sistem</th>
+                <th>Stok Fisik</th>
+                <th>Selisih</th>
+                <th>Kondisi</th>
+                <th>Catatan</th>
+            </tr>
+        </thead>
 
-    <tr>
-        <td style="border:none;"><b>Petugas</b></td>
-        <td style="border:none;">:</td>
-        <td style="border:none;"><?= $stockOpname['nama_admin']; ?></td>
-    </tr>
+        <tbody>
+            <?php
+            $no = 1;
 
-    <tr>
-        <td style="border:none;"><b>Status</b></td>
-        <td style="border:none;">:</td>
-        <td style="border:none;"><?= $stockOpname['status']; ?></td>
-    </tr>
-</table>
+            while ($row = mysqli_fetch_assoc($queryDetail)) :
+            ?>
 
-</div>
+                <tr>
+                    <td class="text-center">
+                        <?= $no++; ?>
+                    </td>
 
-<table>
+                    <td>
+                        <?= htmlspecialchars($row['kode_inventaris']); ?>
+                    </td>
 
-<thead>
+                    <td>
+                        <?= htmlspecialchars($row['nama_barang']); ?>
+                    </td>
 
-<tr>
+                    <td class="text-center">
+                        <?= $row['stok_sistem']; ?>
+                    </td>
 
-<th width="5%">No</th>
-<th>Kode Barang</th>
-<th>Nama Barang</th>
-<th>Stok Sistem</th>
-<th>Stok Fisik</th>
-<th>Selisih</th>
-<th>Kondisi</th>
-<th>Catatan</th>
+                    <td class="text-center">
+                        <?= $row['stok_fisik']; ?>
+                    </td>
 
-</tr>
+                    <td class="text-center">
+                        <?= $row['selisih']; ?>
+                    </td>
 
-</thead>
+                    <td>
+                        <?= htmlspecialchars($row['kondisi']); ?>
+                    </td>
 
-<tbody>
+                    <td>
+                        <?= !empty($row['catatan'])
+                            ? htmlspecialchars($row['catatan'])
+                            : '-'; ?>
+                    </td>
+                </tr>
 
-<?php
+            <?php endwhile; ?>
+        </tbody>
+    </table>
 
-$no = 1;
+    <!-- Tanda Tangan -->
+    <div class="footer">
+        <div class="ttd">
+            <p>Sukoharjo, <?= date('d F Y'); ?></p>
+            <br><br><br>
+            <p><b>Administrator</b></p>
+        </div>
+    </div>
 
-$no = 1;
-
-while ($row = mysqli_fetch_assoc($queryDetail)) {
-    echo "<tr>";
-
-    echo "<td align='center'>{$no}</td>";
-    echo "<td>{$row['kode_inventaris']}</td>";
-    echo "<td>{$row['nama_barang']}</td>";
-    echo "<td align='center'>{$row['stok_sistem']}</td>";
-    echo "<td align='center'>{$row['stok_fisik']}</td>";
-    echo "<td align='center'>{$row['selisih']}</td>";
-    echo "<td>{$row['kondisi']}</td>";
-    echo "<td>" . (!empty($row['catatan']) ? $row['catatan'] : '-') . "</td>";
-
-    echo "</tr>";
-
-    $no++;
-}
-
-?>
-
-</tbody>
-
-</table>
-
-<div class="footer">
-
-<div class="ttd">
-
-<p>Sukoharjo, <?= date('d F Y'); ?></p>
-
-<br><br><br>
-
-<p><b>Administrator</b></p>
-
-</div>
-
-</div>
-
-<script>
-window.print();
-</script>
+    <script>
+        window.print();
+    </script>
 
 </body>
 </html>

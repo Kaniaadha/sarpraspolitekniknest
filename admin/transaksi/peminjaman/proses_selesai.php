@@ -105,11 +105,12 @@ try {
 
     }
 
-    // Memperbarui status peminjaman
+    // Memperbarui status dan tanggal peminjaman
     $updatePeminjaman = mysqli_query($conn, "
         UPDATE peminjaman
         SET
             status = 'Selesai',
+            tanggal_pengembalian = CURDATE(),
             updated_at = NOW()
         WHERE id_peminjaman = '$id_peminjaman'
     ");

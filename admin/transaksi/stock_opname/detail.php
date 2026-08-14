@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Cek login admin
 if (!isset($_SESSION['id_admin'])) {
     header("Location: ../../../login.php");
     exit;
@@ -11,7 +10,6 @@ $menu = "stock_opname";
 
 require_once "../../../config/database.php";
 
-// Validasi ID stock opname
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     header("Location: riwayat.php");
     exit;
@@ -19,7 +17,6 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $id_stock_opname = mysqli_real_escape_string($conn, $_GET['id']);
 
-// Mengambil data stock opname
 $queryStockOpname = mysqli_query($conn, "
     SELECT
         so.*,
@@ -37,7 +34,6 @@ if (!$stockOpname) {
     exit;
 }
 
-// Mengambil detail stock opname
 $queryDetail = mysqli_query($conn, "
     SELECT
         dso.*,
@@ -57,138 +53,92 @@ require_once "../../../includes/sidebar.php";
 
 <main class="app-main">
 
-    <!-- Header -->
     <div class="app-content-header">
-
         <div class="container-fluid">
-
             <div class="row">
-
                 <div class="col-sm-6">
                     <h3 class="mb-0">Detail Stock Opname</h3>
                 </div>
 
                 <div class="col-sm-6">
-
                     <ol class="breadcrumb float-sm-end">
-
                         <li class="breadcrumb-item">
                             <a href="<?= BASE_URL ?>/admin/dashboard.php">Dashboard</a>
                         </li>
-
                         <li class="breadcrumb-item">
                             <a href="riwayat.php">Riwayat Stock Opname</a>
                         </li>
-
                         <li class="breadcrumb-item active">
                             Detail Stock Opname
                         </li>
-
                     </ol>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
     <div class="app-content">
-
         <div class="container-fluid">
 
             <!-- Informasi Stock Opname -->
             <div class="card mb-4">
-
                 <div class="card-header">
                     <h3 class="card-title">Informasi Stock Opname</h3>
                 </div>
 
                 <div class="card-body">
-
                     <div class="row">
 
                         <div class="col-md-6">
-
                             <table class="table table-borderless mb-0">
-
                                 <tr>
                                     <th width="180">Kode Stock Opname</th>
                                     <td width="20">:</td>
-                                    <td><?= $stockOpname['kode_stock_opname']; ?></td>
+                                    <td><?= htmlspecialchars($stockOpname['kode_stock_opname']); ?></td>
                                 </tr>
-
                                 <tr>
                                     <th>Petugas</th>
                                     <td>:</td>
-                                    <td><?= $stockOpname['nama_admin']; ?></td>
+                                    <td><?= htmlspecialchars($stockOpname['nama_admin']); ?></td>
                                 </tr>
-
                             </table>
-
                         </div>
 
                         <div class="col-md-6">
-
                             <table class="table table-borderless mb-0">
-
                                 <tr>
                                     <th width="180">Tanggal</th>
                                     <td width="20">:</td>
                                     <td><?= date('d F Y', strtotime($stockOpname['tanggal'])); ?></td>
                                 </tr>
-
                                 <tr>
-
                                     <th>Status</th>
                                     <td>:</td>
-
                                     <td>
-
-                                        <?php if ($stockOpname['status'] == 'Draft') { ?>
-
-                                            <span class="badge bg-warning">
-                                                Draft
-                                            </span>
-
-                                        <?php } else { ?>
-
-                                            <span class="badge bg-success">
-                                                Selesai
-                                            </span>
-
-                                        <?php } ?>
-
+                                        <?php if ($stockOpname['status'] == 'Draft') : ?>
+                                            <span class="badge bg-warning">Draft</span>
+                                        <?php else : ?>
+                                            <span class="badge bg-success">Selesai</span>
+                                        <?php endif; ?>
                                     </td>
-
                                 </tr>
-
                             </table>
-
                         </div>
 
                     </div>
-
                 </div>
-
             </div>
 
             <!-- Detail Stock Opname -->
             <div class="card">
-
                 <div class="card-header">
                     <h3 class="card-title">Daftar Detail Stock Opname</h3>
                 </div>
 
                 <div class="card-body">
-
                     <div class="table-responsive">
-
                         <table class="table table-bordered table-hover align-middle">
-
                             <thead class="table-light">
-
                                 <tr class="text-center">
                                     <th width="5%">No</th>
                                     <th width="10%">Kode</th>
@@ -199,27 +149,22 @@ require_once "../../../includes/sidebar.php";
                                     <th width="12%">Kondisi</th>
                                     <th>Catatan</th>
                                 </tr>
-
                             </thead>
 
                             <tbody>
-
                                 <?php
                                 $no = 1;
-
-                                while ($row = mysqli_fetch_assoc($queryDetail)) {
+                                while ($row = mysqli_fetch_assoc($queryDetail)) :
                                 ?>
-
                                     <tr>
-
                                         <td class="text-center"><?= $no++; ?></td>
 
                                         <td class="text-center">
-                                            <?= $row['kode_inventaris']; ?>
+                                            <?= htmlspecialchars($row['kode_inventaris']); ?>
                                         </td>
 
                                         <td>
-                                            <?= $row['nama_barang']; ?>
+                                            <?= htmlspecialchars($row['nama_barang']); ?>
                                         </td>
 
                                         <td class="text-center">
@@ -231,55 +176,41 @@ require_once "../../../includes/sidebar.php";
                                         </td>
 
                                         <td class="text-center">
-
-                                            <?php if ($row['selisih'] > 0) { ?>
-
+                                            <?php if ($row['selisih'] > 0) : ?>
                                                 <span class="badge bg-success">
                                                     +<?= $row['selisih']; ?>
                                                 </span>
-
-                                            <?php } elseif ($row['selisih'] < 0) { ?>
-
+                                            <?php elseif ($row['selisih'] < 0) : ?>
                                                 <span class="badge bg-danger">
                                                     <?= $row['selisih']; ?>
                                                 </span>
-
-                                            <?php } else { ?>
-
+                                            <?php else : ?>
                                                 <span class="badge bg-secondary">
                                                     0
                                                 </span>
-
-                                            <?php } ?>
-
+                                            <?php endif; ?>
                                         </td>
 
                                         <td class="text-center">
-                                            <?= $row['kondisi']; ?>
+                                            <?= htmlspecialchars($row['kondisi']); ?>
                                         </td>
 
                                         <td>
-                                            <?= !empty($row['catatan']) ? $row['catatan'] : '-'; ?>
+                                            <?= !empty($row['catatan'])
+                                                ? htmlspecialchars($row['catatan'])
+                                                : '-'; ?>
                                         </td>
-
                                     </tr>
-
-                                <?php } ?>
-
+                                <?php endwhile; ?>
                             </tbody>
-
                         </table>
-
                     </div>
-
                 </div>
-
             </div>
 
+            <!-- Tombol -->
             <div class="row mt-4">
-
                 <div class="col-12">
-
                     <div class="d-flex justify-content-end gap-2">
 
                         <a href="riwayat.php" class="btn btn-secondary">
@@ -287,31 +218,65 @@ require_once "../../../includes/sidebar.php";
                             Kembali
                         </a>
 
-                        <?php if ($stockOpname['status'] == 'Draft') { ?>
-
+                        <?php if ($stockOpname['status'] == 'Draft') : ?>
                             <a
-                                href="proses_selesai.php?id=<?= $stockOpname['id_stock_opname']; ?>"
+                                href="proses_selesai.php?id=<?= $id_stock_opname; ?>"
                                 class="btn btn-success"
-                                onclick="return confirm('Apakah Anda yakin ingin menyelesaikan Stock Opname ini? Setelah diselesaikan, stok inventaris akan diperbarui sesuai hasil Stock Opname.')">
-
+                                id="btnSelesaikanStockOpname">
                                 <i class="bi bi-check-circle me-1"></i>
                                 Selesaikan Stock Opname
-
                             </a>
-
-                        <?php } ?>
+                        <?php endif; ?>
 
                     </div>
-
                 </div>
-
             </div>
 
         </div>
-
     </div>
 
 </main>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+const btnSelesaikan = document.getElementById('btnSelesaikanStockOpname');
+
+if (btnSelesaikan) {
+    btnSelesaikan.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const url = this.href;
+
+        Swal.fire({
+            icon: 'warning',
+            title: 'Selesaikan Stock Opname?',
+            text: 'Setelah diselesaikan, stok inventaris akan diperbarui sesuai hasil Stock Opname.',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Selesaikan',
+            cancelButtonText: 'Batal',
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#6c757d'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    });
+}
+</script>
+
+<?php if (isset($_SESSION['success'])) : ?>
+<script>
+Swal.fire({
+    icon: 'success',
+    title: 'Berhasil!',
+    text: <?= json_encode($_SESSION['success']); ?>,
+    confirmButtonText: 'OK',
+    confirmButtonColor: '#0d6efd'
+});
+</script>
+<?php unset($_SESSION['success']); endif; ?>
 
 <?php
 require_once "../../../includes/footer.php";

@@ -13,6 +13,7 @@ if (session_status() === PHP_SESSION_NONE) {
 */
 
 require_once "../../../../config/database.php";
+require_once "../../../../helpers/activity_log.php";
 require_once "service.php";
 require_once "config.php";
 require_once "helper.php";
@@ -146,6 +147,14 @@ try {
     */
 
     mysqli_commit($conn);
+
+    simpanActivityLog(
+        $conn,
+        $_SESSION['id_admin'],
+        "Menjadikan Foto Banner sebagai Cover",
+        "foto_banner",
+        $idFoto
+    );
 
     $_SESSION['success'] = "Cover banner berhasil diperbarui.";
 

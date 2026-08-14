@@ -126,25 +126,13 @@
 
                     <li>
 
-                        <a href="<?= $baseUrl; ?>user/lapor_kerusakan.php">
+                        <a href="<?= $baseUrl; ?>user/lapor.php">
 
-                            Lapor Kerusakan
-
-                        </a>
-
-                    </li>
-
-
-                    <li>
-
-                        <a href="<?= $baseUrl; ?>user/lapor/laporan_kehilangan/">
-
-                            Lapor Kehilangan
+                            Lapor 
 
                         </a>
 
                     </li>
-
 
                 </ul>
 
@@ -197,7 +185,9 @@
                         <span>
 
                             <a
-                                href="mailto:marketing@politekniknest.ac.id">
+                                href="mailto:marketing@politekniknest.ac.id"
+                                
+                                style="color: inherit; text-decoration: none;">
 
                                 marketing@politekniknest.ac.id
 
@@ -216,7 +206,9 @@
 
                         <span>
 
-                            <a href="tel:08112951003">
+                            <a href="tel:08112951003"
+                            
+                                style="color: inherit; text-decoration: none;">
 
                                 0811 2951003
 
@@ -238,7 +230,9 @@
                             <a
                                 href="https://politekniknest.ac.id"
                                 target="_blank"
-                                rel="noopener noreferrer">
+                                rel="noopener noreferrer"
+                                
+                                style="color: inherit; text-decoration: none;">
 
                                 politekniknest.ac.id
 

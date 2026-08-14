@@ -58,18 +58,36 @@ $queryDetail = mysqli_query($conn, "
 
 $terlambat = false;
 $hariTerlambat = 0;
+$terlambatDikembalikan = false;
+$hariTerlambatDikembalikan = 0;
+
+$tanggalKembali = strtotime($peminjaman['tanggal_kembali']);
+$hariIni = strtotime(date('Y-m-d'));
 
 if (
     $peminjaman['status'] == "Dipinjam" &&
-    strtotime($peminjaman['tanggal_kembali']) < strtotime(date('Y-m-d'))
+    $tanggalKembali < $hariIni
 ) {
-
     $terlambat = true;
 
     $hariTerlambat = floor(
-        (time() - strtotime($peminjaman['tanggal_kembali'])) / 86400
+        ($hariIni - $tanggalKembali) / 86400
     );
+}
 
+if (
+    $peminjaman['status'] == "Selesai" &&
+    !empty($peminjaman['tanggal_pengembalian'])
+) {
+    $tanggalPengembalian = strtotime($peminjaman['tanggal_pengembalian']);
+
+    if ($tanggalPengembalian > $tanggalKembali) {
+        $terlambatDikembalikan = true;
+
+        $hariTerlambatDikembalikan = floor(
+            ($tanggalPengembalian - $tanggalKembali) / 86400
+        );
+    }
 }
 
 switch ($peminjaman['status']) {
@@ -274,6 +292,15 @@ require_once "../../../includes/sidebar.php";
                                     </tr>
 
                                     <tr>
+                                        <th>Tanggal Pengembalian</th>
+                                        <td>
+                                            <?= !empty($peminjaman['tanggal_pengembalian'])
+                                                ? date('d-m-Y', strtotime($peminjaman['tanggal_pengembalian']))
+                                                : '-'; ?>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
                                         <th>Tujuan Peminjaman</th>
                                         <td>
                                             <?= nl2br(htmlspecialchars($peminjaman['tujuan_peminjaman'])); ?>
@@ -334,21 +361,30 @@ require_once "../../../includes/sidebar.php";
                         <?php if ($terlambat) : ?>
 
                             <div class="text-center">
-
                                 <span class="badge bg-danger fs-6 px-3 py-2">
                                     Terlambat <?= $hariTerlambat; ?> Hari
                                 </span>
 
-                                <div class="small text-muted mt-2">
+                                <div class="small text-danger mt-2">
                                     Barang belum dikembalikan
                                 </div>
+                            </div>
 
+                        <?php elseif ($terlambatDikembalikan) : ?>
+
+                            <div class="text-center">
+                                <span class="badge bg-warning text-dark fs-6 px-3 py-2">
+                                    Dikembalikan Terlambat <?= $hariTerlambatDikembalikan; ?> Hari
+                                </span>
+
+                                <div class="small text-muted mt-2">
+                                    Barang sudah dikembalikan
+                                </div>
                             </div>
 
                         <?php elseif ($peminjaman['status'] == "Dipinjam") : ?>
 
                             <div class="text-center">
-
                                 <span class="badge bg-primary fs-6 px-3 py-2">
                                     Sedang Dipinjam
                                 </span>
@@ -356,28 +392,23 @@ require_once "../../../includes/sidebar.php";
                                 <div class="small text-muted mt-2">
                                     Masih dalam masa peminjaman
                                 </div>
-
                             </div>
 
                         <?php elseif ($peminjaman['status'] == "Selesai") : ?>
 
                             <div class="text-center">
-
                                 <span class="badge bg-success fs-6 px-3 py-2">
-                                    Barang Telah Dikembalikan
+                                    Dikembalikan Tepat Waktu
                                 </span>
 
                                 <div class="small text-muted mt-2">
-                                    Barang telah diterima dan diverifikasi admin
+                                    Barang telah dikembalikan
                                 </div>
-
                             </div>
 
                         <?php else : ?>
 
-                            <span class="text-muted">
-                                -
-                            </span>
+                            <span class="text-muted">-</span>
 
                         <?php endif; ?>
 
