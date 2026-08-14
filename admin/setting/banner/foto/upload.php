@@ -22,7 +22,7 @@ if (!isset($_SESSION['id_admin'])) {
 // ======================================================
 
 require_once "../../../../config/database.php";
-
+require_once "../../../../helpers/activity_log.php";
 require_once "config.php";
 require_once "helper.php";
 require_once "service.php";
@@ -168,6 +168,16 @@ mysqli_stmt_bind_param(
 );
 
 if (mysqli_stmt_execute($stmt)) {
+
+    $id_foto_banner = mysqli_insert_id($conn);
+
+    simpanActivityLog(
+        $conn,
+        $_SESSION['id_admin'],
+        "Mengupload Foto Banner",
+        "foto_banner",
+        $id_foto_banner
+    );
 
     $_SESSION['berhasil'] = "Foto banner berhasil diupload.";
 

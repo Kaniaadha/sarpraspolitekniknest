@@ -22,6 +22,7 @@ if (!isset($_SESSION['id_admin'])) {
 // ======================================================
 
 require_once "../../../../config/database.php";
+require_once "../../../../helpers/activity_log.php";
 require_once "config.php";
 require_once "helper.php";
 require_once "service.php";
@@ -152,6 +153,14 @@ try {
     }
 
     mysqli_commit($conn);
+
+    simpanActivityLog(
+        $conn,
+        $_SESSION['id_admin'],
+        "Menghapus Foto Banner",
+        "foto_banner",
+        $idFoto
+    );
 
     $_SESSION['berhasil'] =
         "Foto banner berhasil dihapus.";
