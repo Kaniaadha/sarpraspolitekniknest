@@ -2,43 +2,73 @@
 
     <div class="container">
 
-        <!-- Logo -->
-        <a class="navbar-brand d-flex align-items-center" href="<?= $baseUrl; ?>index.php">
 
-            <img src="<?= $baseUrl; ?>assets/img/logo/logo-polnest.png"
+        <!-- ==========================
+             LOGO
+        =========================== -->
+
+        <a
+            class="navbar-brand d-flex align-items-center"
+            href="<?= $baseUrl; ?>index.php">
+
+            <img
+                src="<?= $baseUrl; ?>assets/img/logo/logo-polnest.png"
                 alt="Logo Politeknik Nest"
                 class="navbar-logo">
+
 
             <div class="brand-text">
 
                 <span class="brand-title">
+
                     SISARPRAS
+
                 </span>
 
+
                 <span class="brand-subtitle">
+
                     Politeknik Nest
+
                 </span>
 
             </div>
 
         </a>
 
-        <!-- Toggle -->
+
+
+        <!-- ==========================
+             TOGGLE MOBILE
+        =========================== -->
+
         <button
             class="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="#navbarMenu">
+            data-bs-target="#navbarMenu"
+            aria-controls="navbarMenu"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
 
             <span class="navbar-toggler-icon"></span>
 
         </button>
 
-        <!-- Menu -->
-        <div class="collapse navbar-collapse justify-content-end"
+
+
+        <!-- ==========================
+             MENU
+        =========================== -->
+
+        <div
+            class="collapse navbar-collapse justify-content-end"
             id="navbarMenu">
 
             <ul class="navbar-nav align-items-lg-center">
+
+
+                <!-- BERANDA -->
 
                 <li class="nav-item">
 
@@ -53,6 +83,9 @@
                 </li>
 
 
+
+                <!-- GEDUNG -->
+
                 <li class="nav-item">
 
                     <a
@@ -65,6 +98,9 @@
 
                 </li>
 
+
+
+                <!-- RUANGAN -->
 
                 <li class="nav-item">
 
@@ -79,6 +115,9 @@
                 </li>
 
 
+
+                <!-- PUBLIC SPACE -->
+
                 <li class="nav-item">
 
                     <a
@@ -91,6 +130,9 @@
 
                 </li>
 
+
+
+                <!-- INVENTARIS -->
 
                 <li class="nav-item">
 
@@ -105,8 +147,13 @@
                 </li>
 
 
+
+                <!-- PEMINJAMAN -->
+
                 <li class="nav-item">
-                    <a class="nav-link <?= ($currentPage == 'peminjaman') ? 'active' : ''; ?>"
+
+                    <a
+                        class="nav-link <?= ($currentPage == 'peminjaman') ? 'active' : ''; ?>"
                         href="<?= $baseUrl; ?>user/peminjaman/index.php">
 
                         Peminjaman
@@ -115,8 +162,14 @@
 
                 </li>
 
+
+
+                <!-- LAPOR -->
+
                 <li class="nav-item">
-                    <a class="nav-link <?= ($currentPage == 'lapor') ? 'active' : ''; ?>"
+
+                    <a
+                        class="nav-link <?= ($currentPage == 'lapor') ? 'active' : ''; ?>"
                         href="<?= $baseUrl; ?>user/lapor.php">
 
                         Lapor
@@ -125,21 +178,6 @@
 
                 </li>
 
-                <!-- Login -->
-
-                <li class="nav-item ms-lg-3 mt-3 mt-lg-0">
-
-                    <a
-                        href="<?= $baseUrl; ?>login.php"
-                        class="btn btn-login">
-
-                        <i class="bi bi-box-arrow-in-right"></i>
-
-                        Login
-
-                    </a>
-
-                </li>
 
             </ul>
 

@@ -150,7 +150,7 @@ $query = mysqli_query($conn, "
 
                                     <td class="text-center">
                                         <a
-                                            href="../foto/index.php?tipe=Gedung&id=<?= $row['id_lokasi']; ?>"
+                                            href="../foto/index.php?tipe=lokasi&id=<?= $row['id_lokasi']; ?>"
                                             class="btn btn-info btn-sm me-1"
                                             title="Gallery Foto">
                                             <i class="bi bi-images"></i>

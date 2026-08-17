@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 $menu = "inventaris";
@@ -9,6 +10,11 @@ if (!isset($_SESSION['id_admin'])) {
 }
 
 require_once "../../../config/database.php";
+
+
+// =====================================================
+// DATA INVENTARIS
+// =====================================================
 
 $query = mysqli_query($conn, "
     SELECT
@@ -50,12 +56,20 @@ $query = mysqli_query($conn, "
         i.nama_barang ASC
 ");
 
+
 require_once "../../../includes/header.php";
 require_once "../../../includes/navbar.php";
 require_once "../../../includes/sidebar.php";
+
 ?>
 
+
 <main class="app-main">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
 
     <div class="app-content-header">
 
@@ -64,21 +78,32 @@ require_once "../../../includes/sidebar.php";
             <div class="d-flex justify-content-between align-items-center">
 
                 <h2 class="fw-bold mb-0">
+
                     Data Inventaris
+
                 </h2>
+
 
                 <ol class="breadcrumb mb-0">
 
                     <li class="breadcrumb-item">
+
                         Dashboard
+
                     </li>
+
 
                     <li class="breadcrumb-item">
+
                         Master
+
                     </li>
 
+
                     <li class="breadcrumb-item active">
+
                         Inventaris
+
                     </li>
 
                 </ol>
@@ -89,13 +114,25 @@ require_once "../../../includes/sidebar.php";
 
     </div>
 
+
+
+    <!-- =====================================================
+         CONTENT
+    ====================================================== -->
+
     <div class="container-fluid">
 
         <div class="card border-0 shadow-sm">
 
+
+            <!-- =================================================
+                 CARD HEADER
+            ================================================== -->
+
             <div class="card-header py-3">
 
                 <div class="d-flex justify-content-between align-items-center">
+
 
                     <h5 class="mb-0">
 
@@ -104,6 +141,7 @@ require_once "../../../includes/sidebar.php";
                         Daftar Inventaris
 
                     </h5>
+
 
                     <a
                         href="tambah.php"
@@ -115,82 +153,168 @@ require_once "../../../includes/sidebar.php";
 
                     </a>
 
+
                 </div>
 
             </div>
+
+
+
+            <!-- =================================================
+                 CARD BODY
+            ================================================== -->
 
             <div class="card-body">
 
                 <div class="table-responsive">
 
-                    <table class="table table-bordered table-hover align-middle datatable">
+
+                    <table
+                        class="table table-bordered table-hover align-middle datatable">
+
+
+                        <!-- =================================================
+                             TABLE HEADER
+                        ================================================== -->
 
                         <thead class="table-secondary">
 
                             <tr>
 
-                                <th width="5%" class="text-center">
+
+                                <th
+                                    width="5%"
+                                    class="text-center">
+
                                     No
+
                                 </th>
 
-                                <th width="8%">
+
+                                <th
+                                    width="8%"
+                                    class="text-center">
+
                                     Gambar
+
                                 </th>
 
+
                                 <th class="text-center">
+
                                     Kode
+
                                 </th>
 
+
                                 <th>
+
                                     Nama Barang
+
                                 </th>
 
+
                                 <th>
+
                                     Kategori
+
                                 </th>
+
 
                                 <th>
+
                                     Penempatan
+
                                 </th>
 
+
                                 <th class="text-center">
+
                                     Jumlah
+
                                 </th>
 
+
                                 <th class="text-center">
+
+                                    Harga
+
+                                </th>
+
+
+                                <th class="text-center">
+
                                     Kondisi
+
                                 </th>
+
 
                                 <th class="text-center">
+
                                     Status
+
                                 </th>
 
-                                <th width="15%" class="text-center">
+
+                                <th
+                                    width="15%"
+                                    class="text-center">
+
                                     Aksi
+
                                 </th>
+
 
                             </tr>
 
                         </thead>
 
+
+
+                        <!-- =================================================
+                             TABLE BODY
+                        ================================================== -->
+
                         <tbody>
+
 
                             <?php $no = 1; ?>
 
-                            <?php while($row = mysqli_fetch_assoc($query)) : ?>
+
+                            <?php while (
+                                $row = mysqli_fetch_assoc($query)
+                            ) : ?>
+
 
                                 <tr>
 
-                                    <td>
-                                        <?= $no++; ?>
-                                    </td>
+
+                                    <!-- NO -->
+
                                     <td class="text-center">
 
-                                        <?php if (!empty($row['foto'])) : ?>
+                                        <?= $no++; ?>
+
+                                    </td>
+
+
+
+                                    <!-- GAMBAR -->
+
+                                    <td class="text-center">
+
+
+                                        <?php if (
+                                            !empty($row['foto'])
+                                        ) : ?>
+
 
                                             <img
-                                                src="../../../assets/uploads/inventaris/<?= htmlspecialchars($row['foto']); ?>"
+                                                src="../../../assets/uploads/inventaris/<?= htmlspecialchars(
+                                                    $row['foto']
+                                                ); ?>"
                                                 class="img-thumbnail"
+                                                alt="Foto Inventaris"
                                                 style="
                                                     width:70px;
                                                     height:70px;
@@ -199,7 +323,9 @@ require_once "../../../includes/sidebar.php";
                                                 "
                                                 onclick="previewFoto(this.src)">
 
+
                                         <?php else : ?>
+
 
                                             <div
                                                 class="border rounded d-flex align-items-center justify-content-center mx-auto"
@@ -214,233 +340,429 @@ require_once "../../../includes/sidebar.php";
 
                                             </div>
 
+
                                         <?php endif; ?>
 
+
                                     </td>
+
+
+
+                                    <!-- KODE -->
+
                                     <td class="text-center">
-                                        <?= htmlspecialchars($row['kode_inventaris']); ?>
+
+                                        <?= htmlspecialchars(
+                                            $row['kode_inventaris']
+                                        ); ?>
+
                                     </td>
+
+
+
+                                    <!-- NAMA BARANG -->
 
                                     <td>
 
+
                                         <strong>
 
-                                            <?= htmlspecialchars($row['nama_barang']); ?>
+                                            <?= htmlspecialchars(
+                                                $row['nama_barang']
+                                            ); ?>
 
                                         </strong>
 
-                                        <?php if(!empty($row['merk'])) : ?>
+
+                                        <?php if (
+                                            !empty($row['merk'])
+                                        ) : ?>
 
                                             <br>
 
                                             <small class="text-muted">
 
-                                                <?= htmlspecialchars($row['merk']); ?>
+                                                <?= htmlspecialchars(
+                                                    $row['merk']
+                                                ); ?>
 
                                             </small>
 
                                         <?php endif; ?>
 
-                                    </td>
-
-                                    <td>
-
-                                        <?= htmlspecialchars($row['nama_kategori']); ?>
 
                                     </td>
 
+
+
+                                    <!-- KATEGORI -->
+
                                     <td>
 
-                                        <?php if(!empty($row['id_ruangan'])) : ?>
+                                        <?= htmlspecialchars(
+                                            $row['nama_kategori']
+                                        ); ?>
 
-                                            <?= htmlspecialchars($row['lokasi_ruangan']); ?>
+                                    </td>
+
+
+
+                                    <!-- PENEMPATAN -->
+
+                                    <td>
+
+
+                                        <?php if (
+                                            !empty($row['id_ruangan'])
+                                        ) : ?>
+
+
+                                            <?= htmlspecialchars(
+                                                $row['lokasi_ruangan']
+                                            ); ?>
 
                                             <br>
 
-                                            <?= htmlspecialchars($row['lantai_ruangan']); ?>
+
+                                            <?= htmlspecialchars(
+                                                $row['lantai_ruangan']
+                                            ); ?>
 
                                             <br>
+
 
                                             <strong>
 
-                                                <?= htmlspecialchars($row['nama_ruangan']); ?>
+                                                <?= htmlspecialchars(
+                                                    $row['nama_ruangan']
+                                                ); ?>
 
                                             </strong>
+
 
                                         <?php else : ?>
 
-                                            <?= htmlspecialchars($row['lokasi_public']); ?>
+
+                                            <?= htmlspecialchars(
+                                                $row['lokasi_public']
+                                            ); ?>
 
                                             <br>
 
-                                            <?= htmlspecialchars($row['lantai_public']); ?>
+
+                                            <?= htmlspecialchars(
+                                                $row['lantai_public']
+                                            ); ?>
 
                                             <br>
+
 
                                             <strong>
 
-                                                <?= htmlspecialchars($row['nama_public_space']); ?>
+                                                <?= htmlspecialchars(
+                                                    $row['nama_public_space']
+                                                ); ?>
 
                                             </strong>
 
+
                                         <?php endif; ?>
 
+
                                     </td>
+
+
+
+                                    <!-- JUMLAH -->
 
                                     <td class="text-center">
 
-                                        <?= number_format($row['jumlah']); ?>
+                                        <?= number_format(
+                                            $row['jumlah']
+                                        ); ?>
 
                                     </td>
 
-                            <td class="text-center">
 
-                                <?php
 
-                                switch($row['kondisi']){
+                                    <!-- HARGA -->
 
-                                    case "Baik":
+                                    <td class="text-center">
 
-                                        echo '<span class="badge bg-success">Baik</span>';
 
-                                        break;
+                                        <?php if (
+                                            $row['harga'] !== null &&
+                                            $row['harga'] !== ''
+                                        ) : ?>
 
-                                    case "Rusak Ringan":
 
-                                        echo '<span class="badge bg-warning text-dark">Rusak Ringan</span>';
+                                            <strong>
 
-                                        break;
+                                                Rp <?= number_format(
+                                                    $row['harga'],
+                                                    0,
+                                                    ',',
+                                                    '.'
+                                                ); ?>
 
-                                    case "Rusak Berat":
+                                            </strong>
 
-                                        echo '<span class="badge bg-danger">Rusak Berat</span>';
 
-                                        break;
+                                        <?php else : ?>
 
-                                    default:
 
-                                        echo '<span class="badge bg-secondary">'
-                                            . htmlspecialchars($row['kondisi']) .
-                                            '</span>';
+                                            <span class="text-muted">
 
-                                        break;
+                                                -
 
-                                }
+                                            </span>
 
-                                ?>
 
-                            </td>
+                                        <?php endif; ?>
 
-                            <td class="text-center">
 
-                                <?php if($row['status']=="Aktif") : ?>
+                                    </td>
 
-                                    <span class="badge bg-success rounded-pill">
 
-                                        Aktif
 
-                                    </span>
+                                    <!-- KONDISI -->
 
-                                <?php else : ?>
+                                    <td class="text-center">
 
-                                    <span class="badge bg-danger rounded-pill">
 
-                                        Nonaktif
+                                        <?php
 
-                                    </span>
+                                        switch (
+                                            $row['kondisi']
+                                        ) {
 
-                                <?php endif; ?>
+                                            case "Baik":
 
-                            </td>
+                                                echo '
+                                                    <span class="badge bg-success">
+                                                        Baik
+                                                    </span>
+                                                ';
 
-                            <td class="text-center">
+                                                break;
 
-                                <a
-                                    href="edit.php?id=<?= $row['id_inventaris']; ?>"
-                                    class="btn btn-warning btn-sm me-1">
 
-                                    <i class="bi bi-pencil-square"></i>
+                                            case "Rusak Ringan":
 
-                                </a>
+                                                echo '
+                                                    <span class="badge bg-warning text-dark">
+                                                        Rusak Ringan
+                                                    </span>
+                                                ';
 
-                                <a
-                                    href="#"
-                                    class="btn btn-danger btn-sm"
-                                    onclick="hapusInventaris(<?= $row['id_inventaris']; ?>)">
+                                                break;
 
-                                    <i class="bi bi-trash"></i>
 
-                                </a>
+                                            case "Rusak Berat":
 
-                            </td>
+                                                echo '
+                                                    <span class="badge bg-danger">
+                                                        Rusak Berat
+                                                    </span>
+                                                ';
 
-                            </tr>
+                                                break;
+
+
+                                            default:
+
+                                                echo '
+                                                    <span class="badge bg-secondary">
+                                                        ' .
+                                                        htmlspecialchars(
+                                                            $row['kondisi']
+                                                        )
+                                                        . '
+                                                    </span>
+                                                ';
+
+                                                break;
+
+                                        }
+
+                                        ?>
+
+
+                                    </td>
+
+
+
+                                    <!-- STATUS -->
+
+                                    <td class="text-center">
+
+
+                                        <?php if (
+                                            $row['status'] == "Aktif"
+                                        ) : ?>
+
+
+                                            <span
+                                                class="badge bg-success rounded-pill">
+
+                                                Aktif
+
+                                            </span>
+
+
+                                        <?php else : ?>
+
+
+                                            <span
+                                                class="badge bg-danger rounded-pill">
+
+                                                Nonaktif
+
+                                            </span>
+
+
+                                        <?php endif; ?>
+
+
+                                    </td>
+
+
+
+                                    <!-- AKSI -->
+
+                                    <td class="text-center">
+
+
+                                        <a
+                                            href="edit.php?id=<?= $row['id_inventaris']; ?>"
+                                            class="btn btn-warning btn-sm me-1"
+                                            title="Edit">
+
+                                            <i class="bi bi-pencil-square"></i>
+
+                                        </a>
+
+
+                                        <a
+                                            href="#"
+                                            class="btn btn-danger btn-sm"
+                                            title="Hapus"
+                                            onclick="hapusInventaris(
+                                                <?= $row['id_inventaris']; ?>
+                                            )">
+
+                                            <i class="bi bi-trash"></i>
+
+                                        </a>
+
+
+                                    </td>
+
+
+                                </tr>
+
 
                             <?php endwhile; ?>
 
-                            </tbody>
 
-                            </table>
+                        </tbody>
 
-                            </div>
 
-                            </div>
+                    </table>
 
-                            </div>
+                </div>
 
-                            </div>
+            </div>
 
-                            </main>
+        </div>
 
-                            <script>
+    </div>
 
-                            function hapusInventaris(id){
 
-                                Swal.fire({
+</main>
 
-                                    title: 'Hapus Data?',
 
-                                    text: 'Data inventaris yang dihapus tidak dapat dikembalikan.',
 
-                                    icon: 'warning',
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
 
-                                    showCancelButton: true,
+<script>
 
-                                    confirmButtonColor: '#dc3545',
 
-                                    cancelButtonColor: '#6c757d',
+/* =====================================================
+   HAPUS INVENTARIS
+===================================================== */
 
-                                    confirmButtonText: 'Ya, Hapus!',
+function hapusInventaris(id) {
 
-                                    cancelButtonText: 'Batal'
 
-                                }).then((result)=>{
+    Swal.fire({
 
-                                    if(result.isConfirmed){
+        title: 'Hapus Data?',
 
-                                        window.location.href = "hapus.php?id=" + id;
+        text: 'Data inventaris yang dihapus tidak dapat dikembalikan.',
 
-                                    }
+        icon: 'warning',
 
-                                });
+        showCancelButton: true,
 
-                            }
-                            function previewFoto(src){
+        confirmButtonColor: '#dc3545',
 
-                                Swal.fire({
+        cancelButtonColor: '#6c757d',
 
-                                    imageUrl: src,
-                                    imageAlt: 'Foto Inventaris',
-                                    showConfirmButton: false,
-                                    showCloseButton: true,
-                                    width: 700
+        confirmButtonText: 'Ya, Hapus!',
 
-                                });
+        cancelButtonText: 'Batal'
 
-                            }
-                            </script>
+    }).then((result) => {
 
-                            <?php
-                            require_once "../../../includes/footer.php";
-                            require_once "../../../includes/scripts.php";
-                            ?>
+
+        if (result.isConfirmed) {
+
+            window.location.href =
+                "hapus.php?id=" + id;
+
+        }
+
+    });
+
+}
+
+
+
+/* =====================================================
+   PREVIEW FOTO
+===================================================== */
+
+function previewFoto(src) {
+
+
+    Swal.fire({
+
+        imageUrl: src,
+
+        imageAlt: 'Foto Inventaris',
+
+        showConfirmButton: false,
+
+        showCloseButton: true,
+
+        width: 700
+
+    });
+
+}
+
+
+</script>
+
+
+
+<?php
+
+require_once "../../../includes/footer.php";
+
+require_once "../../../includes/scripts.php";
+
+?>

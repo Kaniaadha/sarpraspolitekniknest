@@ -13,16 +13,30 @@
 
                 <div class="footer-brand">
 
-                    <img
-                        src="<?= $baseUrl; ?>assets/img/logo/logo-polnest.png"
-                        alt="Logo Politeknik Nest"
-                        class="footer-logo">
+                    <!-- Logo sebagai akses Admin -->
+
+                    <a
+                        href="<?= $baseUrl; ?>admin/dashboard.php"
+                        class="footer-admin-logo"
+                        title="Admin">
+
+                        <img
+                            src="<?= $baseUrl; ?>assets/img/logo/logo-polnest.png"
+                            alt="Logo Politeknik Nest"
+                            class="footer-logo">
+
+                    </a>
+
 
                     <div>
 
-                        <h3>SISARPRAS</h3>
+                        <h3>
+                            SISARPRAS
+                        </h3>
 
-                        <span>Politeknik Nest</span>
+                        <span>
+                            Politeknik Nest
+                        </span>
 
                     </div>
 
@@ -43,6 +57,7 @@
             </div>
 
 
+
             <!-- ==========================
                  MENU
             =========================== -->
@@ -58,9 +73,13 @@
 
                 <ul class="footer-menu">
 
+
+                    <!-- BERANDA -->
+
                     <li>
 
-                        <a href="<?= $baseUrl; ?>index.php">
+                        <a
+                            href="<?= $baseUrl; ?>index.php">
 
                             Beranda
 
@@ -69,9 +88,12 @@
                     </li>
 
 
+                    <!-- GEDUNG -->
+
                     <li>
 
-                        <a href="<?= $baseUrl; ?>user/gedung.php">
+                        <a
+                            href="<?= $baseUrl; ?>user/gedung.php">
 
                             Gedung
 
@@ -80,9 +102,12 @@
                     </li>
 
 
+                    <!-- RUANGAN -->
+
                     <li>
 
-                        <a href="<?= $baseUrl; ?>user/ruangan.php">
+                        <a
+                            href="<?= $baseUrl; ?>user/ruangan.php">
 
                             Ruangan
 
@@ -91,9 +116,12 @@
                     </li>
 
 
+                    <!-- PUBLIC SPACE -->
+
                     <li>
 
-                        <a href="<?= $baseUrl; ?>user/public_space.php">
+                        <a
+                            href="<?= $baseUrl; ?>user/public_space.php">
 
                             Public Space
 
@@ -102,9 +130,12 @@
                     </li>
 
 
+                    <!-- INVENTARIS -->
+
                     <li>
 
-                        <a href="<?= $baseUrl; ?>user/inventaris.php">
+                        <a
+                            href="<?= $baseUrl; ?>user/inventaris.php">
 
                             Inventaris
 
@@ -113,9 +144,12 @@
                     </li>
 
 
+                    <!-- PEMINJAMAN -->
+
                     <li>
 
-                        <a href="<?= $baseUrl; ?>user/peminjaman/index.php">
+                        <a
+                            href="<?= $baseUrl; ?>user/peminjaman/index.php">
 
                             Peminjaman
 
@@ -124,19 +158,38 @@
                     </li>
 
 
+                    <!-- LAPOR KERUSAKAN -->
+
                     <li>
 
-                        <a href="<?= $baseUrl; ?>user/lapor.php">
+                        <a
+                            href="<?= $baseUrl; ?>user/lapor_kerusakan.php">
 
-                            Lapor 
+                            Lapor Kerusakan
 
                         </a>
 
                     </li>
 
+
+                    <!-- LAPOR KEHILANGAN -->
+
+                    <li>
+
+                        <a
+                            href="<?= $baseUrl; ?>user/lapor/laporan_kehilangan/">
+
+                            Lapor Kehilangan
+
+                        </a>
+
+                    </li>
+
+
                 </ul>
 
             </div>
+
 
 
             <!-- ==========================
@@ -185,9 +238,7 @@
                         <span>
 
                             <a
-                                href="mailto:marketing@politekniknest.ac.id"
-                                
-                                style="color: inherit; text-decoration: none;">
+                                href="mailto:marketing@politekniknest.ac.id">
 
                                 marketing@politekniknest.ac.id
 
@@ -206,9 +257,8 @@
 
                         <span>
 
-                            <a href="tel:08112951003"
-                            
-                                style="color: inherit; text-decoration: none;">
+                            <a
+                                href="tel:08112951003">
 
                                 0811 2951003
 
@@ -230,9 +280,7 @@
                             <a
                                 href="https://politekniknest.ac.id"
                                 target="_blank"
-                                rel="noopener noreferrer"
-                                
-                                style="color: inherit; text-decoration: none;">
+                                rel="noopener noreferrer">
 
                                 politekniknest.ac.id
 
@@ -248,8 +296,9 @@
             </div>
 
 
+
             <!-- ==========================
-                 SOCIAL
+                 SOCIAL MEDIA
             =========================== -->
 
             <div class="col-lg-2">
@@ -324,8 +373,18 @@
         </div>
 
 
+
+        <!-- ==========================
+             DIVIDER
+        =========================== -->
+
         <hr class="footer-divider">
 
+
+
+        <!-- ==========================
+             COPYRIGHT
+        =========================== -->
 
         <div class="footer-bottom">
 
@@ -343,9 +402,24 @@
 </footer>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="<?= $baseUrl; ?>assets/js/user/main.js"></script>
+<!-- ==========================
+     BOOTSTRAP
+=========================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+
+<!-- ==========================
+     USER JAVASCRIPT
+=========================== -->
+
+<script
+    src="<?= $baseUrl; ?>assets/js/user/main.js">
+</script>
 
 
 </body>

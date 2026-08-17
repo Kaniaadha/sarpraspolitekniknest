@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 require_once "../../../config/database.php";
@@ -28,28 +29,32 @@ $id_public_space = !empty($_POST['id_public_space'])
     : NULL;
 
 $jumlah           = (int) ($_POST['jumlah'] ?? 0);
+$harga            = trim($_POST['harga'] ?? '');
 $kondisi          = $_POST['kondisi'] ?? '';
 $tahun_perolehan  = trim($_POST['tahun_perolehan'] ?? '');
 $sumber_perolehan = trim($_POST['sumber_perolehan'] ?? '');
 $status           = $_POST['status'] ?? '';
 
 $currentYear = date('Y');
-/*
-|--------------------------------------------------------------------------
-| Upload
-|--------------------------------------------------------------------------
-*/
+
+
+// ==============================
+// Upload
+// ==============================
 
 $uploadFolder = "../../../assets/uploads/inventaris/";
 
 ensureUploadDirectory($uploadFolder);
 
 $foto = null;
+
+
 // ==============================
 // Simpan Old Input
 // ==============================
 
 $_SESSION['old'] = $_POST;
+
 
 // ==============================
 // Validasi Wajib
@@ -65,11 +70,13 @@ if (
     empty($status)
 ) {
 
-    $_SESSION['error'] = "Semua field wajib diisi kecuali Merk, Spesifikasi, Tahun Perolehan, dan Sumber Perolehan.";
+    $_SESSION['error'] =
+        "Semua field wajib diisi kecuali Merk, Spesifikasi, Harga, Tahun Perolehan, dan Sumber Perolehan.";
 
     header("Location: tambah.php");
     exit;
 }
+
 
 // ==============================
 // Validasi Format Kode
@@ -77,11 +84,13 @@ if (
 
 if (!preg_match('/^\.NBK\..+$/', $kode_inventaris)) {
 
-    $_SESSION['error'] = "Kode Inventaris harus diawali dengan .NBK.";
+    $_SESSION['error'] =
+        "Kode Inventaris harus diawali dengan .NBK.";
 
     header("Location: tambah.php");
     exit;
 }
+
 
 // ==============================
 // Validasi Jumlah
@@ -89,11 +98,52 @@ if (!preg_match('/^\.NBK\..+$/', $kode_inventaris)) {
 
 if ($jumlah <= 0) {
 
-    $_SESSION['error'] = "Jumlah harus lebih dari 0.";
+    $_SESSION['error'] =
+        "Jumlah harus lebih dari 0.";
 
     header("Location: tambah.php");
     exit;
 }
+
+
+// ==============================
+// Validasi Harga
+// ==============================
+
+if ($harga !== '') {
+
+    if (!is_numeric($harga)) {
+
+        $_SESSION['error'] =
+            "Harga harus berupa angka.";
+
+        header("Location: tambah.php");
+        exit;
+    }
+
+    if ((float) $harga < 0) {
+
+        $_SESSION['error'] =
+            "Harga tidak boleh kurang dari 0.";
+
+        header("Location: tambah.php");
+        exit;
+    }
+
+}
+
+
+// ==============================
+// Format Harga
+// ==============================
+
+$harga_sql = ($harga === '')
+    ? "NULL"
+    : "'" . mysqli_real_escape_string(
+        $conn,
+        $harga
+    ) . "'";
+
 
 // ==============================
 // Validasi Tahun
@@ -101,16 +151,19 @@ if ($jumlah <= 0) {
 
 if (!empty($tahun_perolehan)) {
 
-    if ($tahun_perolehan < 1900 || $tahun_perolehan > $currentYear) {
+    if (
+        $tahun_perolehan < 1900 ||
+        $tahun_perolehan > $currentYear
+    ) {
 
-        $_SESSION['error'] = "Tahun Perolehan tidak valid.";
+        $_SESSION['error'] =
+            "Tahun Perolehan tidak valid.";
 
         header("Location: tambah.php");
         exit;
-
     }
-
 }
+
 
 // ==============================
 // Validasi Penempatan
@@ -120,11 +173,11 @@ if ($jenis_penempatan == "ruangan") {
 
     if (empty($id_ruangan)) {
 
-        $_SESSION['error'] = "Silakan pilih Ruangan.";
+        $_SESSION['error'] =
+            "Silakan pilih Ruangan.";
 
         header("Location: tambah.php");
         exit;
-
     }
 
     $id_public_space = NULL;
@@ -135,11 +188,11 @@ elseif ($jenis_penempatan == "public") {
 
     if (empty($id_public_space)) {
 
-        $_SESSION['error'] = "Silakan pilih Public Space.";
+        $_SESSION['error'] =
+            "Silakan pilih Public Space.";
 
         header("Location: tambah.php");
         exit;
-
     }
 
     $id_ruangan = NULL;
@@ -148,12 +201,13 @@ elseif ($jenis_penempatan == "public") {
 
 else {
 
-    $_SESSION['error'] = "Jenis Penempatan tidak valid.";
+    $_SESSION['error'] =
+        "Jenis Penempatan tidak valid.";
 
     header("Location: tambah.php");
     exit;
-
 }
+
 
 // ==============================
 // Validasi Kode Unik
@@ -181,51 +235,63 @@ if (mysqli_num_rows($resultCek) > 0) {
 
     mysqli_stmt_close($stmtCek);
 
-    $_SESSION['error'] = "Kode Inventaris sudah digunakan.";
+    $_SESSION['error'] =
+        "Kode Inventaris sudah digunakan.";
 
     header("Location: tambah.php");
     exit;
 }
 
 mysqli_stmt_close($stmtCek);
-/*
-|--------------------------------------------------------------------------
-| Upload Foto
-|--------------------------------------------------------------------------
-*/
+
+
+// ==============================
+// Upload Foto
+// ==============================
 
 if (
     isset($_FILES['foto']) &&
     $_FILES['foto']['error'] !== UPLOAD_ERR_NO_FILE
 ) {
 
-    $validation = validateImage($_FILES['foto'], $config);
+    $validation =
+        validateImage(
+            $_FILES['foto'],
+            $config
+        );
 
     if ($validation !== true) {
 
-        $_SESSION['error'] = $validation;
+        $_SESSION['error'] =
+            $validation;
 
         header("Location: tambah.php");
         exit;
     }
+
 
     $extension = pathinfo(
         $_FILES['foto']['name'],
         PATHINFO_EXTENSION
     );
 
-    $foto = generateUniqueFileName($extension);
+
+    $foto =
+        generateUniqueFileName(
+            $extension
+        );
 
 }
-/*
-|--------------------------------------------------------------------------
-| Upload File
-|--------------------------------------------------------------------------
-*/
+
+
+// ==============================
+// Upload File
+// ==============================
 
 if ($foto !== null) {
 
-    $destination = $uploadFolder . $foto;
+    $destination =
+        $uploadFolder . $foto;
 
     if (
         !move_uploaded_file(
@@ -234,14 +300,17 @@ if ($foto !== null) {
         )
     ) {
 
-        $_SESSION['error'] = "Upload foto gagal.";
+        $_SESSION['error'] =
+            "Upload foto gagal.";
 
         header("Location: tambah.php");
         exit;
     }
 }
+
+
 // ==============================
-// Simpan Database
+// Format NULL
 // ==============================
 
 $id_ruangan_sql = is_null($id_ruangan)
@@ -254,11 +323,21 @@ $id_public_sql = is_null($id_public_space)
 
 $tahun_sql = ($tahun_perolehan === "")
     ? "NULL"
-    : "'$tahun_perolehan'";
+    : "'" . mysqli_real_escape_string(
+        $conn,
+        $tahun_perolehan
+    ) . "'";
+
+
+// ==============================
+// Simpan Database
+// ==============================
 
 try {
 
-    $query = mysqli_query($conn, "
+    $query = mysqli_query(
+        $conn,
+        "
         INSERT INTO inventaris
         (
             kode_inventaris,
@@ -269,6 +348,7 @@ try {
             merk,
             spesifikasi,
             jumlah,
+            harga,
             kondisi,
             tahun_perolehan,
             sumber_perolehan,
@@ -287,6 +367,7 @@ try {
             '$merk',
             '$spesifikasi',
             '$jumlah',
+            $harga_sql,
             '$kondisi',
             $tahun_sql,
             '$sumber_perolehan',
@@ -295,18 +376,27 @@ try {
             NOW(),
             NOW()
         )
-    ");
+        "
+    );
 
-} catch (mysqli_sql_exception $e) {
+}
+catch (mysqli_sql_exception $e) {
 
+
+    // ==============================
     // Duplicate kode inventaris
+    // ==============================
+
     if ($e->getCode() == 1062) {
 
         if (
             isset($destination) &&
             file_exists($destination)
         ) {
-            deletePhysicalFile($destination);
+
+            deletePhysicalFile(
+                $destination
+            );
         }
 
         $_SESSION['error'] =
@@ -316,12 +406,19 @@ try {
         exit;
     }
 
+
+    // ==============================
     // Error database lainnya
+    // ==============================
+
     if (
         isset($destination) &&
         file_exists($destination)
     ) {
-        deletePhysicalFile($destination);
+
+        deletePhysicalFile(
+            $destination
+        );
     }
 
     $_SESSION['error'] =
@@ -331,6 +428,7 @@ try {
     exit;
 }
 
+
 // ==============================
 // Hasil
 // ==============================
@@ -339,7 +437,9 @@ if ($query) {
 
     unset($_SESSION['old']);
 
-    $idInventaris = mysqli_insert_id($conn);
+    $idInventaris =
+        mysqli_insert_id($conn);
+
 
     simpanActivityLog(
         $conn,
@@ -349,19 +449,30 @@ if ($query) {
         $idInventaris
     );
 
-    $_SESSION['success'] = "Data Inventaris berhasil ditambahkan.";
+
+    $_SESSION['success'] =
+        "Data Inventaris berhasil ditambahkan.";
 
     header("Location: index.php");
     exit;
 
-}else{
+}
 
-    if(
+else {
+
+    if (
         isset($destination) &&
         file_exists($destination)
-    ){
-        deletePhysicalFile($destination);
+    ) {
+
+        deletePhysicalFile(
+            $destination
+        );
     }
 
-    $_SESSION['error']="Data Inventaris gagal ditambahkan.";
+    $_SESSION['error'] =
+        "Data Inventaris gagal ditambahkan.";
+
+    header("Location: tambah.php");
+    exit;
 }
