@@ -187,7 +187,9 @@ mysqli_stmt_close($stmtInventaris);
 ?>
 
 <?php include "../includes/user/header.php"; ?>
-
+<?php
+$currentPage = 'ruangan';
+?>
 <style>
 
 /*==================================================
@@ -733,7 +735,71 @@ RESPONSIVE
     }
 
 }
+/* ==================================================
+   RESPONSIVE MOBILE - 2 CARD SEBARIS
+================================================== */
 
+@media (max-width: 576px) {
+
+    .info-grid,
+    .stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    /* INFO CARD */
+
+    .info-card {
+        border-radius: 16px;
+        padding: 18px 12px;
+    }
+
+    .info-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+
+    .info-card h5 {
+        font-size: 12px;
+        line-height: 1.2;
+        margin-bottom: 5px;
+    }
+
+    .info-card p {
+        font-size: 10px;
+        line-height: 1.3;
+        word-break: break-word;
+    }
+
+    /* STAT CARD */
+
+    .stat-card {
+        border-radius: 16px;
+        padding: 18px 12px;
+    }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+
+    .stat-card h3 {
+        font-size: 24px;
+        line-height: 1.2;
+    }
+
+    .stat-card span {
+        font-size: 10px;
+        line-height: 1.3;
+    }
+
+}
 </style>
 
 

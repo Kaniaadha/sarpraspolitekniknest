@@ -201,55 +201,56 @@ foreach ($lantaiList as $lantai) {
     border: none;
     outline: none;
     border-radius: 50px;
-}
-
-
-/* ==========================================================
-   TOTAL
+}/* ==========================================================
+   TOTAL PUBLIC SPACE
 ========================================================== */
 
-.stats-section {
-    margin-top: -50px;
+.public-total {
+    margin-top: -55px;
+    margin-bottom: 45px;
     position: relative;
-    z-index: 2;
+    z-index: 5;
 }
 
-.stats-card {
+.public-total-card {
     display: flex;
     align-items: center;
-    gap: 15px;
-    width: fit-content;
-    padding: 20px 25px;
+    gap: 18px;
     background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 12px 30px rgba(0,0,0,.08);
+    border-radius: 22px;
+    padding: 22px 26px;
+    box-shadow: 0 15px 35px rgba(0,0,0,.08);
 }
 
-.stats-icon {
-    width: 55px;
-    height: 55px;
+.public-total-icon {
+    width: 58px;
+    height: 58px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: linear-gradient(
+        135deg,
+        #EC4899,
+        #FF7A45
+    );
     display: flex;
-    align-items: center;
     justify-content: center;
-    border-radius: 15px;
-    background: #fce7f3;
-    color: #EC4899;
+    align-items: center;
+    color: #fff;
     font-size: 22px;
 }
 
-.stats-label {
-    display: block;
-    color: #718096;
-    font-size: 13px;
-}
-
-.stats-card h3 {
+.public-total-card h3 {
     margin: 0;
-    color: #243653;
-    font-size: 27px;
+    font-size: 28px;
     font-weight: 800;
+    color: #2d3748;
 }
 
+.public-total-card p {
+    margin: 3px 0 0;
+    color: #6b7280;
+    font-size: 14px;
+}
 
 /* ==========================================================
    CONTENT
@@ -495,6 +496,69 @@ foreach ($lantaiList as $lantai) {
     }
 }
 
+/* ==================================================
+   RESPONSIVE MOBILE - 2 CARD SEBARIS
+================================================== */
+
+@media (max-width: 576px) {
+
+    .public-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .public-card {
+        border-radius: 16px;
+    }
+
+    .public-image {
+        height: 120px;
+    }
+
+    .public-code {
+        top: 6px;
+        left: 6px;
+        padding: 4px 8px;
+        font-size: 9px;
+    }
+
+    .public-body {
+        padding: 12px;
+    }
+
+    .public-body h5 {
+        font-size: 14px;
+        line-height: 1.2;
+        margin-bottom: 5px;
+    }
+
+    .public-location {
+        font-size: 10px;
+        margin-bottom: 9px;
+    }
+
+    .public-info {
+        gap: 6px;
+        margin-bottom: 10px;
+    }
+
+    .public-info div {
+        font-size: 10px;
+    }
+
+    .public-desc {
+        font-size: 10px;
+        line-height: 1.4;
+        margin-bottom: 10px;
+    }
+
+    .btn-detail {
+        height: 34px;
+        font-size: 11px;
+        gap: 4px;
+    }
+
+}
 </style>
 
 
@@ -567,25 +631,25 @@ foreach ($lantaiList as $lantai) {
      TOTAL
 ========================================================== -->
 
-<section class="stats-section">
+<section class="public-total">
 
     <div class="container">
 
-        <div class="stats-card">
+        <div class="public-total-card">
 
-            <div class="stats-icon">
+            <div class="public-total-icon">
                 <i class="bi bi-buildings-fill"></i>
             </div>
 
             <div>
 
-                <span class="stats-label">
-                    Total Public Space
-                </span>
-
                 <h3>
                     <?= $totalPublicSpace; ?>
                 </h3>
+
+                <p>
+                    Total public space aktif
+                </p>
 
             </div>
 

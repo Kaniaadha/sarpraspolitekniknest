@@ -982,15 +982,48 @@ $totalRusak = mysqli_fetch_assoc(
 @media(max-width:576px){
 
     .inventory-image{
-
-        height:200px;
-
+        height:130px;
     }
 
     .inventory-content{
+        padding:12px;
+    }
 
-        padding:18px;
+    .inventory-category{
+        font-size:9px;
+    }
 
+    .inventory-name{
+        font-size:14px;
+        margin:6px 0;
+    }
+
+    .inventory-code{
+        font-size:10px;
+        padding:7px 8px;
+        margin-bottom:10px;
+    }
+
+    .info-row{
+        font-size:10px;
+        gap:5px;
+    }
+
+    .inventory-info{
+        gap:6px;
+        margin-bottom:12px;
+    }
+
+    .inventory-card-footer{
+        padding-top:10px;
+    }
+
+    .status-text{
+        font-size:10px;
+    }
+
+    .btn-detail{
+        font-size:10px;
     }
 
 }
@@ -1742,7 +1775,7 @@ $totalRusak = mysqli_fetch_assoc(
                     <!-- CARD -->
 
                     <div
-                        class="col-xl-4 col-lg-4 col-md-6 inventaris-item"
+                        class="col-6 col-md-6 col-lg-4 col-xl-4 inventaris-item"
                         data-search="
 
                             <?= htmlspecialchars(

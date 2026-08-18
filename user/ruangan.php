@@ -1041,6 +1041,71 @@ RESPONSIVE
 .section-title {
     font-weight: 700;
 }
+/* ==================================================
+   RESPONSIVE MOBILE - 2 CARD SEBARIS
+================================================== */
+
+@media (max-width: 576px) {
+
+    .ruangan-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .ruangan-card {
+        border-radius: 16px;
+    }
+
+    .ruangan-image {
+        height: 120px;
+    }
+
+    .ruangan-code {
+        top: 6px;
+        left: 6px;
+        padding: 4px 8px;
+        font-size: 9px;
+    }
+
+    .ruangan-body {
+        padding: 12px;
+    }
+
+    .ruangan-body h5 {
+        font-size: 14px;
+        line-height: 1.2;
+        margin-bottom: 5px;
+    }
+
+    .ruangan-location {
+        font-size: 10px;
+        gap: 4px;
+        margin-bottom: 9px;
+    }
+
+    .ruangan-info {
+        gap: 6px;
+        margin-bottom: 10px;
+    }
+
+    .ruangan-info div {
+        font-size: 10px;
+        gap: 4px;
+    }
+
+    .ruangan-desc {
+        font-size: 10px;
+        line-height: 1.4;
+        margin-bottom: 10px;
+    }
+
+    .btn-detail-ruangan {
+        height: 34px;
+        font-size: 11px;
+        gap: 4px;
+    }
+
+}
 </style>
 
 <main class="ruangan-page">

@@ -498,6 +498,77 @@ display:block;
 }
 
 }
+@media(max-width:576px){
+
+    .info-grid,
+    .stat-grid{
+
+        grid-template-columns:repeat(2,1fr);
+        gap:12px;
+
+    }
+
+    .info-card{
+
+        padding:18px 12px;
+        border-radius:16px;
+
+    }
+
+    .info-icon{
+
+        width:48px;
+        height:48px;
+        border-radius:12px;
+        font-size:20px;
+        margin-bottom:10px;
+
+    }
+
+    .info-card h5{
+
+        font-size:13px;
+        margin-bottom:6px;
+
+    }
+
+    .info-card p{
+
+        font-size:11px;
+        line-height:1.4;
+
+    }
+
+    .stat-card{
+
+        padding:18px 12px;
+        border-radius:16px;
+
+    }
+
+    .stat-icon{
+
+        width:48px;
+        height:48px;
+        border-radius:12px;
+        font-size:20px;
+        margin-bottom:10px;
+
+    }
+
+    .stat-card h3{
+
+        font-size:28px;
+
+    }
+
+    .stat-card span{
+
+        font-size:11px;
+
+    }
+
+}
 
 /*==================================================
 RESPONSIVE
@@ -513,22 +584,82 @@ grid-template-columns:repeat(2,1fr);
 }
 
 }
-
 @media(max-width:768px){
 
-.info-grid,
-.stat-grid{
+    .info-grid,
+    .stat-grid{
 
-grid-template-columns:1fr;
+        grid-template-columns:repeat(2, 1fr);
+        gap:12px;
 
-}
+    }
 
-.gallery-item{
+    .info-card{
 
-min-width:220px;
-height:160px;
+        padding:18px 12px;
+        border-radius:16px;
 
-}
+    }
+
+    .info-icon{
+
+        width:48px;
+        height:48px;
+        border-radius:12px;
+        font-size:20px;
+        margin-bottom:10px;
+
+    }
+
+    .info-card h5{
+
+        font-size:13px;
+        margin-bottom:6px;
+
+    }
+
+    .info-card p{
+
+        font-size:11px;
+        line-height:1.4;
+
+    }
+
+    .stat-card{
+
+        padding:18px 12px;
+        border-radius:16px;
+
+    }
+
+    .stat-icon{
+
+        width:48px;
+        height:48px;
+        border-radius:12px;
+        font-size:20px;
+        margin-bottom:10px;
+
+    }
+
+    .stat-card h3{
+
+        font-size:28px;
+
+    }
+
+    .stat-card span{
+
+        font-size:11px;
+
+    }
+
+    .gallery-item{
+
+        min-width:220px;
+        height:160px;
+
+    }
 
 }
 
@@ -1370,3 +1501,4 @@ document.querySelectorAll('.floor-card').forEach(function(card) {
 });
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
