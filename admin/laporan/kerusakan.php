@@ -343,82 +343,73 @@ require_once "../../includes/sidebar.php";
                             </thead>
 
                             <tbody>
-                                <?php
-                                $no = 1;
+                            <?php
+                            $no = 1;
 
-                                if (mysqli_num_rows($queryLaporan) > 0) :
-                                    while ($row = mysqli_fetch_assoc($queryLaporan)) :
-                                ?>
+                            if (mysqli_num_rows($queryLaporan) > 0) :
+                                while ($row = mysqli_fetch_assoc($queryLaporan)) :
+                            ?>
 
-                                    <tr>
-                                        <td class="text-center">
-                                            <?= $no++; ?>
-                                        </td>
+                                <tr>
+                                    <td class="text-center">
+                                        <?= $no++; ?>
+                                    </td>
 
-                                        <td>
-                                            <strong>
-                                                <?= htmlspecialchars($row['kode_kerusakan']); ?>
-                                            </strong>
-                                        </td>
+                                    <td>
+                                        <strong>
+                                            <?= htmlspecialchars($row['kode_kerusakan']); ?>
+                                        </strong>
+                                    </td>
 
-                                        <td class="text-center">
-                                            <?= date('d-m-Y', strtotime($row['tanggal_lapor'])); ?>
-                                        </td>
+                                    <td class="text-center">
+                                        <?= date('d-m-Y', strtotime($row['tanggal_lapor'])); ?>
+                                    </td>
 
-                                        <td>
-                                            <?= htmlspecialchars($row['nama_barang']); ?>
-                                            <br>
-                                            <small class="text-muted">
-                                                <?= htmlspecialchars($row['kode_inventaris']); ?>
-                                            </small>
-                                        </td>
+                                    <td>
+                                        <?= htmlspecialchars($row['nama_barang']); ?>
+                                        <br>
+                                        <small class="text-muted">
+                                            <?= htmlspecialchars($row['kode_inventaris']); ?>
+                                        </small>
+                                    </td>
 
-                                        <td>
-                                            <?= htmlspecialchars($row['nama_pelapor']); ?>
-                                        </td>
+                                    <td>
+                                        <?= htmlspecialchars($row['nama_pelapor']); ?>
+                                    </td>
 
-                                        <td>
-                                            <?= htmlspecialchars($row['bagian_rusak']); ?>
-                                        </td>
+                                    <td>
+                                        <?= htmlspecialchars($row['bagian_rusak']); ?>
+                                    </td>
 
-                                        <td>
-                                            <?= htmlspecialchars($row['jenis_kerusakan']); ?>
-                                        </td>
+                                    <td>
+                                        <?= htmlspecialchars($row['jenis_kerusakan']); ?>
+                                    </td>
 
-                                        <td class="text-center">
-                                            <?= htmlspecialchars($row['tingkat_kerusakan']); ?>
-                                        </td>
+                                    <td class="text-center">
+                                        <?= htmlspecialchars($row['tingkat_kerusakan']); ?>
+                                    </td>
 
-                                        <td class="text-center">
-                                            <?php if ($row['status'] == 'Menunggu') : ?>
-                                                <span class="badge bg-secondary">
-                                                    Menunggu
-                                                </span>
-                                            <?php elseif ($row['status'] == 'Diproses') : ?>
-                                                <span class="badge bg-warning text-dark">
-                                                    Diproses
-                                                </span>
-                                            <?php else : ?>
-                                                <span class="badge bg-success">
-                                                    Selesai
-                                                </span>
-                                            <?php endif; ?>
-                                        </td>
-                                    </tr>
+                                    <td class="text-center">
+                                        <?php if ($row['status'] == 'Menunggu') : ?>
+                                            <span class="badge bg-secondary">
+                                                Menunggu
+                                            </span>
+                                        <?php elseif ($row['status'] == 'Diproses') : ?>
+                                            <span class="badge bg-warning text-dark">
+                                                Diproses
+                                            </span>
+                                        <?php else : ?>
+                                            <span class="badge bg-success">
+                                                Selesai
+                                            </span>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
 
-                                <?php
-                                    endwhile;
-                                else :
-                                ?>
-
-                                    <tr>
-                                        <td colspan="9" class="text-center py-5 text-muted">
-                                            <i class="bi bi-inbox fs-1 d-block mb-3"></i>
-                                            Tidak ada data kerusakan yang sesuai dengan filter.
-                                        </td>
-                                    </tr>
-
-                                <?php endif; ?>
+                            <?php
+                                endwhile;
+                            endif;
+                            ?>
                             </tbody>
                         </table>
                     </div>

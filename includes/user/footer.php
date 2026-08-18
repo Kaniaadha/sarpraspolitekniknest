@@ -421,7 +421,18 @@
     src="<?= $baseUrl; ?>assets/js/user/main.js">
 </script>
 
+<style>
+    /* Footer - semua link putih */
+    .footer a {
+        color: #ffffff !important;
+        text-decoration: none;
+    }
 
+    .footer a:hover {
+        color: #ffffff !important;
+        text-decoration: none;
+    }
+</style>
 </body>
 
 </html>
