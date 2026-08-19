@@ -59,30 +59,21 @@ require_once "../../../includes/sidebar.php";
             <div class="d-flex justify-content-between align-items-center">
 
                 <h2 class="mb-0 fw-bold">
-
                     Data Inventaris
-
                 </h2>
-
 
                 <ol class="breadcrumb mb-0">
 
                     <li class="breadcrumb-item">
-
                         Dashboard
-
                     </li>
 
                     <li class="breadcrumb-item">
-
                         Master
-
                     </li>
 
                     <li class="breadcrumb-item active">
-
                         Inventaris
-
                     </li>
 
                 </ol>
@@ -92,7 +83,6 @@ require_once "../../../includes/sidebar.php";
         </div>
 
     </div>
-
 
 
     <!-- =====================================================
@@ -123,7 +113,8 @@ require_once "../../../includes/sidebar.php";
 
                     <a
                         href="tambah.php"
-                        class="btn btn-primary">
+                        class="btn btn-primary"
+                    >
 
                         <i class="bi bi-plus-circle me-1"></i>
 
@@ -134,7 +125,6 @@ require_once "../../../includes/sidebar.php";
                 </div>
 
             </div>
-
 
 
             <div class="card-body">
@@ -149,8 +139,8 @@ require_once "../../../includes/sidebar.php";
                     <div class="table-responsive">
 
                         <table
-                            class="table table-bordered table-hover align-middle datatable">
-
+                            class="table table-bordered table-hover align-middle datatable"
+                        >
 
                             <thead class="table-secondary">
 
@@ -158,60 +148,52 @@ require_once "../../../includes/sidebar.php";
 
                                     <th
                                         width="5%"
-                                        class="text-center">
-
+                                        class="text-center"
+                                    >
                                         No
+                                    </th>
 
+                                    <th width="80">
+                                        Foto
                                     </th>
 
                                     <th>
-
-                                        Kode
-
+                                        Kode Inventaris
                                     </th>
 
                                     <th>
-
                                         Nama Barang
-
                                     </th>
 
                                     <th>
-
                                         Kategori
-
                                     </th>
 
                                     <th>
+                                        Penempatan
+                                    </th>
 
+                                    <th>
                                         Jumlah
-
                                     </th>
 
                                     <th>
-
                                         Harga
-
                                     </th>
 
                                     <th>
-
                                         Kondisi
-
                                     </th>
 
                                     <th>
-
                                         Status
-
                                     </th>
 
                                     <th
-                                        width="17%"
-                                        class="text-center">
-
+                                        width="120"
+                                        class="text-center"
+                                    >
                                         Aksi
-
                                     </th>
 
                                 </tr>
@@ -219,21 +201,12 @@ require_once "../../../includes/sidebar.php";
                             </thead>
 
 
-
                             <tbody>
 
-
-                                <?php
-
-                                $no = 1;
-
-                                ?>
+                                <?php $no = 1; ?>
 
 
-                                <?php while (
-                                    $row = mysqli_fetch_assoc($query)
-                                ) : ?>
-
+                                <?php while ($row = mysqli_fetch_assoc($query)) : ?>
 
                                     <tr>
 
@@ -247,6 +220,45 @@ require_once "../../../includes/sidebar.php";
                                         </td>
 
 
+                                        <!-- FOTO -->
+
+                                        <td class="text-center">
+
+                                            <?php if (!empty($row['foto'])) : ?>
+
+                                                <img
+                                                    src="../../../assets/uploads/inventaris/<?= htmlspecialchars($row['foto']); ?>"
+                                                    alt="<?= htmlspecialchars($row['nama_barang']); ?>"
+                                                    class="inventaris-table-photo"
+                                                    onerror="
+                                                        this.style.display='none';
+                                                        this.nextElementSibling.style.display='flex';
+                                                    "
+                                                >
+
+                                                <div
+                                                    class="inventaris-photo-fallback table-fallback"
+                                                    style="display:none;"
+                                                >
+
+                                                    <i class="bi bi-box-seam"></i>
+
+                                                </div>
+
+                                            <?php else : ?>
+
+                                                <div
+                                                    class="inventaris-photo-fallback table-fallback"
+                                                >
+
+                                                    <i class="bi bi-box-seam"></i>
+
+                                                </div>
+
+                                            <?php endif; ?>
+
+                                        </td>
+
 
                                         <!-- KODE -->
 
@@ -259,17 +271,34 @@ require_once "../../../includes/sidebar.php";
                                         </td>
 
 
-
                                         <!-- NAMA BARANG -->
 
                                         <td>
 
-                                            <?= htmlspecialchars(
-                                                $row['nama_barang']
-                                            ); ?>
+                                            <strong>
+
+                                                <?= htmlspecialchars(
+                                                    $row['nama_barang']
+                                                ); ?>
+
+                                            </strong>
+
+
+                                            <?php if (!empty($row['merk'])) : ?>
+
+                                                <br>
+
+                                                <small class="text-muted">
+
+                                                    <?= htmlspecialchars(
+                                                        $row['merk']
+                                                    ); ?>
+
+                                                </small>
+
+                                            <?php endif; ?>
 
                                         </td>
-
 
 
                                         <!-- KATEGORI -->
@@ -283,6 +312,46 @@ require_once "../../../includes/sidebar.php";
                                         </td>
 
 
+                                        <!-- PENEMPATAN -->
+
+                                        <td>
+
+                                            <?php if (!empty($row['nama_ruangan'])) : ?>
+
+                                                <span>
+
+                                                    <i class="bi bi-door-open me-1"></i>
+
+                                                    <?= htmlspecialchars(
+                                                        $row['nama_ruangan']
+                                                    ); ?>
+
+                                                </span>
+
+                                            <?php elseif (!empty($row['nama_public_space'])) : ?>
+
+                                                <span>
+
+                                                    <i class="bi bi-tree me-1"></i>
+
+                                                    <?= htmlspecialchars(
+                                                        $row['nama_public_space']
+                                                    ); ?>
+
+                                                </span>
+
+                                            <?php else : ?>
+
+                                                <span class="text-muted">
+
+                                                    Belum ditempatkan
+
+                                                </span>
+
+                                            <?php endif; ?>
+
+                                        </td>
+
 
                                         <!-- JUMLAH -->
 
@@ -295,18 +364,16 @@ require_once "../../../includes/sidebar.php";
                                         </td>
 
 
-
                                         <!-- HARGA -->
 
                                         <td>
 
                                             <?php if (
-                                                $row['harga'] !== null
-                                                && $row['harga'] !== ''
+                                                $row['harga'] !== null &&
+                                                $row['harga'] !== ''
                                             ) : ?>
 
-                                                Rp
-                                                <?= number_format(
+                                                Rp <?= number_format(
                                                     $row['harga'],
                                                     0,
                                                     ',',
@@ -315,12 +382,13 @@ require_once "../../../includes/sidebar.php";
 
                                             <?php else : ?>
 
-                                                -
+                                                <span class="text-muted">
+                                                    -
+                                                </span>
 
                                             <?php endif; ?>
 
                                         </td>
-
 
 
                                         <!-- KONDISI -->
@@ -330,62 +398,41 @@ require_once "../../../includes/sidebar.php";
                                             <?php
 
                                             $kondisi =
-                                                $row['kondisi'] ?? '';
+                                                $row['kondisi'] ?? 'Baik';
+
+
+                                            if ($kondisi == 'Baik') {
+
+                                                $badgeKondisi =
+                                                    'bg-success';
+
+                                            } elseif (
+                                                $kondisi == 'Rusak Ringan'
+                                            ) {
+
+                                                $badgeKondisi =
+                                                    'bg-warning text-dark';
+
+                                            } else {
+
+                                                $badgeKondisi =
+                                                    'bg-danger';
+
+                                            }
 
                                             ?>
 
+                                            <span
+                                                class="badge rounded-pill <?= $badgeKondisi; ?>"
+                                            >
 
-                                            <?php if (
-                                                $kondisi == 'Baik'
-                                            ) : ?>
+                                                <?= htmlspecialchars(
+                                                    $kondisi
+                                                ); ?>
 
-                                                <span
-                                                    class="badge rounded-pill bg-success">
-
-                                                    Baik
-
-                                                </span>
-
-
-                                            <?php elseif (
-                                                $kondisi == 'Rusak Ringan'
-                                            ) : ?>
-
-                                                <span
-                                                    class="badge rounded-pill bg-warning text-dark">
-
-                                                    Rusak Ringan
-
-                                                </span>
-
-
-                                            <?php elseif (
-                                                $kondisi == 'Rusak Berat'
-                                            ) : ?>
-
-                                                <span
-                                                    class="badge rounded-pill bg-danger">
-
-                                                    Rusak Berat
-
-                                                </span>
-
-
-                                            <?php else : ?>
-
-                                                <span
-                                                    class="badge rounded-pill bg-secondary">
-
-                                                    <?= htmlspecialchars(
-                                                        $kondisi ?: '-'
-                                                    ); ?>
-
-                                                </span>
-
-                                            <?php endif; ?>
+                                            </span>
 
                                         </td>
-
 
 
                                         <!-- STATUS -->
@@ -397,19 +444,17 @@ require_once "../../../includes/sidebar.php";
                                             ) : ?>
 
                                                 <span
-                                                    class="badge rounded-pill bg-success">
-
+                                                    class="badge rounded-pill bg-success"
+                                                >
                                                     Aktif
-
                                                 </span>
 
                                             <?php else : ?>
 
                                                 <span
-                                                    class="badge rounded-pill bg-secondary">
-
+                                                    class="badge rounded-pill bg-danger"
+                                                >
                                                     Nonaktif
-
                                                 </span>
 
                                             <?php endif; ?>
@@ -417,39 +462,20 @@ require_once "../../../includes/sidebar.php";
                                         </td>
 
 
-
                                         <!-- AKSI -->
 
                                         <td class="text-center">
 
-
-                                            <!-- FOTO -->
-
-                                            <a
-                                                href="../foto/index.php?tipe=inventaris&id=<?= $row['id_inventaris']; ?>"
-                                                class="btn btn-info btn-sm me-1"
-                                                title="Gallery Foto">
-
-                                                <i class="bi bi-images"></i>
-
-                                            </a>
-
-
-
-                                            <!-- EDIT -->
-
                                             <a
                                                 href="edit.php?id=<?= $row['id_inventaris']; ?>"
                                                 class="btn btn-warning btn-sm me-1"
-                                                title="Edit">
+                                                title="Edit"
+                                            >
 
                                                 <i class="bi bi-pencil-square"></i>
 
                                             </a>
 
-
-
-                                            <!-- HAPUS -->
 
                                             <button
                                                 type="button"
@@ -457,21 +483,19 @@ require_once "../../../includes/sidebar.php";
                                                 title="Hapus"
                                                 onclick="hapusInventaris(
                                                     <?= $row['id_inventaris']; ?>
-                                                )">
+                                                )"
+                                            >
 
                                                 <i class="bi bi-trash"></i>
 
                                             </button>
-
 
                                         </td>
 
 
                                     </tr>
 
-
                                 <?php endwhile; ?>
-
 
                             </tbody>
 
@@ -480,7 +504,6 @@ require_once "../../../includes/sidebar.php";
                     </div>
 
                 </div>
-
 
 
                 <!-- =================================================
@@ -509,12 +532,12 @@ require_once "../../../includes/sidebar.php";
                                 type="text"
                                 id="searchInventarisMobile"
                                 class="form-control"
-                                placeholder="Cari barang, kode, kategori...">
+                                placeholder="Cari barang, kode, kategori..."
+                            >
 
                         </div>
 
                     </div>
-
 
 
                     <!-- =================================================
@@ -523,8 +546,8 @@ require_once "../../../includes/sidebar.php";
 
                     <div
                         class="row g-3"
-                        id="inventarisMobileList">
-
+                        id="inventarisMobileList"
+                    >
 
                         <?php
 
@@ -533,15 +556,10 @@ require_once "../../../includes/sidebar.php";
                         ?>
 
 
-                        <?php if (
-                            mysqli_num_rows($query) > 0
-                        ) : ?>
+                        <?php if (mysqli_num_rows($query) > 0) : ?>
 
 
-                            <?php while (
-                                $row = mysqli_fetch_assoc($query)
-                            ) : ?>
-
+                            <?php while ($row = mysqli_fetch_assoc($query)) : ?>
 
                                 <div class="col-6">
 
@@ -552,362 +570,311 @@ require_once "../../../includes/sidebar.php";
                                             strtolower(
                                                 $row['kode_inventaris'] . ' ' .
                                                 $row['nama_barang'] . ' ' .
-                                                ($row['nama_kategori'] ?? '') . ' ' .
                                                 ($row['merk'] ?? '') . ' ' .
-                                                ($row['kondisi'] ?? '') . ' ' .
+                                                ($row['nama_kategori'] ?? '') . ' ' .
                                                 ($row['nama_ruangan'] ?? '') . ' ' .
-                                                ($row['nama_public_space'] ?? '')
+                                                ($row['nama_public_space'] ?? '') . ' ' .
+                                                ($row['kondisi'] ?? '') . ' ' .
+                                                ($row['status'] ?? '')
                                             )
-                                        ); ?>">
+                                        ); ?>"
+                                    >
 
 
-                                        <!-- ==========================
-                                             TOP
-                                        =========================== -->
+                                        <!-- =================================================
+                                             FOTO
+                                        ================================================== -->
 
-                                        <div class="inventaris-mobile-top">
-
-
-                                            <div class="inventaris-mobile-icon">
-
-                                                <i class="bi bi-box-seam-fill"></i>
-
-                                            </div>
+                                        <div class="inventaris-mobile-photo">
 
 
-                                            <?php if (
-                                                $row['status'] == 'Aktif'
-                                            ) : ?>
+                                            <?php if (!empty($row['foto'])) : ?>
 
-                                                <span
-                                                    class="badge bg-success rounded-pill">
+                                                <img
+                                                    src="../../../assets/uploads/inventaris/<?= htmlspecialchars($row['foto']); ?>"
+                                                    alt="<?= htmlspecialchars($row['nama_barang']); ?>"
+                                                    onerror="
+                                                        this.style.display='none';
+                                                        this.nextElementSibling.style.display='flex';
+                                                    "
+                                                >
 
-                                                    Aktif
+                                                <div
+                                                    class="inventaris-photo-fallback"
+                                                    style="display:none;"
+                                                >
 
-                                                </span>
+                                                    <i class="bi bi-box-seam"></i>
+
+                                                </div>
 
                                             <?php else : ?>
 
-                                                <span
-                                                    class="badge bg-secondary rounded-pill">
+                                                <div
+                                                    class="inventaris-photo-fallback"
+                                                >
 
-                                                    Nonaktif
+                                                    <i class="bi bi-box-seam"></i>
 
-                                                </span>
+                                                </div>
 
                                             <?php endif; ?>
 
 
+                                            <!-- STATUS -->
+
+                                            <div class="inventaris-mobile-status">
+
+                                                <?php if (
+                                                    $row['status'] == 'Aktif'
+                                                ) : ?>
+
+                                                    <span
+                                                        class="badge bg-success rounded-pill"
+                                                    >
+                                                        Aktif
+                                                    </span>
+
+                                                <?php else : ?>
+
+                                                    <span
+                                                        class="badge bg-danger rounded-pill"
+                                                    >
+                                                        Nonaktif
+                                                    </span>
+
+                                                <?php endif; ?>
+
+                                            </div>
+
                                         </div>
 
 
+                                        <!-- =================================================
+                                             CONTENT
+                                        ================================================== -->
 
-                                        <!-- ==========================
-                                             NAMA BARANG
-                                        =========================== -->
-
-                                        <h6 class="inventaris-mobile-name">
-
-                                            <?= htmlspecialchars(
-                                                $row['nama_barang']
-                                            ); ?>
-
-                                        </h6>
+                                        <div class="inventaris-mobile-content">
 
 
+                                            <!-- NAMA -->
 
-                                        <!-- ==========================
-                                             KODE
-                                        =========================== -->
-
-                                        <div class="inventaris-mobile-info">
-
-                                            <span>
-
-                                                <i class="bi bi-upc-scan"></i>
-
-                                                Kode
-
-                                            </span>
-
-
-                                            <strong>
+                                            <h6 class="inventaris-mobile-name">
 
                                                 <?= htmlspecialchars(
-                                                    $row['kode_inventaris']
+                                                    $row['nama_barang']
                                                 ); ?>
 
-                                            </strong>
-
-                                        </div>
+                                            </h6>
 
 
-
-                                        <!-- ==========================
-                                             KATEGORI
-                                        =========================== -->
-
-                                        <div class="inventaris-mobile-info">
-
-                                            <span>
-
-                                                <i class="bi bi-tags-fill"></i>
-
-                                                Kategori
-
-                                            </span>
-
-
-                                            <strong>
-
-                                                <?= htmlspecialchars(
-                                                    $row['nama_kategori'] ?? '-'
-                                                ); ?>
-
-                                            </strong>
-
-                                        </div>
-
-
-
-                                        <!-- ==========================
-                                             MERK
-                                        =========================== -->
-
-                                        <?php if (
-                                            !empty($row['merk'])
-                                        ) : ?>
+                                            <!-- KODE -->
 
                                             <div class="inventaris-mobile-info">
 
                                                 <span>
 
-                                                    <i class="bi bi-bookmark-fill"></i>
-
-                                                    Merk
+                                                    <i class="bi bi-upc-scan"></i>
+                                                    Kode
 
                                                 </span>
-
 
                                                 <strong>
 
                                                     <?= htmlspecialchars(
-                                                        $row['merk']
+                                                        $row['kode_inventaris']
                                                     ); ?>
 
                                                 </strong>
 
                                             </div>
 
-                                        <?php endif; ?>
 
+                                            <!-- KATEGORI -->
 
+                                            <div class="inventaris-mobile-info">
 
-                                        <!-- ==========================
-                                             JUMLAH
-                                        =========================== -->
+                                                <span>
 
-                                        <div class="inventaris-mobile-info">
+                                                    <i class="bi bi-tags-fill"></i>
+                                                    Kategori
 
-                                            <span>
+                                                </span>
 
-                                                <i class="bi bi-boxes"></i>
+                                                <strong>
 
-                                                Jumlah
-
-                                            </span>
-
-
-                                            <strong>
-
-                                                <?= number_format(
-                                                    $row['jumlah']
-                                                ); ?>
-
-                                                unit
-
-                                            </strong>
-
-                                        </div>
-
-
-
-                                        <!-- ==========================
-                                             HARGA
-                                        =========================== -->
-
-                                        <div class="inventaris-mobile-info">
-
-                                            <span>
-
-                                                <i class="bi bi-cash-stack"></i>
-
-                                                Harga
-
-                                            </span>
-
-
-                                            <strong>
-
-                                                <?php if (
-                                                    $row['harga'] !== null
-                                                    && $row['harga'] !== ''
-                                                ) : ?>
-
-                                                    Rp
-                                                    <?= number_format(
-                                                        $row['harga'],
-                                                        0,
-                                                        ',',
-                                                        '.'
+                                                    <?= htmlspecialchars(
+                                                        $row['nama_kategori'] ?? '-'
                                                     ); ?>
 
-                                                <?php else : ?>
+                                                </strong>
 
-                                                    -
+                                            </div>
 
-                                                <?php endif; ?>
 
-                                            </strong>
+                                            <!-- PENEMPATAN -->
+
+                                            <div class="inventaris-mobile-info">
+
+                                                <span>
+
+                                                    <i class="bi bi-geo-alt-fill"></i>
+                                                    Penempatan
+
+                                                </span>
+
+                                                <strong>
+
+                                                    <?php if (
+                                                        !empty(
+                                                            $row['nama_ruangan']
+                                                        )
+                                                    ) : ?>
+
+                                                        <?= htmlspecialchars(
+                                                            $row['nama_ruangan']
+                                                        ); ?>
+
+                                                    <?php elseif (
+                                                        !empty(
+                                                            $row['nama_public_space']
+                                                        )
+                                                    ) : ?>
+
+                                                        <?= htmlspecialchars(
+                                                            $row['nama_public_space']
+                                                        ); ?>
+
+                                                    <?php else : ?>
+
+                                                        Belum ditempatkan
+
+                                                    <?php endif; ?>
+
+                                                </strong>
+
+                                            </div>
+
+
+                                            <!-- JUMLAH -->
+
+                                            <div class="inventaris-mobile-info">
+
+                                                <span>
+
+                                                    <i class="bi bi-boxes"></i>
+                                                    Jumlah
+
+                                                </span>
+
+                                                <strong>
+
+                                                    <?= number_format(
+                                                        $row['jumlah']
+                                                    ); ?>
+
+                                                    unit
+
+                                                </strong>
+
+                                            </div>
+
+
+                                            <!-- HARGA -->
+
+                                            <div class="inventaris-mobile-info">
+
+                                                <span>
+
+                                                    <i class="bi bi-cash-stack"></i>
+                                                    Harga
+
+                                                </span>
+
+                                                <strong>
+
+                                                    <?php if (
+                                                        $row['harga'] !== null &&
+                                                        $row['harga'] !== ''
+                                                    ) : ?>
+
+                                                        Rp <?= number_format(
+                                                            $row['harga'],
+                                                            0,
+                                                            ',',
+                                                            '.'
+                                                        ); ?>
+
+                                                    <?php else : ?>
+
+                                                        -
+
+                                                    <?php endif; ?>
+
+                                                </strong>
+
+                                            </div>
+
+
+                                            <!-- KONDISI -->
+
+                                            <div class="inventaris-mobile-info">
+
+                                                <span>
+
+                                                    <i class="bi bi-clipboard-check-fill"></i>
+                                                    Kondisi
+
+                                                </span>
+
+                                                <strong>
+
+                                                    <?= htmlspecialchars(
+                                                        $row['kondisi'] ?? 'Baik'
+                                                    ); ?>
+
+                                                </strong>
+
+                                            </div>
+
+
+                                            <!-- AKSI -->
+
+                                            <div class="inventaris-mobile-actions">
+
+
+                                                <a
+                                                    href="edit.php?id=<?= $row['id_inventaris']; ?>"
+                                                    class="btn btn-warning btn-sm"
+                                                    title="Edit"
+                                                >
+
+                                                    <i class="bi bi-pencil-square"></i>
+
+                                                </a>
+
+
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-danger btn-sm"
+                                                    title="Hapus"
+                                                    onclick="hapusInventaris(
+                                                        <?= $row['id_inventaris']; ?>
+                                                    )"
+                                                >
+
+                                                    <i class="bi bi-trash"></i>
+
+                                                </button>
+
+                                            </div>
+
 
                                         </div>
-
-
-
-                                        <!-- ==========================
-                                             KONDISI
-                                        =========================== -->
-
-                                        <div class="inventaris-mobile-info">
-
-                                            <span>
-
-                                                <i class="bi bi-clipboard-check"></i>
-
-                                                Kondisi
-
-                                            </span>
-
-
-                                            <strong>
-
-                                                <?= htmlspecialchars(
-                                                    $row['kondisi'] ?? '-'
-                                                ); ?>
-
-                                            </strong>
-
-                                        </div>
-
-
-
-                                        <!-- ==========================
-                                             PENEMPATAN
-                                        =========================== -->
-
-                                        <?php
-
-                                        if (
-                                            !empty($row['nama_ruangan'])
-                                        ) {
-
-                                            $penempatan =
-                                                $row['nama_ruangan'];
-
-                                        } elseif (
-                                            !empty($row['nama_public_space'])
-                                        ) {
-
-                                            $penempatan =
-                                                $row['nama_public_space'];
-
-                                        } else {
-
-                                            $penempatan = '-';
-
-                                        }
-
-                                        ?>
-
-
-                                        <div class="inventaris-mobile-info">
-
-                                            <span>
-
-                                                <i class="bi bi-geo-alt-fill"></i>
-
-                                                Penempatan
-
-                                            </span>
-
-
-                                            <strong>
-
-                                                <?= htmlspecialchars(
-                                                    $penempatan
-                                                ); ?>
-
-                                            </strong>
-
-                                        </div>
-
-
-
-                                        <!-- ==========================
-                                             ACTION
-                                        =========================== -->
-
-                                        <div class="inventaris-mobile-actions">
-
-
-                                            <!-- GALLERY -->
-
-                                            <a
-                                                href="../foto/index.php?tipe=inventaris&id=<?= $row['id_inventaris']; ?>"
-                                                class="btn btn-info btn-sm"
-                                                title="Gallery">
-
-                                                <i class="bi bi-images"></i>
-
-                                            </a>
-
-
-
-                                            <!-- EDIT -->
-
-                                            <a
-                                                href="edit.php?id=<?= $row['id_inventaris']; ?>"
-                                                class="btn btn-warning btn-sm"
-                                                title="Edit">
-
-                                                <i class="bi bi-pencil-square"></i>
-
-                                            </a>
-
-
-
-                                            <!-- HAPUS -->
-
-                                            <button
-                                                type="button"
-                                                class="btn btn-danger btn-sm"
-                                                title="Hapus"
-                                                onclick="hapusInventaris(
-                                                    <?= $row['id_inventaris']; ?>
-                                                )">
-
-                                                <i class="bi bi-trash"></i>
-
-                                            </button>
-
-
-                                        </div>
-
 
                                     </div>
 
                                 </div>
-
 
                             <?php endwhile; ?>
 
@@ -921,9 +888,7 @@ require_once "../../../includes/sidebar.php";
 
                             <div class="col-12">
 
-
                                 <div class="inventaris-empty">
-
 
                                     <div class="inventaris-empty-icon">
 
@@ -931,25 +896,18 @@ require_once "../../../includes/sidebar.php";
 
                                     </div>
 
-
                                     <h5>
-
                                         Belum Ada Data Inventaris
-
                                     </h5>
 
-
                                     <p>
-
-                                        Belum ada data inventaris
-                                        yang ditambahkan.
-
+                                        Belum ada inventaris yang ditambahkan.
                                     </p>
-
 
                                     <a
                                         href="tambah.php"
-                                        class="btn btn-primary">
+                                        class="btn btn-primary"
+                                    >
 
                                         <i class="bi bi-plus-circle me-1"></i>
 
@@ -957,9 +915,7 @@ require_once "../../../includes/sidebar.php";
 
                                     </a>
 
-
                                 </div>
-
 
                             </div>
 
@@ -978,94 +934,133 @@ require_once "../../../includes/sidebar.php";
 
     </div>
 
-
 </main>
 
 
 
 <!-- =====================================================
-     MOBILE CARD STYLE
+     STYLE
 ====================================================== -->
 
 <style>
 
 
-.mobile-cards {
+/* =====================================================
+   DEFAULT
+===================================================== */
 
+.mobile-cards {
     display: none;
+}
+
+
+/* =====================================================
+   DESKTOP PHOTO
+===================================================== */
+
+.inventaris-table-photo {
+
+    width: 55px;
+    height: 55px;
+
+    object-fit: cover;
+
+    border-radius: 10px;
+
+    border: 1px solid #eeeeee;
 
 }
 
 
+.table-fallback {
+
+    width: 55px;
+    height: 55px;
+
+    border-radius: 10px;
+
+    margin: auto;
+
+}
+
+
+/* =====================================================
+   PHOTO FALLBACK
+===================================================== */
+
+.inventaris-photo-fallback {
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,138,0,.12),
+            rgba(255,94,120,.12)
+        );
+
+    color: #ff8a00;
+
+    font-size: 28px;
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
 @media (max-width: 767.98px) {
 
 
-    /* =================================================
-       DESKTOP TABLE
-    ================================================== */
+    /* HIDE TABLE */
 
     .desktop-table {
-
         display: none;
-
     }
 
 
-    /* =================================================
-       MOBILE
-    ================================================== */
+    /* SHOW MOBILE */
 
     .mobile-cards {
-
         display: block;
-
     }
 
 
-    /* =================================================
-       HEADER
-    ================================================== */
+    /* HEADER */
 
     .app-content-header h2 {
-
         font-size: 20px;
-
     }
-
 
     .app-content-header .breadcrumb {
-
         display: none;
-
     }
 
+
+    /* CARD HEADER */
 
     .card-header {
-
         padding: 14px !important;
-
     }
-
 
     .card-header h5 {
-
         font-size: 15px;
-
     }
-
 
     .card-header .btn {
-
         padding: 7px 10px;
-
         font-size: 12px;
-
     }
 
 
-    /* =================================================
-       SEARCH
-    ================================================== */
+    /* SEARCH */
 
     .mobile-search .input-group {
 
@@ -1074,7 +1069,7 @@ require_once "../../../includes/sidebar.php";
         overflow: hidden;
 
         box-shadow:
-            0 2px 8px rgba(0, 0, 0, .05);
+            0 2px 8px rgba(0,0,0,.05);
 
     }
 
@@ -1111,7 +1106,7 @@ require_once "../../../includes/sidebar.php";
 
 
     /* =================================================
-       CARD
+       INVENTARIS CARD
     ================================================== */
 
     .inventaris-mobile-card {
@@ -1122,14 +1117,12 @@ require_once "../../../includes/sidebar.php";
 
         border-radius: 14px;
 
-        padding: 12px;
+        overflow: hidden;
 
         box-shadow:
-            0 3px 12px rgba(0, 0, 0, .06);
+            0 3px 12px rgba(0,0,0,.06);
 
         transition: .25s ease;
-
-        overflow: hidden;
 
     }
 
@@ -1141,67 +1134,84 @@ require_once "../../../includes/sidebar.php";
     }
 
 
-    /* =================================================
-       TOP
-    ================================================== */
+    /* FOTO */
 
-    .inventaris-mobile-top {
+    .inventaris-mobile-photo {
 
-        display: flex;
+        position: relative;
 
-        justify-content: space-between;
+        width: 100%;
 
-        align-items: center;
-
-        gap: 5px;
-
-        margin-bottom: 10px;
-
-    }
-
-
-    .inventaris-mobile-icon {
-
-        width: 34px;
-
-        height: 34px;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        border-radius: 9px;
+        height: 135px;
 
         background:
             linear-gradient(
                 135deg,
-                #ff8a00,
-                #ff5e78
+                #fff1f5,
+                #fff7ed
             );
 
-        color: #fff;
-
-        font-size: 15px;
+        overflow: hidden;
 
     }
 
 
-    .inventaris-mobile-top .badge {
+    .inventaris-mobile-photo > img {
+
+        width: 100%;
+        height: 100%;
+
+        object-fit: cover;
+
+        display: block;
+
+    }
+
+
+    .inventaris-mobile-photo
+    .inventaris-photo-fallback {
+
+        width: 100%;
+        height: 100%;
+
+    }
+
+
+    /* STATUS FOTO */
+
+    .inventaris-mobile-status {
+
+        position: absolute;
+
+        top: 8px;
+
+        right: 8px;
+
+    }
+
+
+    .inventaris-mobile-status .badge {
 
         font-size: 9px;
 
         padding: 5px 7px;
 
-        white-space: nowrap;
+        box-shadow:
+            0 2px 5px rgba(0,0,0,.12);
 
     }
 
 
-    /* =================================================
-       NAME
-    ================================================== */
+    /* CONTENT */
+
+    .inventaris-mobile-content {
+
+        padding: 12px;
+
+    }
+
+
+    /* NAME */
 
     .inventaris-mobile-name {
 
@@ -1220,9 +1230,7 @@ require_once "../../../includes/sidebar.php";
     }
 
 
-    /* =================================================
-       INFO
-    ================================================== */
+    /* INFO */
 
     .inventaris-mobile-info {
 
@@ -1268,9 +1276,7 @@ require_once "../../../includes/sidebar.php";
     }
 
 
-    /* =================================================
-       ACTION
-    ================================================== */
+    /* ACTION */
 
     .inventaris-mobile-actions {
 
@@ -1300,9 +1306,7 @@ require_once "../../../includes/sidebar.php";
     }
 
 
-    /* =================================================
-       SEARCH EMPTY
-    ================================================== */
+    /* SEARCH EMPTY */
 
     .inventaris-search-empty {
 
@@ -1352,9 +1356,7 @@ require_once "../../../includes/sidebar.php";
     }
 
 
-    /* =================================================
-       EMPTY
-    ================================================== */
+    /* EMPTY DATA */
 
     .inventaris-empty {
 
@@ -1374,7 +1376,6 @@ require_once "../../../includes/sidebar.php";
     .inventaris-empty-icon {
 
         width: 60px;
-
         height: 60px;
 
         margin: 0 auto 14px;
@@ -1382,7 +1383,6 @@ require_once "../../../includes/sidebar.php";
         display: flex;
 
         align-items: center;
-
         justify-content: center;
 
         border-radius: 50%;
@@ -1430,40 +1430,39 @@ require_once "../../../includes/sidebar.php";
 @media (max-width: 380px) {
 
 
+    .inventaris-mobile-photo {
+        height: 115px;
+    }
+
+
     .inventaris-mobile-card {
+        border-radius: 12px;
+    }
 
+
+    .inventaris-mobile-content {
         padding: 10px;
-
     }
 
 
     .inventaris-mobile-name {
-
         font-size: 12px;
-
     }
 
 
     .inventaris-mobile-info strong {
-
         font-size: 9px;
-
     }
 
 
     .inventaris-mobile-actions .btn {
-
         padding: 5px 3px;
-
         font-size: 10px;
-
     }
 
 
     .mobile-search .form-control {
-
         font-size: 11px;
-
     }
 
 }
@@ -1521,9 +1520,7 @@ if (searchInventarisMobile) {
 
 
                 if (!mobileCard) {
-
                     return;
-
                 }
 
 
@@ -1635,21 +1632,22 @@ function hapusInventaris(id) {
 
     Swal.fire({
 
-        title: 'Hapus Data?',
+        title: "Hapus Data?",
 
-        text: 'Data Inventaris yang dihapus tidak dapat dikembalikan.',
+        text:
+            "Data inventaris yang dihapus tidak dapat dikembalikan.",
 
-        icon: 'warning',
+        icon: "warning",
 
         showCancelButton: true,
 
-        confirmButtonColor: '#dc3545',
+        confirmButtonColor: "#dc3545",
 
-        cancelButtonColor: '#6c757d',
+        cancelButtonColor: "#6c757d",
 
-        confirmButtonText: 'Ya, Hapus!',
+        confirmButtonText: "Ya, Hapus!",
 
-        cancelButtonText: 'Batal'
+        cancelButtonText: "Batal"
 
     }).then((result) => {
 

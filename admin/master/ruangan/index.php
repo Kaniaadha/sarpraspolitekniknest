@@ -156,11 +156,13 @@ require_once "../../../includes/sidebar.php";
 
                                     </th>
 
+
                                     <th>
 
                                         Kode Ruangan
 
                                     </th>
+
 
                                     <th>
 
@@ -168,11 +170,13 @@ require_once "../../../includes/sidebar.php";
 
                                     </th>
 
+
                                     <th>
 
                                         Gedung
 
                                     </th>
+
 
                                     <th>
 
@@ -180,11 +184,13 @@ require_once "../../../includes/sidebar.php";
 
                                     </th>
 
+
                                     <th>
 
                                         Kapasitas
 
                                     </th>
+
 
                                     <th>
 
@@ -192,8 +198,9 @@ require_once "../../../includes/sidebar.php";
 
                                     </th>
 
+
                                     <th
-                                        width="15%"
+                                        width="18%"
                                         class="text-center">
 
                                         Aksi
@@ -213,11 +220,13 @@ require_once "../../../includes/sidebar.php";
 
                                 ?>
 
+
                                 <?php while (
                                     $row = mysqli_fetch_assoc($query)
                                 ) : ?>
 
                                     <tr>
+
 
                                         <!-- NO -->
 
@@ -226,6 +235,7 @@ require_once "../../../includes/sidebar.php";
                                             <?= $no++; ?>
 
                                         </td>
+
 
 
                                         <!-- KODE -->
@@ -239,6 +249,7 @@ require_once "../../../includes/sidebar.php";
                                         </td>
 
 
+
                                         <!-- NAMA -->
 
                                         <td>
@@ -248,6 +259,7 @@ require_once "../../../includes/sidebar.php";
                                             ); ?>
 
                                         </td>
+
 
 
                                         <!-- GEDUNG -->
@@ -261,6 +273,7 @@ require_once "../../../includes/sidebar.php";
                                         </td>
 
 
+
                                         <!-- LANTAI -->
 
                                         <td>
@@ -270,6 +283,7 @@ require_once "../../../includes/sidebar.php";
                                             ); ?>
 
                                         </td>
+
 
 
                                         <!-- KAPASITAS -->
@@ -283,6 +297,7 @@ require_once "../../../includes/sidebar.php";
                                             orang
 
                                         </td>
+
 
 
                                         <!-- STATUS -->
@@ -314,10 +329,26 @@ require_once "../../../includes/sidebar.php";
                                         </td>
 
 
+
                                         <!-- AKSI -->
 
                                         <td class="text-center">
 
+
+                                            <!-- GALLERY -->
+
+                                            <a
+                                                href="../foto/index.php?tipe=ruangan&id=<?= $row['id_ruangan']; ?>"
+                                                class="btn btn-info btn-sm me-1"
+                                                title="Gallery Foto">
+
+                                                <i class="bi bi-images"></i>
+
+                                            </a>
+
+
+
+                                            <!-- EDIT -->
 
                                             <a
                                                 href="edit.php?id=<?= $row['id_ruangan']; ?>"
@@ -328,6 +359,9 @@ require_once "../../../includes/sidebar.php";
 
                                             </a>
 
+
+
+                                            <!-- HAPUS -->
 
                                             <a
                                                 href="#"
@@ -343,6 +377,7 @@ require_once "../../../includes/sidebar.php";
 
 
                                         </td>
+
 
                                     </tr>
 
@@ -404,7 +439,8 @@ require_once "../../../includes/sidebar.php";
                         <?php
 
                         /*
-                         * Query yang sama digunakan kembali
+                         * Kembalikan pointer query
+                         * agar bisa digunakan kembali
                          * untuk tampilan mobile.
                          */
 
@@ -610,6 +646,21 @@ require_once "../../../includes/sidebar.php";
                                         <div class="ruangan-mobile-actions">
 
 
+                                            <!-- GALLERY -->
+
+                                            <a
+                                                href="../foto/index.php?tipe=ruangan&id=<?= $row['id_ruangan']; ?>"
+                                                class="btn btn-info btn-sm"
+                                                title="Gallery">
+
+                                                <i class="bi bi-images"></i>
+
+                                            </a>
+
+
+
+                                            <!-- EDIT -->
+
                                             <a
                                                 href="edit.php?id=<?= $row['id_ruangan']; ?>"
                                                 class="btn btn-warning btn-sm"
@@ -619,6 +670,9 @@ require_once "../../../includes/sidebar.php";
 
                                             </a>
 
+
+
+                                            <!-- HAPUS -->
 
                                             <button
                                                 type="button"
@@ -729,6 +783,7 @@ require_once "../../../includes/sidebar.php";
     display: none;
 
 }
+
 
 
 /* =====================================================
@@ -1163,6 +1218,7 @@ require_once "../../../includes/sidebar.php";
     }
 
 }
+
 
 
 /* =====================================================

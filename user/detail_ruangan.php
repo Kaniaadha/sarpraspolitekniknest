@@ -800,6 +800,187 @@ RESPONSIVE
     }
 
 }
+/* ==================================================
+   GALLERY LIGHTBOX / POPUP
+================================================== */
+
+.gallery-item {
+    cursor: pointer;
+}
+
+.gallery-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(0, 0, 0, 0.90);
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+.gallery-lightbox.active {
+    display: flex;
+}
+
+.gallery-lightbox-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gallery-lightbox-image {
+    max-width: 85%;
+    max-height: 85vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 14px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, .45);
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+
+/* CLOSE */
+
+.gallery-lightbox-close {
+    position: fixed;
+    top: 22px;
+    right: 28px;
+
+    width: 48px;
+    height: 48px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, .18);
+    color: #fff;
+
+    font-size: 24px;
+    cursor: pointer;
+
+    z-index: 100001;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: .2s;
+}
+
+.gallery-lightbox-close:hover {
+    background: rgba(255, 255, 255, .32);
+}
+
+
+/* PREV / NEXT */
+
+.gallery-lightbox-btn {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 52px;
+    height: 52px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, .18);
+    color: #fff;
+
+    font-size: 24px;
+    cursor: pointer;
+
+    z-index: 100001;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: .2s;
+}
+
+.gallery-lightbox-btn:hover {
+    background: rgba(255, 255, 255, .32);
+}
+
+.gallery-lightbox-prev {
+    left: 25px;
+}
+
+.gallery-lightbox-next {
+    right: 25px;
+}
+
+
+/* COUNTER */
+
+.gallery-lightbox-counter {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    color: #fff;
+    background: rgba(0, 0, 0, .45);
+
+    padding: 7px 15px;
+    border-radius: 30px;
+
+    font-size: 14px;
+    z-index: 100001;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+    .gallery-lightbox {
+        padding: 15px;
+    }
+
+    .gallery-lightbox-image {
+        max-width: 92%;
+        max-height: 78vh;
+        border-radius: 10px;
+    }
+
+    .gallery-lightbox-close {
+        top: 15px;
+        right: 15px;
+
+        width: 42px;
+        height: 42px;
+
+        font-size: 20px;
+    }
+
+    .gallery-lightbox-btn {
+        width: 42px;
+        height: 42px;
+        font-size: 19px;
+    }
+
+    .gallery-lightbox-prev {
+        left: 10px;
+    }
+
+    .gallery-lightbox-next {
+        right: 10px;
+    }
+
+    .gallery-lightbox-counter {
+        bottom: 15px;
+        font-size: 12px;
+    }
+
+}
 </style>
 
 
@@ -1090,26 +1271,30 @@ GALERI RUANGAN
         </div>
 
 
-        <?php if (!empty($gallery)) : ?>
+                <?php if (!empty($gallery)) : ?>
 
-            <div class="gallery-wrapper">
+                <div class="gallery-wrapper">
 
-                <?php foreach ($gallery as $foto) : ?>
+                    <?php foreach ($gallery as $index => $foto) : ?>
 
-                    <div class="gallery-item">
-
-                        <img
-                            src="<?= $baseUrl; ?>assets/uploads/ruangan/<?= htmlspecialchars($foto['nama_file']); ?>"
-                            alt="<?= htmlspecialchars($ruangan['nama_ruangan']); ?>"
+                        <div
+                            class="gallery-item"
+                            data-gallery-index="<?= $index; ?>"
                         >
 
-                    </div>
+                            <img
+                                src="<?= $baseUrl; ?>assets/uploads/ruangan/<?= htmlspecialchars($foto['nama_file']); ?>"
+                                alt="<?= htmlspecialchars($ruangan['nama_ruangan']); ?>"
+                                loading="lazy"
+                            >
 
-                <?php endforeach; ?>
+                        </div>
 
-            </div>
+                    <?php endforeach; ?>
 
-        <?php else : ?>
+                </div>
+
+            <?php else : ?>
 
             <div class="gallery-empty">
 
@@ -1252,9 +1437,416 @@ STATISTIK RUANGAN
     </div>
 
 </section>
+</section>
 
 
+<!-- ==================================================
+     GALLERY LIGHTBOX
+================================================== -->
 
+<div
+    class="gallery-lightbox"
+    id="galleryLightbox"
+>
+
+    <!-- CLOSE -->
+
+    <button
+        type="button"
+        class="gallery-lightbox-close"
+        id="galleryLightboxClose"
+        aria-label="Tutup"
+    >
+
+        <i class="bi bi-x-lg"></i>
+
+    </button>
+
+
+    <!-- PREVIOUS -->
+
+    <button
+        type="button"
+        class="gallery-lightbox-btn gallery-lightbox-prev"
+        id="galleryLightboxPrev"
+        aria-label="Foto sebelumnya"
+    >
+
+        <i class="bi bi-chevron-left"></i>
+
+    </button>
+
+
+    <!-- IMAGE -->
+
+    <div class="gallery-lightbox-content">
+
+        <img
+            src=""
+            alt="Gallery Ruangan"
+            class="gallery-lightbox-image"
+            id="galleryLightboxImage"
+        >
+
+    </div>
+
+
+    <!-- NEXT -->
+
+    <button
+        type="button"
+        class="gallery-lightbox-btn gallery-lightbox-next"
+        id="galleryLightboxNext"
+        aria-label="Foto berikutnya"
+    >
+
+        <i class="bi bi-chevron-right"></i>
+
+    </button>
+
+
+    <!-- COUNTER -->
+
+    <div
+        class="gallery-lightbox-counter"
+        id="galleryLightboxCounter"
+    >
+        1 / 1
+    </div>
+
+</div>
+
+
+<!-- ==================================================
+     GALLERY LIGHTBOX SCRIPT
+================================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const galleryItems =
+        document.querySelectorAll(".gallery-item");
+
+    const lightbox =
+        document.getElementById("galleryLightbox");
+
+    const lightboxImage =
+        document.getElementById("galleryLightboxImage");
+
+    const closeButton =
+        document.getElementById("galleryLightboxClose");
+
+    const prevButton =
+        document.getElementById("galleryLightboxPrev");
+
+    const nextButton =
+        document.getElementById("galleryLightboxNext");
+
+    const counter =
+        document.getElementById("galleryLightboxCounter");
+
+
+    if (!lightbox || galleryItems.length === 0) {
+        return;
+    }
+
+
+    let currentIndex = 0;
+
+
+    /* ==================================================
+       AMBIL SEMUA FOTO
+    ================================================== */
+
+    const images =
+        Array.from(galleryItems)
+            .map(function (item) {
+
+                const image =
+                    item.querySelector("img");
+
+                return image
+                    ? image.src
+                    : "";
+
+            })
+            .filter(Boolean);
+
+
+    /* ==================================================
+       TAMPILKAN FOTO
+    ================================================== */
+
+    function showImage(index) {
+
+        if (images.length === 0) {
+            return;
+        }
+
+
+        if (index < 0) {
+            index = images.length - 1;
+        }
+
+
+        if (index >= images.length) {
+            index = 0;
+        }
+
+
+        currentIndex = index;
+
+
+        lightboxImage.src =
+            images[currentIndex];
+
+
+        counter.textContent =
+            (currentIndex + 1)
+            + " / "
+            + images.length;
+
+
+        lightbox.classList.add("active");
+
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+    /* ==================================================
+       TUTUP POPUP
+    ================================================== */
+
+    function closeLightbox() {
+
+        lightbox.classList.remove("active");
+
+        lightboxImage.src = "";
+
+        document.body.style.overflow = "";
+
+    }
+
+
+    /* ==================================================
+       NEXT / PREVIOUS
+    ================================================== */
+
+    function nextImage() {
+
+        showImage(
+            currentIndex + 1
+        );
+
+    }
+
+
+    function prevImage() {
+
+        showImage(
+            currentIndex - 1
+        );
+
+    }
+
+
+    /* ==================================================
+       KLIK FOTO
+    ================================================== */
+
+    galleryItems.forEach(
+        function (item, index) {
+
+            item.addEventListener(
+                "click",
+                function () {
+
+                    showImage(index);
+
+                }
+            );
+
+        }
+    );
+
+
+    /* ==================================================
+       TOMBOL NEXT
+    ================================================== */
+
+    nextButton.addEventListener(
+        "click",
+        function (event) {
+
+            event.stopPropagation();
+
+            nextImage();
+
+        }
+    );
+
+
+    /* ==================================================
+       TOMBOL PREV
+    ================================================== */
+
+    prevButton.addEventListener(
+        "click",
+        function (event) {
+
+            event.stopPropagation();
+
+            prevImage();
+
+        }
+    );
+
+
+    /* ==================================================
+       TOMBOL CLOSE
+    ================================================== */
+
+    closeButton.addEventListener(
+        "click",
+        function (event) {
+
+            event.stopPropagation();
+
+            closeLightbox();
+
+        }
+    );
+
+
+    /* ==================================================
+       KLIK BACKGROUND
+    ================================================== */
+
+    lightbox.addEventListener(
+        "click",
+        function (event) {
+
+            if (event.target === lightbox) {
+
+                closeLightbox();
+
+            }
+
+        }
+    );
+
+
+    /* ==================================================
+       KEYBOARD
+    ================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                !lightbox.classList.contains("active")
+            ) {
+
+                return;
+
+            }
+
+
+            if (event.key === "Escape") {
+
+                closeLightbox();
+
+            }
+
+
+            if (event.key === "ArrowRight") {
+
+                nextImage();
+
+            }
+
+
+            if (event.key === "ArrowLeft") {
+
+                prevImage();
+
+            }
+
+        }
+    );
+
+
+    /* ==================================================
+       SWIPE MOBILE
+    ================================================== */
+
+    let touchStartX = 0;
+
+    let touchEndX = 0;
+
+
+    lightboxImage.addEventListener(
+        "touchstart",
+        function (event) {
+
+            touchStartX =
+                event.changedTouches[0].screenX;
+
+        },
+        {
+            passive: true
+        }
+    );
+
+
+    lightboxImage.addEventListener(
+        "touchend",
+        function (event) {
+
+            touchEndX =
+                event.changedTouches[0].screenX;
+
+
+            const swipeDistance =
+                touchEndX - touchStartX;
+
+
+            if (
+                Math.abs(swipeDistance) < 50
+            ) {
+
+                return;
+
+            }
+
+
+            if (swipeDistance < 0) {
+
+                nextImage();
+
+            } else {
+
+                prevImage();
+
+            }
+
+        },
+        {
+            passive: true
+        }
+    );
+
+});
+
+</script>
+
+
+<?php include "../includes/user/footer.php"; ?>
 <?php include "../includes/user/footer.php"; ?>
 
 

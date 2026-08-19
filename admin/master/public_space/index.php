@@ -113,7 +113,7 @@ require_once "../../../includes/sidebar.php";
 
                     <h5 class="mb-0 fw-semibold">
 
-                        <i class="bi bi-people-fill me-2"></i>
+                        <i class="bi bi-tree-fill me-2"></i>
 
                         Daftar Public Space
 
@@ -166,7 +166,7 @@ require_once "../../../includes/sidebar.php";
 
                                     <th>
 
-                                        Kode Public Space
+                                        Kode
 
                                     </th>
 
@@ -194,13 +194,20 @@ require_once "../../../includes/sidebar.php";
 
                                     <th>
 
+                                        Luas
+
+                                    </th>
+
+
+                                    <th>
+
                                         Status
 
                                     </th>
 
 
                                     <th
-                                        width="15%"
+                                        width="18%"
                                         class="text-center">
 
                                         Aksi
@@ -289,15 +296,41 @@ require_once "../../../includes/sidebar.php";
 
 
 
+                                        <!-- LUAS -->
+
+                                        <td>
+
+                                            <?php if (
+                                                $row['luas'] !== null &&
+                                                $row['luas'] !== ''
+                                            ) : ?>
+
+                                                <?= number_format(
+                                                    $row['luas'],
+                                                    2,
+                                                    ',',
+                                                    '.'
+                                                ); ?>
+
+                                                m²
+
+                                            <?php else : ?>
+
+                                                -
+
+                                            <?php endif; ?>
+
+                                        </td>
+
+
+
                                         <!-- STATUS -->
 
                                         <td>
 
-
                                             <?php if (
                                                 $row['status'] == "Aktif"
                                             ) : ?>
-
 
                                                 <span
                                                     class="badge rounded-pill bg-success">
@@ -306,9 +339,7 @@ require_once "../../../includes/sidebar.php";
 
                                                 </span>
 
-
                                             <?php else : ?>
-
 
                                                 <span
                                                     class="badge rounded-pill bg-danger">
@@ -317,9 +348,7 @@ require_once "../../../includes/sidebar.php";
 
                                                 </span>
 
-
                                             <?php endif; ?>
-
 
                                         </td>
 
@@ -328,6 +357,19 @@ require_once "../../../includes/sidebar.php";
                                         <!-- AKSI -->
 
                                         <td class="text-center">
+
+
+                                            <!-- GALLERY -->
+
+                                            <a
+                                                href="../foto/index.php?tipe=public_space&id=<?= $row['id_public_space']; ?>"
+                                                class="btn btn-info btn-sm me-1"
+                                                title="Gallery Foto">
+
+                                                <i class="bi bi-images"></i>
+
+                                            </a>
+
 
 
                                             <!-- EDIT -->
@@ -385,7 +427,7 @@ require_once "../../../includes/sidebar.php";
 
 
                     <!-- =================================================
-                         SEARCH MOBILE
+                         MOBILE SEARCH
                     ================================================== -->
 
                     <div class="mobile-search mb-3">
@@ -403,7 +445,7 @@ require_once "../../../includes/sidebar.php";
                                 type="text"
                                 id="searchPublicSpaceMobile"
                                 class="form-control"
-                                placeholder="Cari public space, kode, gedung, atau lantai...">
+                                placeholder="Cari public space, kode, gedung, lantai...">
 
                         </div>
 
@@ -421,12 +463,6 @@ require_once "../../../includes/sidebar.php";
 
 
                         <?php
-
-                        /*
-                         * Kembalikan pointer query agar
-                         * data dapat digunakan kembali
-                         * untuk card mobile.
-                         */
 
                         mysqli_data_seek($query, 0);
 
@@ -467,7 +503,7 @@ require_once "../../../includes/sidebar.php";
 
                                             <div class="public-space-mobile-icon">
 
-                                                <i class="bi bi-people-fill"></i>
+                                                <i class="bi bi-tree-fill"></i>
 
                                             </div>
 
@@ -476,7 +512,6 @@ require_once "../../../includes/sidebar.php";
                                                 $row['status'] == "Aktif"
                                             ) : ?>
 
-
                                                 <span
                                                     class="badge bg-success rounded-pill">
 
@@ -484,9 +519,7 @@ require_once "../../../includes/sidebar.php";
 
                                                 </span>
 
-
                                             <?php else : ?>
-
 
                                                 <span
                                                     class="badge bg-danger rounded-pill">
@@ -494,7 +527,6 @@ require_once "../../../includes/sidebar.php";
                                                     Tidak Aktif
 
                                                 </span>
-
 
                                             <?php endif; ?>
 
@@ -599,10 +631,66 @@ require_once "../../../includes/sidebar.php";
 
 
                                         <!-- ==========================
+                                             LUAS
+                                        =========================== -->
+
+                                        <div class="public-space-mobile-info">
+
+                                            <span>
+
+                                                <i class="bi bi-rulers"></i>
+
+                                                Luas
+
+                                            </span>
+
+
+                                            <strong>
+
+                                                <?php if (
+                                                    $row['luas'] !== null &&
+                                                    $row['luas'] !== ''
+                                                ) : ?>
+
+                                                    <?= number_format(
+                                                        $row['luas'],
+                                                        2,
+                                                        ',',
+                                                        '.'
+                                                    ); ?>
+
+                                                    m²
+
+                                                <?php else : ?>
+
+                                                    -
+
+                                                <?php endif; ?>
+
+                                            </strong>
+
+                                        </div>
+
+
+
+                                        <!-- ==========================
                                              ACTION
                                         =========================== -->
 
                                         <div class="public-space-mobile-actions">
+
+
+                                            <!-- GALLERY -->
+
+                                            <a
+                                                href="../foto/index.php?tipe=public_space&id=<?= $row['id_public_space']; ?>"
+                                                class="btn btn-info btn-sm"
+                                                title="Gallery">
+
+                                                <i class="bi bi-images"></i>
+
+                                            </a>
+
 
 
                                             <!-- EDIT -->
@@ -659,7 +747,7 @@ require_once "../../../includes/sidebar.php";
 
                                     <div class="public-space-empty-icon">
 
-                                        <i class="bi bi-people"></i>
+                                        <i class="bi bi-tree"></i>
 
                                     </div>
 
@@ -673,7 +761,7 @@ require_once "../../../includes/sidebar.php";
 
                                     <p>
 
-                                        Belum ada data public space
+                                        Belum ada public space
                                         yang ditambahkan.
 
                                     </p>
@@ -731,6 +819,7 @@ require_once "../../../includes/sidebar.php";
     display: none;
 
 }
+
 
 
 /* =====================================================
@@ -1165,6 +1254,7 @@ require_once "../../../includes/sidebar.php";
     }
 
 }
+
 
 
 /* =====================================================
