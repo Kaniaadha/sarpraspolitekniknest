@@ -38,7 +38,7 @@ $config = [
         'max_photo' => 10,
 
         // Maksimal ukuran file (5 MB)
-        'max_size' => 5 * 1024 * 1024,
+        'max_size' => 10 * 1024 * 1024,
 
         // Format file yang diperbolehkan
         'allowed_extensions' => [
@@ -109,7 +109,7 @@ $config = [
         'required' => 'Silakan pilih foto terlebih dahulu.',
         'invalid_extension' => 'Format file tidak didukung.',
         'invalid_mime' => 'File bukan gambar yang valid.',
-        'max_size' => 'Ukuran foto maksimal 5 MB.',
+        'max_size' => 'Ukuran foto maksimal 10 MB.',
         'max_photo' => 'Jumlah foto telah mencapai batas maksimal.',
         'upload_failed' => 'Upload foto gagal.',
         'delete_failed' => 'Gagal menghapus foto.',

@@ -267,7 +267,7 @@ $uploadPath = "../../../assets/uploads/{$uploadFolder}/";
 
                 <div class="form-text mt-2">
 
-                    Maksimal <?= $maxPhoto; ?> foto • Maksimal ukuran 5 MB
+                    Maksimal <?= $maxPhoto; ?> foto • Maksimal ukuran 10 MB
 
                 </div>
 
