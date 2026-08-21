@@ -4,7 +4,7 @@ define(
     'UPLOAD_PATH',
     __DIR__ . '/../../../../assets/uploads/banner/'
 );
-define('MAX_FILE_SIZE', 5 * 1024 * 1024); // 5 MB
+define('MAX_FILE_SIZE', 10 * 1024 * 1024); // 10 MB
 
 define('ALLOWED_EXTENSION', [
 

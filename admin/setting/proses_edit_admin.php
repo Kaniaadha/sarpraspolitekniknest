@@ -122,11 +122,11 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
     }
 
     // Validasi ukuran
-    if ($ukuran > 2 * 1024 * 1024) {
+    if ($ukuran > 10 * 1024 * 1024) {
 
         echo "
             <script>
-                alert('Ukuran foto maksimal 2 MB.');
+                alert('Ukuran foto maksimal 10 MB.');
                 window.history.back();
             </script>
         ";

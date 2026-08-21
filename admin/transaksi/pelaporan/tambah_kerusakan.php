@@ -105,11 +105,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 
-    $maxSize = 5 * 1024 * 1024;
+    $maxSize = 10 * 1024 * 1024;
 
     if ($foto['size'] > $maxSize) {
 
-        $_SESSION['error'] = "Ukuran foto maksimal 5 MB.";
+        $_SESSION['error'] = "Ukuran foto maksimal 10 MB.";
         header("Location: tambah_kerusakan.php");
         exit;
     }
@@ -675,7 +675,7 @@ require_once "../../../includes/sidebar.php";
 
                                 <small class="text-muted">
                                     Foto wajib diunggah sebagai bukti kerusakan.
-                                    Format JPG, PNG, atau WEBP. Maksimal 5 MB.
+                                    Format JPG, PNG, atau WEBP. Maksimal 10 MB.
                                 </small>
 
                             </div>

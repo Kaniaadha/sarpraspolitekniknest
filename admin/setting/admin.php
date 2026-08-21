@@ -138,7 +138,7 @@ require_once "../../includes/sidebar.php";
 
                     <small class="text-muted d-block mt-2">
 
-                        JPG, JPEG atau PNG (Maksimal 2 MB)
+                        JPG, JPEG atau PNG (Maksimal 10 MB)
 
                     </small>
 

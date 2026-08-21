@@ -95,7 +95,7 @@ if (!isAllowedExtension($extension)) {
 
 if (!isAllowedSize($file['size'])) {
 
-    $_SESSION['gagal'] = "Ukuran foto maksimal 5 MB.";
+    $_SESSION['gagal'] = "Ukuran foto maksimal 10 MB.";
 
     header("Location: index.php?id={$idBanner}");
     exit;

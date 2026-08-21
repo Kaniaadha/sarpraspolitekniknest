@@ -284,7 +284,7 @@ $uploadPath = "../../../../assets/uploads/banner/";
 
                                     Format:
                                     JPG, JPEG, PNG, WEBP
-                                    • Maksimal 5 MB
+                                    • Maksimal 10 MB
 
                                 </div>
 
