@@ -244,14 +244,26 @@ require_once "../../includes/sidebar.php";
                                         <td class="text-center">
                                             <?php if ($row['status'] == 'Menunggu') : ?>
                                                 <span class="badge bg-secondary">Menunggu</span>
+
                                             <?php elseif ($row['status'] == 'Disetujui') : ?>
                                                 <span class="badge bg-warning text-dark">Disetujui</span>
+
                                             <?php elseif ($row['status'] == 'Dipinjam') : ?>
                                                 <span class="badge bg-warning text-dark">Dipinjam</span>
+
                                             <?php elseif ($row['status'] == 'Dikembalikan') : ?>
                                                 <span class="badge bg-success">Dikembalikan</span>
-                                            <?php else : ?>
+
+                                            <?php elseif ($row['status'] == 'Selesai') : ?>
+                                                <span class="badge bg-success">Selesai</span>
+
+                                            <?php elseif ($row['status'] == 'Ditolak') : ?>
                                                 <span class="badge bg-danger">Ditolak</span>
+
+                                            <?php else : ?>
+                                                <span class="badge bg-secondary">
+                                                    <?= htmlspecialchars($row['status']); ?>
+                                                </span>
                                             <?php endif; ?>
                                         </td>
                                     </tr>
