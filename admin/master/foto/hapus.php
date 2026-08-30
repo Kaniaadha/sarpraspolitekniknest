@@ -10,12 +10,34 @@ declare(strict_types=1);
  * ----------------------------------------------------------
  * Menghapus foto gallery selain cover.
  *
- * Author  : SISARPRAS Team
- * Version : 1.0
  * ==========================================================
  */
 
 session_start();
+
+
+/*
+|--------------------------------------------------------------------------
+| Cek Login Admin
+|--------------------------------------------------------------------------
+*/
+
+if (
+    !isset($_SESSION['id_admin']) ||
+    !is_numeric($_SESSION['id_admin'])
+) {
+
+    $_SESSION['error'] =
+        'Sesi admin tidak ditemukan. Silakan login kembali.';
+
+    header("Location: ../../../login.php");
+    exit;
+}
+
+
+$idAdminLogin =
+    (int) $_SESSION['id_admin'];
+
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +59,9 @@ require_once 'helper.php';
 */
 
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+
     exit('Invalid Request.');
+
 }
 
 
@@ -53,11 +77,13 @@ $id = filter_input(
     FILTER_VALIDATE_INT
 );
 
+
 $photoId = filter_input(
     INPUT_GET,
     'foto',
     FILTER_VALIDATE_INT
 );
+
 
 if (!$id || !$photoId) {
 
@@ -68,6 +94,7 @@ if (!$id || !$photoId) {
 
     header("Location: index.php?tipe={$tipe}&id={$id}");
     exit;
+
 }
 
 
@@ -89,15 +116,20 @@ $sql = "
     LIMIT 1
 ";
 
+
 $stmt = $conn->prepare($sql);
+
 
 if (!$stmt) {
 
-    $_SESSION['error'] = 'Gagal menyiapkan query database.';
+    $_SESSION['error'] =
+        'Gagal menyiapkan query database.';
 
     header("Location: index.php?tipe={$tipe}&id={$id}");
     exit;
+
 }
+
 
 $stmt->bind_param(
     "ii",
@@ -105,11 +137,15 @@ $stmt->bind_param(
     $id
 );
 
+
 $stmt->execute();
+
 
 $result = $stmt->get_result();
 
+
 $photo = $result->fetch_assoc();
+
 
 if (!$photo) {
 
@@ -122,6 +158,7 @@ if (!$photo) {
 
     header("Location: index.php?tipe={$tipe}&id={$id}");
     exit;
+
 }
 
 
@@ -142,9 +179,12 @@ if ((int) $photo['is_cover'] === 1) {
 
     header("Location: index.php?tipe={$tipe}&id={$id}");
     exit;
+
 }
 
+
 $stmt->close();
+
 
 /*
 |--------------------------------------------------------------------------
@@ -152,7 +192,8 @@ $stmt->close();
 |--------------------------------------------------------------------------
 */
 
-$filePath = '../../../assets/uploads/'
+$filePath =
+    '../../../assets/uploads/'
     . $uploadFolder
     . DIRECTORY_SEPARATOR
     . $photo['nama_file'];
@@ -165,6 +206,7 @@ $filePath = '../../../assets/uploads/'
 */
 
 $conn->begin_transaction();
+
 
 try {
 
@@ -180,11 +222,18 @@ try {
           AND {$foreignKey} = ?
     ";
 
+
     $stmt = $conn->prepare($sql);
 
+
     if (!$stmt) {
-        throw new Exception('Gagal menyiapkan query database.');
+
+        throw new Exception(
+            'Gagal menyiapkan query database.'
+        );
+
     }
+
 
     $stmt->bind_param(
         "ii",
@@ -192,14 +241,18 @@ try {
         $id
     );
 
+
     if (!$stmt->execute()) {
+
         throw new Exception(
             uploadError(
                 $config,
                 'delete_failed'
             )
         );
+
     }
+
 
     $stmt->close();
 
@@ -211,31 +264,40 @@ try {
     */
 
     if (!deletePhysicalFile($filePath)) {
+
         throw new Exception(
             uploadError(
                 $config,
                 'delete_failed'
             )
         );
+
     }
 
-/*
-|--------------------------------------------------------------------------
-| Rapikan Urutan Gallery
-|--------------------------------------------------------------------------
-*/
 
-if (!reorderGallery(
-    $conn,
-    $table,
-    $primaryKey,
-    $foreignKey,
-    $id
-)) {
-    throw new Exception(
-        'Gagal merapikan urutan gallery.'
-    );
-}
+    /*
+    |--------------------------------------------------------------------------
+    | Rapikan Urutan Gallery
+    |--------------------------------------------------------------------------
+    */
+
+    if (
+        !reorderGallery(
+            $conn,
+            $table,
+            $primaryKey,
+            $foreignKey,
+            $id
+        )
+    ) {
+
+        throw new Exception(
+            'Gagal merapikan urutan gallery.'
+        );
+
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | Commit
@@ -244,22 +306,46 @@ if (!reorderGallery(
 
     $conn->commit();
 
-    $namaModul = ucfirst(str_replace('_', ' ', $module));
+
+    /*
+    |--------------------------------------------------------------------------
+    | Activity Log
+    |--------------------------------------------------------------------------
+    */
+
+    $namaModul =
+        ucfirst(
+            str_replace(
+                '_',
+                ' ',
+                $module
+            )
+        );
+
 
     simpanActivityLog(
         $conn,
-        $_SESSION['id_admin'],
+        $idAdminLogin,
         "Menghapus Foto {$namaModul}",
         $table,
         $id
     );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Success Message
+    |--------------------------------------------------------------------------
+    */
 
     $_SESSION['success'] = uploadSuccess(
         $config,
         'delete_success'
     );
 
+
 } catch (Exception $e) {
+
 
     /*
     |--------------------------------------------------------------------------
@@ -269,8 +355,12 @@ if (!reorderGallery(
 
     $conn->rollback();
 
-    $_SESSION['error'] = $e->getMessage();
+
+    $_SESSION['error'] =
+        $e->getMessage();
+
 }
+
 
 /*
 |--------------------------------------------------------------------------
@@ -278,5 +368,10 @@ if (!reorderGallery(
 |--------------------------------------------------------------------------
 */
 
-header("Location: index.php?tipe={$tipe}&id={$id}");
+header(
+    "Location: index.php?tipe={$tipe}&id={$id}"
+);
+
 exit;
+
+?>
