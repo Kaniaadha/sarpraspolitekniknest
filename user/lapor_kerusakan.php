@@ -89,9 +89,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $foto = $_FILES['foto'];
 
-    // Maksimal 5 MB
-    if ($foto['size'] > 5 * 1024 * 1024) {
-        $_SESSION['user_error'] = "Ukuran foto maksimal 5 MB.";
+    // Maksimal 10 MB
+    if ($foto['size'] > 10 * 1024 * 1024) {
+        $_SESSION['user_error'] = "Ukuran foto maksimal 10 MB.";
         header("Location: lapor_kerusakan.php");
         exit;
     }
@@ -845,7 +845,7 @@ textarea.form-control{
 
                             <div class="form-text">
                                 Foto wajib diunggah sebagai bukti kerusakan.
-                                Format JPG, PNG, atau WEBP..Maksimal 5 MB.
+                                Format JPG, PNG, atau WEBP..Maksimal 10 MB.
                             </div>
                         </div>
 
